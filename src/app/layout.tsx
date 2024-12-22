@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/config/global.css";
+
+import Navbar from "@/components/layout/Header";
 
 export const metadata: Metadata = {
   title: "최유찬 개발 블로그",
@@ -13,7 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="w-full">
+        <header className="w-full py-4 border-b-[1px] shadow-sm">
+          <Navbar />
+        </header>
+        <main className="max-w-6xl mx-auto">{children}</main>
+      </body>
     </html>
   );
 }
