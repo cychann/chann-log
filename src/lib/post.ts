@@ -14,12 +14,14 @@ const parsePost = async (postPath: string): Promise<Post> => {
 
   const postUrl = `/articles/${path.basename(postPath, ".mdx")}`;
   const readingMinutes = Math.ceil(readingTime(content).minutes);
+  const category = path.dirname(postPath).split(path.sep).slice(-1)[0];
 
   return {
     ...data,
     content,
     url: postUrl,
     readingMinutes: readingMinutes,
+    category: category,
   } as Post;
 };
 
@@ -31,7 +33,6 @@ export const getPostPaths = (category?: string) => {
 
 export const getPostList = async (category?: string): Promise<Post[]> => {
   const postPaths = getPostPaths(category);
-  console.log(postPaths);
   const postList = await Promise.all(
     postPaths.map((postPath) => parsePost(postPath))
   );
@@ -51,16 +52,12 @@ export const getCategoryList = (category: string) => {
 
 export const filterPosts = (
   posts: Post[],
-  { category, search }: { category?: string; search?: string }
+  { category }: { category?: string }
 ) => {
-  return posts
-    .filter((post) =>
-      !category || category === "All" ? true : post.tags?.includes(category)
-    )
-    .filter((post) =>
-      !search
-        ? true
-        : post.title.toLowerCase().includes(search.toLowerCase()) ||
-          post.content.toLowerCase().includes(search.toLowerCase())
-    );
+  return posts.filter((post) => {
+    const matchesCategory =
+      !category || category === "All" || post.category === category;
+
+    return matchesCategory;
+  });
 };

@@ -4,20 +4,19 @@ import PostList from "@/components/post/PostList";
 import Filters from "@/components/filters/Filter";
 
 type Props = {
-  params: {
+  searchParams: {
     category?: string;
     search?: string;
   };
 };
 
-export default async function articlePage({ params }: Props) {
-  const { category, search } = params;
+export default async function articlePage({ searchParams }: Props) {
+  const { category, search } = searchParams;
   const postList = await getPostList();
   const categoryList = getCategoryList("articles");
 
   const filteredPosts = filterPosts(postList, {
-    category: params.category,
-    search: params.search,
+    category,
   });
 
   return (

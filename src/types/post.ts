@@ -4,6 +4,7 @@ export type Post = {
   content: string;
   thumbnail: string;
   date: string;
+  category: string;
   tags?: string;
   url: string;
   readingMinutes: number;
