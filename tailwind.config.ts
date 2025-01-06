@@ -9,13 +9,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#4662D5",
       },
       fontFamily: {
         pretendard: ["Pretendard"],
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            "h1, h2, h3, h4": {
+              margin: "2rem 0",
+            },
+            p: {
+              margin: "2rem 0",
+            },
+
+            pre: {
+              padding: "1.25rem",
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 } satisfies Config;
