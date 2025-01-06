@@ -6,18 +6,21 @@ import { Post } from "@/types/post";
 import readingTime from "reading-time";
 
 const BASE_PATH = "/posts";
-const POSTS_PATH = path.join(process.cwd(), BASE_PATH);
+const ARTCIELS_PATH = "/articles";
+const POSTS_PATH = path.join(process.cwd(), BASE_PATH, ARTCIELS_PATH);
 
 const parsePost = async (postPath: string): Promise<Post> => {
   const file = fs.readFileSync(postPath, "utf8");
   const { data, content } = matter(file);
 
-  const postUrl = `/articles/${path.basename(postPath, ".mdx")}`;
+  const dateString = new Date(data.date).toLocaleDateString();
   const readingMinutes = Math.ceil(readingTime(content).minutes);
   const category = path.dirname(postPath).split(path.sep).slice(-1)[0];
+  const postUrl = `/articles/${category}/${path.basename(postPath, ".mdx")}`;
 
   return {
     ...data,
+    date: dateString,
     content,
     url: postUrl,
     readingMinutes: readingMinutes,
@@ -40,9 +43,11 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
   return postList;
 };
 
-export const getCategoryList = (category: string) => {
-  const categoryPath = path.join(POSTS_PATH, category);
+export const getCategoryList = () => {
+  const categoryPath = path.join(POSTS_PATH);
+
   const categoryPaths = sync(`${categoryPath}/*`);
+  console.log(categoryPath, categoryPaths);
   const categoryList = categoryPaths.map(
     (p) => p.split(path.sep).slice(-1)?.[0]
   );
@@ -60,4 +65,10 @@ export const filterPosts = (
 
     return matchesCategory;
   });
+};
+
+export const getPostDetail = async (category: string, slug: string) => {
+  const filePath = `${POSTS_PATH}/${category}/${slug}.mdx`;
+  const postDetail = await parsePost(filePath);
+  return postDetail;
 };
