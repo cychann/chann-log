@@ -1,6 +1,6 @@
 import React from "react";
 import { filterPosts, getCategoryList, getPostList } from "@/lib/post";
-import PostList from "@/components/post/PostList";
+import PostList from "@/components/post/postList/PostList";
 import Filters from "@/components/filters/Filter";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export default async function articlePage({ searchParams }: Props) {
   const { category, search } = searchParams;
   const postList = await getPostList();
-  const categoryList = getCategoryList("articles");
+  const categoryList = getCategoryList();
 
   const filteredPosts = filterPosts(postList, {
     category,
