@@ -1,4 +1,5 @@
-import PostDateTimeInfo from "@/components/ui/PostDateTimeInfo";
+import PostDateTimeInfo from "@/components/common/PostDateTimeInfo";
+import Tags from "@/components/common/Tags";
 import { Post } from "@/types/post";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,7 @@ type Props = {
   post: Post;
 };
 
-export default function PostCard({ post }: Props) {
+export default function ArticleCard({ post }: Props) {
   const { url, thumbnail, title, description, date, tags, readingMinutes } =
     post;
 
@@ -29,16 +30,7 @@ export default function PostCard({ post }: Props) {
         <div className="p-4 flex flex-col gap-2">
           <h2 className="font-bold text-xl text-gray-800">{title}</h2>
           <p className="text-gray-600">{description}</p>
-          <ul className="flex items-center gap-2 mt-2">
-            {tags?.split(",").map((tag) => (
-              <li
-                key={tag}
-                className="rounded-full bg-gray-200 px-3 py-1 text-xs text-gray-700"
-              >
-                {tag}
-              </li>
-            ))}
-          </ul>
+          <Tags tags={post.tags?.split(",") || []} />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
       </li>
