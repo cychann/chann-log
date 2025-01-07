@@ -1,5 +1,3 @@
-import PostDateTimeInfo from "@/components/common/PostDateTimeInfo";
-import Tags from "@/components/common/Tags";
 import LogList from "@/components/post/LogList";
 import { LOG_DATA } from "@/config/const";
 import { getPostCount, getPostList } from "@/lib/post";

@@ -2,18 +2,20 @@ import React from "react";
 import ArticlesPageContainer from "@/components/articles/ArticlesPageContainer";
 import { getCategoryList, getPostList } from "@/lib/post";
 
-type ArticlePageProps = {
-  searchParams: {
-    search?: string;
+interface Props {
+  params: {
+    category: string;
   };
-};
+}
 
-export default async function ArticlePage({ searchParams }: ArticlePageProps) {
+export default async function page({ params }: Props) {
+  const { category } = await params;
   const postList = await getPostList("articles");
   const categoryList = getCategoryList("articles");
+
   return (
     <ArticlesPageContainer
-      category="All"
+      category={category}
       postList={postList}
       categoryList={categoryList}
     />

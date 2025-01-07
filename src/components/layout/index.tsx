@@ -10,7 +10,7 @@ import IconButton from "@/components/common/IconButton";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
-  { name: "Log", href: "/logs" },
+  { name: "Logs", href: "/logs" },
   { name: "Collections", href: "/collections" },
 ];
 
