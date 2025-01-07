@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/config/global.css";
 
-import Navbar from "@/components/layout/Header";
+import Navbar from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "최유찬 개발 블로그",

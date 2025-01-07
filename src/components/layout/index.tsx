@@ -5,12 +5,12 @@ import { FaGithub } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { IoIosSearch } from "react-icons/io";
-import NavLink from "@/components/layout/Header/NavLink";
-import IconButton from "@/components/common/buttons/IconButton";
+import NavLink from "@/components/layout/NavLink";
+import IconButton from "@/components/common/IconButton";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
-  { name: "Log", href: "/log" },
+  { name: "Log", href: "/logs" },
   { name: "Collections", href: "/collections" },
 ];
 

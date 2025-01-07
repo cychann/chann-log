@@ -12,11 +12,7 @@ interface Props {
 
 export default async function page({ params }: Props) {
   const { category, slug } = await params;
-  const post = await getPostDetail(
-    "articles",
-    category,
-    decodeURIComponent(slug)
-  );
+  const post = await getPostDetail("logs", category, decodeURIComponent(slug));
 
   return (
     <section className="mx-auto w-full max-w-[750px] my-5">

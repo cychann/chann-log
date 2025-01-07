@@ -1,5 +1,5 @@
 import React from "react";
-import PostDateTimeInfo from "@/components/ui/PostDateTimeInfo";
+import PostDateTimeInfo from "@/components/common/PostDateTimeInfo";
 import { PostHeaderInfo } from "@/types/post";
 
 export default function PostHeader({
