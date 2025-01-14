@@ -1,6 +1,6 @@
 import React from "react";
 import ArticlesPageContainer from "@/components/articles/ArticlesPageContainer";
-import { getCategoryList, getPostList } from "@/lib/post";
+import { getArticleCategoryList, getArticleList } from "@/lib/posts/article";
 
 type ArticlePageProps = {
   searchParams: {
@@ -9,8 +9,8 @@ type ArticlePageProps = {
 };
 
 export default async function ArticlePage({ searchParams }: ArticlePageProps) {
-  const postList = await getPostList("articles");
-  const categoryList = getCategoryList("articles");
+  const postList = await getArticleList();
+  const categoryList = getArticleCategoryList();
   return (
     <ArticlesPageContainer
       category="All"

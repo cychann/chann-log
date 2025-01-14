@@ -1,8 +1,8 @@
-import { filterPosts, getCategoryPostCounts } from "@/lib/post";
 import React from "react";
 import CategoryList from "../filters/CategoryList";
 import ArticleList from "../post/ArticleList";
 import { Post } from "@/types/post";
+import { filterArticles, getArticleCategoryCounts } from "@/lib/posts/article";
 
 type ArticlesPageContainer = {
   category: string;
@@ -15,11 +15,12 @@ export default function ArticlesPageContainer({
   postList,
   categoryList,
 }: ArticlesPageContainer) {
-  const categoryPostCounts = getCategoryPostCounts(postList, categoryList);
+  const categoryPostCounts = getArticleCategoryCounts(postList, categoryList);
 
-  const filteredPosts = filterPosts(postList, {
-    category: category === "All" ? "" : category,
-  });
+  const filteredPosts = filterArticles(
+    postList,
+    category === "All" ? "" : category
+  );
   return (
     <section className="mx-auto mt-12 w-full max-w-[960px] px-4">
       <CategoryList

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
@@ -11,7 +9,6 @@ import IconButton from "@/components/common/IconButton";
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
   { name: "Logs", href: "/logs" },
-  { name: "Collections", href: "/collections" },
 ];
 
 export default function Header() {

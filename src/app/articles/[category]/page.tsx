@@ -1,6 +1,6 @@
 import React from "react";
 import ArticlesPageContainer from "@/components/articles/ArticlesPageContainer";
-import { getCategoryList, getPostList } from "@/lib/post";
+import { getArticleCategoryList, getArticleList } from "@/lib/posts/article";
 
 interface Props {
   params: {
@@ -10,8 +10,8 @@ interface Props {
 
 export default async function page({ params }: Props) {
   const { category } = await params;
-  const postList = await getPostList("articles");
-  const categoryList = getCategoryList("articles");
+  const postList = await getArticleList();
+  const categoryList = getArticleCategoryList();
 
   return (
     <ArticlesPageContainer
