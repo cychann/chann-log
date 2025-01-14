@@ -1,28 +1,26 @@
 import Link from "next/link";
+import Category from "./Category";
 
 type CategoryListProps = {
   categories: string[];
   selectedCategory: string;
+  categoryPostCounts: Record<string, number>;
 };
 
 export default function CategoryList({
   categories,
   selectedCategory,
+  categoryPostCounts,
 }: CategoryListProps) {
   return (
-    <ul className="flex items-center gap-2">
+    <ul className="flex items-center gap-2 mb-8">
       {categories.map((category) => (
-        <Link key={category} href={`/articles/${category}`}>
-          <li
-            className={`cursor-pointer px-4 py-2 rounded hover:bg-slate-100 transition-all duration-200  ${
-              selectedCategory === category
-                ? "bg-black text-white"
-                : "text-black"
-            }`}
-          >
-            {category}
-          </li>
-        </Link>
+        <Category
+          key={category}
+          category={category}
+          selected={selectedCategory === category}
+          postCount={categoryPostCounts[category]}
+        />
       ))}
     </ul>
   );

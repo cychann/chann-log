@@ -53,6 +53,19 @@ export const getPostCount = cache(async (type: string, category?: string) => {
   return posts.length;
 });
 
+export const getCategoryPostCounts = (
+  posts: Post[],
+  categories: string[]
+): Record<string, number> => {
+  const counts = categories.reduce((acc, category) => {
+    acc[category] = posts.filter((post) => post.category === category).length;
+    return acc;
+  }, {} as Record<string, number>);
+
+  counts["All"] = posts.length;
+
+  return counts;
+};
 export const getCategoryList = (type: string) => {
   const categoryPath = POSTS_PATH(type);
 
