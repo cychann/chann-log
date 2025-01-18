@@ -1,7 +1,6 @@
-import CustomMDX from "@/components/mdx/CustomMDX";
 import PostContent from "@/components/post/PostContent";
 import PostHeader from "@/components/post/PostHeader";
-import { getPostDetail } from "@/lib/post";
+import { getArticleDetail } from "@/lib/posts/article";
 
 interface Props {
   params: {
@@ -12,11 +11,7 @@ interface Props {
 
 export default async function page({ params }: Props) {
   const { category, slug } = await params;
-  const post = await getPostDetail(
-    "articles",
-    category,
-    decodeURIComponent(slug)
-  );
+  const post = await getArticleDetail(category, decodeURIComponent(slug));
 
   return (
     <section className="mx-auto w-full max-w-[750px] my-5">

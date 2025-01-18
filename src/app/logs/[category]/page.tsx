@@ -1,8 +1,6 @@
-import PostDateTimeInfo from "@/components/common/PostDateTimeInfo";
-import Tags from "@/components/common/Tags";
 import LogList from "@/components/post/LogList";
 import { LOG_DATA } from "@/config/const";
-import { getPostCount, getPostList } from "@/lib/post";
+import { getLogCount, getLogList } from "@/lib/posts/log";
 import Image from "next/image";
 import React from "react";
 
@@ -14,8 +12,8 @@ interface Props {
 
 export default async function page({ params }: Props) {
   const { category } = await params;
-  const postCount = await getPostCount("logs", category);
-  const postList = await getPostList("logs", category);
+  const postCount = await getLogCount(category);
+  const postList = await getLogList(category);
 
   return (
     <section className="mx-auto mt-12 w-full max-w-[960px] px-4">

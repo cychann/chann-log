@@ -1,14 +1,12 @@
 import { LOG_DATA } from "@/config/const";
-import { getCategoryList, getPostCount, getPostList } from "@/lib/post";
+import { getLogCategoryList, getLogCount } from "@/lib/posts/log";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default async function logPage() {
-  const categoryList = getCategoryList("logs");
-  const postCounts = await Promise.all(
-    categoryList.map((category) => getPostCount("logs", category))
-  );
+export default function logPage() {
+  const categoryList = getLogCategoryList();
+  const postCounts = categoryList.map((category) => getLogCount(category));
 
   return (
     <section className="mx-auto mt-12 w-full max-w-[960px] px-4">
