@@ -1,7 +1,7 @@
 import { getArticleList } from "@/lib/posts/article";
 import { KBarWrapper } from "./KBarWrapper";
 import { getLogList } from "@/lib/posts/log";
-import { createKbarAction } from "@/lib/KBar/kbar";
+import { createKbarAction } from "@/lib/KBar";
 
 export default async function KBarContainer({
   children,

@@ -4,7 +4,6 @@ import path from "path";
 import { sync } from "glob";
 import { Post } from "@/types/post";
 import readingTime from "reading-time";
-import { cache } from "react";
 
 const BASE_PATH = "/posts";
 
