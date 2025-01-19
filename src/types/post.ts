@@ -32,3 +32,9 @@ export type Post = {
   url: string;
   readingMinutes: number;
 };
+
+export interface HeadingItem {
+  text: string;
+  link: string;
+  indent: number;
+}

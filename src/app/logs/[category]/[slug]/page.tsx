@@ -1,6 +1,4 @@
-import CustomMDX from "@/components/mdx/CustomMDX";
-import PostContent from "@/components/post/PostContent";
-import PostHeader from "@/components/post/PostHeader";
+import PostDetailPage from "@/components/post/PostDetailPage";
 import { getLogDetail } from "@/lib/posts/log";
 
 interface Props {
@@ -10,19 +8,9 @@ interface Props {
   };
 }
 
-export default async function page({ params }: Props) {
+export default async function logDetailpage({ params }: Props) {
   const { category, slug } = await params;
   const post = await getLogDetail(category, decodeURIComponent(slug));
 
-  return (
-    <section className="mx-auto w-full max-w-[750px] my-5">
-      <PostHeader
-        title={post.title}
-        date={post.date}
-        category={post.category}
-        readingMinutes={post.readingMinutes}
-      />
-      <PostContent content={post.content} />
-    </section>
-  );
+  return <PostDetailPage post={post} />;
 }

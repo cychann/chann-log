@@ -14,7 +14,6 @@ class ArticleService extends PostService {
 
 export const articleService = new ArticleService();
 
-// 편의를 위한 export 함수들
 export const getArticleList = (category?: string) =>
   articleService.getList(category);
 export const getArticleDetail = (category: string, slug: string) =>
