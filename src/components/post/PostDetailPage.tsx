@@ -21,8 +21,8 @@ export default function PostDetailPage({ post }: PostDetailPageProps) {
         readingMinutes={post.readingMinutes}
       />
       <article className="relative">
-        <TOCSidebar toc={toc} />
         <PostContent content={post.content} />
+        <TOCSidebar toc={toc} />
       </article>
     </section>
   );

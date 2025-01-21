@@ -15,7 +15,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className="scroll-smooth overflow-y-scroll">
       <body className="w-full">
         {/* @ts-expect-error Async Server Component */}
         <KBarContainer>

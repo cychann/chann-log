@@ -29,8 +29,8 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
   };
 
   return (
-    <aside className="not-prose absolute left-full top-0 hidden h-full xl:block">
-      <div className="sticky top-12 ml-8 w-[240px]">
+    <aside className="absolute left-full top-0 hidden h-full xl:block">
+      <div className="sticky top-[6rem] ml-8 w-[240px]">
         <nav
           className="mb-4 rounded-lg border bg-white/50 px-4 py-3 shadow-sm backdrop-blur-sm"
           aria-label="Table of contents"
