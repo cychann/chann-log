@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import PostHeader from "./PostHeader";
+import PostDetailHeader from "./PostDetailHeader";
 import DefaultHeader from "./DefaultHeader";
 
 export default function Header() {
@@ -9,7 +9,7 @@ export default function Header() {
   const isPostDetail = /\/(articles|logs)\/[^/]+\/[^/]+$/.test(pathname);
 
   if (isPostDetail) {
-    return <PostHeader />;
+    return <PostDetailHeader />;
   }
 
   return <DefaultHeader />;
