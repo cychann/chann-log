@@ -15,13 +15,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className="scroll-smooth overflow-y-scroll">
       <body className="w-full">
         {/* @ts-expect-error Async Server Component */}
         <KBarContainer>
-          <header className="w-full py-4 border-b-[1px] shadow-sm">
-            <Header />
-          </header>
+          <Header />
           <main className="max-w-6xl mx-auto">{children}</main>
         </KBarContainer>
       </body>
