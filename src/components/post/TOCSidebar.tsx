@@ -61,7 +61,7 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
                       text-sm transition-colors duration-200
                       ${
                         isActive
-                          ? "font-medium text-primary pl-3"
+                          ? "font-medium text-primary"
                           : "text-gray-500 hover:text-primary"
                       }
                     `}
