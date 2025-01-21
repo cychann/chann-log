@@ -1,34 +1,16 @@
 "use client";
 
-import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { MdDarkMode } from "react-icons/md";
-import { MdLightMode } from "react-icons/md";
-import NavLink from "@/components/layout/NavLink";
-import IconButton from "@/components/common/IconButton";
-import KBarButton from "../KBar/KBarButton";
-
-const NAV_LIST = [
-  { name: "Articles", href: "/articles" },
-  { name: "Logs", href: "/logs" },
-];
+import { usePathname } from "next/navigation";
+import PostHeader from "./PostHeader";
+import DefaultHeader from "./DefaultHeader";
 
 export default function Header() {
-  return (
-    <nav className="flex justify-between items-center max-w-6xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Link href="/">
-          <h3 className="text-3xl font-extrabold">chann-log</h3>
-        </Link>
-        {NAV_LIST.map(({ name, href }) => (
-          <NavLink href={href} name={name} key={name} />
-        ))}
-      </div>
-      <div className="flex items-center gap-2">
-        <KBarButton />
-        <IconButton icon={<MdDarkMode size={24} />} />
-        <IconButton icon={<FaGithub size={24} />} />
-      </div>
-    </nav>
-  );
+  const pathname = usePathname();
+  const isPostDetail = /\/(articles|logs)\/[^/]+\/[^/]+$/.test(pathname);
+
+  if (isPostDetail) {
+    return <PostHeader />;
+  }
+
+  return <DefaultHeader />;
 }
