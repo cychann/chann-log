@@ -1,0 +1,276 @@
+---
+title: Caching in Nuxt3
+description: Nuxt3에서의 캐싱
+thumbnail: "/posts/articles/Nuxt/Nuxt_caching/thumbnail.avif"
+date: 2024-07-30
+tags: caching, getCachedData
+---
+
+프론트엔드 개발자라면, 어떻게 웹사이트의 성능을 최적화할 수 있을지 항상 고민할 것입니다. 웹사이트의 로딩 시간을 줄이고, 물 흐르듯 자연스러운 사용자 경험을 제공하는 것은 너무 중요한 사항입니다. 여러 최적화 방법이 있는데, 그중 단연코 빠질 수 없는 개념은 바로 **캐싱(Caching)**입니다.
+
+# 캐싱의 기본 개념과 중요성
+
+**캐싱(Caching)**은 자주 사용되거나 요청되는 데이터를 임시 저장소에 보관하여, 이후 같은 데이터에 대한 요청이 있을 때 더 빠르게 제공하는 기술입니다. 캐싱을 활용하면 데이터 접근 속도를 크게 향상시킬 수 있으며, 서버의 부하를 감소시킬 수 있습니다.
+
+하지만 이런 장점이 있는 만큼 단위 메모리당 비용이 비싼 편이며, 캐싱 전략을 잘못 구현하면 오히려 성능 저하나 데이터 불일치와 같은 문제를 일으킬 수 있습니다. 따라서 재사용을 충분히 많이 할 수 있는 데이터를 선별적으로 선택하고, 유효기간과 갱신 방법을 신중하게 설계하여 적절한 캐싱 전략을 적용할 수 있어야 합니다.
+
+캐싱은 단순히 데이터를 저장하는 것 이상의 복잡한 과정을 필요로 하며, 캐시 된 데이터의 신선도와 정확성을 유지하는 기술이 중요합니다. 따라서 프론트엔드 개발자로서 캐싱의 기본 원리를 이해하고, 적절한 캐싱 전략을 적용하는 능력이 필요합니다.
+
+# 프론트엔드에서의 캐싱 전략
+
+프론트엔드 개발자의 관점에서 캐싱을 적용하기 좋은 상황의 예시로는 다음과 같은 것들이 있습니다.
+
+- **자주 참조되는 데이터**
+  - ex) 홈페이지 콘텐츠, 공통 자원(사이트 로고, 헤더 푸터 등)
+  - 캐싱 전략: 짧은 TTL(Time-To-Live)을 설정하거나, 실시간 업데이트가 필요한 경우 적절한 캐싱 무효화 전략을 적용
+- **자주 변경되지 않는 데이터**
+  - ex) 정적 자원(CSS, JS File, Image, Font)
+  - 캐싱 전략: 긴 TTL을 설정하여 캐시 히트율을 높임
+- **동일한 입력에 대해 동일한 출력을 보장하는 데이터**
+  - ex) 동일한 응답을 제공하는 API 응답
+  - 캐싱 전략: 결과가 변하지 않는 한 응답을 캐시
+- **대용량 데이터**
+  - ex) 비디오 및 오디오 파일 및 고해상도 이미지
+  - 캐싱 전략: CDN(Content Delivery Network)을 활용하여 분산 캐싱 적용
+
+위의 사례 말고도 다양한 케이스가 있을 수 있습니다. 다만 중요한 것은, 데이터의 특성과 사용 패턴을 고려하여 적절한 캐싱 전략을 선택할 수 있어야 한다는 것입니다.
+
+실제로 백엔드 개발자와 협력하여 HTTP Cache-Control 헤더를 직접 설정하거나 다른 캐싱 방법을 적용할 수도 있지만, 이번 포스트에서는 Nuxt3를 활용한 프론트엔드 캐싱 관련 내용에 대해 정리해 보았습니다.
+
+# Nuxt3에서의 Caching
+
+## 1. 정적 파일 캐싱 최적화
+
+Nuxt 3는 정적 파일(예: JavaScript 파일, CSS 파일, 이미지 등)의 캐싱을 자동으로 최적화하여 애플리케이션의 성능을 향상합니다. 이를 통해 동일한 정적 파일을 재요청할 때, 브라우저가 파일을 다시 다운로드하지 않고 캐시를 활용할 수 있습니다.
+
+예를 들어 이미지 파일에 대한 'Cache-Control' 헤더를 다음과 같이 설정합니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/1.png" />
+이미지 파일 Cache-Control
+
+위의 사진에서 'Cache-Control' 헤더는 Nuxt3에서 자동으로 설정해 준 부분입니다. 각 헤더의 의미는 다음과 같습니다.
+
+`Cache-Control: public, max-age=31536000, immutable`
+
+- public: 모든 사용자와 캐시 서버가 이 응답을 캐시 할 수 있음
+- max-age=31536000: 브라우저가 이 자산을 1년(31536000초) 동안 캐시
+- immutable: 이 리소스는 절대 변경되지 않으므로, 브라우저가 재검사 없이 캐시 된 버전을 사용할 수 있음
+
+### Etag
+
+여기서 immutable 속성을 지정할 수 있는 이유는 `Etag` 속성 때문입니다. Nuxt3에서 빌드할 때 정적 리소스에 대해 고유 식별자인 `Etag`를 자동으로 생해줍니다.
+
+### If-None-Match
+
+`Etag`는 `If-None-Match` 헤더와 함께 사용되어, `Etag`의 데이터 수정 여부를 확인합니다.
+
+- 캐시에 있는 Etag와 서버에 있는 Etag가 같으면 -> **304 Not Modified 응답 (캐시 재사용)**
+- 캐시에 있는 Etag와 서버에 있는 Etag가 다르면 -> **200 OK 응답 (네트워크 다운로드)**
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/2.png" />
+출처 : https://web.dev/articles/http-cache
+
+위 사진의 예시에서는 Etag 값이 일치했으므로 서버는 파일을 캐시해야 하는 기간에 관한 지침(Cache-Control: max-age=120)과 함께 304 Not Modified 응답을 반환했습니다.
+
+이와 같은 방식으로, 서버는 파일이 변경되지 않았음을 확인할 수 있으며, 클라이언트는 캐시된 파일을 사용하게 됩니다.
+
+이렇게 Nuxt3에서는 자동으로 캐싱 최적화와 관련된 설정이 적용됩니다.
+
+하지만 특정 요구 사항에 따라 캐싱 설정을 직접 조정하고 싶다면, ' routeRules' 옵션을 활용하여 캐싱 설정을 세부적으로 조정할 수 있습니다.
+
+```ts
+export default defineNuxtConfig({
+  // ...
+
+  // 방법 1
+  routeRules: {
+    "/_nuxt/**": {
+      cache: {
+        maxAge: 3600,
+      },
+    },
+  },
+
+  // 방법 2
+  routeRules: {
+    "/_nuxt/**": {
+      headers: {
+        "cache-control": "ublic, max-age=3600",
+      },
+    },
+  },
+
+  // ...
+});
+```
+
+이 옵션들은 NitroRouteConfig 인터페이스의 일부로 제공되며, 다음과 같은 캐싱 관련 설정을 지원합니다.
+
+- **cache**: 캐시 관련 옵션을 설정
+- **headers**: HTTP 응답 헤더를 직접 설정
+
+```ts
+interface NitroRouteConfig {
+  cache?: ExcludeFunctions<CachedEventHandlerOptions> | false;
+  headers?: Record<string, string>;
+  redirect?:
+    | string
+    | {
+        to: string;
+        statusCode?: HTTPStatusCode;
+      };
+  prerender?: boolean;
+  proxy?:
+    | string
+    | ({
+        to: string;
+      } & ProxyOptions);
+  isr?: number | boolean;
+  cors?: boolean;
+  swr?: boolean | number;
+  static?: boolean | number;
+}
+interface NitroRouteRules
+  extends Omit<NitroRouteConfig, "redirect" | "cors" | "swr" | "static"> {
+  redirect?: {
+    to: string;
+    statusCode: HTTPStatusCode;
+  };
+  proxy?: {
+    to: string;
+  } & ProxyOptions;
+}
+```
+
+위에서 적용한 옵션을 다시 빌드 후 실행해 보면, 아래와 같이 직접 지정한 max-age가 설정된 것을 확인할 수 있습니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/3.png" />
+
+Nuxt 3는 빌드 시마다 JavaScript와 CSS 파일의 이름에 해시값을 자동으로 추가합니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/4.png" />
+빌드할 때마다 파일 이름에 해시값 자동 생성
+
+이로 인해 파일이 변경될 때마다 새로운 URL이 생성되므로, 브라우저는 새로 배포되지 않는 한 캐시 된 파일을 계속 사용할 수 있습니다. 이는 정적 파일의 캐시 관리를 더욱 효율적으로 만들어 줍니다.
+
+## 2. getCachedData를 활용한 API 호출 캐싱
+
+Nuxt3에서는 데이터 패칭과 캐싱을 효율적으로 처리할 수 있는 강력한 composable 메서드인 `useFetch`와 `useAsyncData`를 제공합니다. 특히 `getCachedData`라는 옵션을 활용하면, 애플리케이션 성능을 향상하는 데 도움이 되는 내장된 캐싱 기능을 구현하여 불필요한 API 호출을 방지할 수 있습니다.
+
+아래는 Nuxt3에서 `getCachedData`를 사용하여 캐싱을 구현한 간단 예제입니다.
+
+```ts
+const getURL = "https://icanhazdadjoke.com/";
+
+const nuxtApp = useNuxtApp();
+const { data } = await useFetch(getURL, {
+  headers: {
+    Accept: "application/json",
+  },
+  key: "joke",
+  transform(input) {
+    return {
+      ...input,
+      fetchedAt: new Date(),
+    };
+  },
+  getCachedData: (key) => {
+    const data = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+    console.log("key data", data);
+
+    if (!data) {
+      console.log("refetch");
+      // Fetch the first time
+      return;
+    }
+
+    // Is the data too old?
+    const expirationDate = new Date(data.fetchedAt);
+    expirationDate.setTime(expirationDate.getTime() + 10 * 500);
+    const isExpired = expirationDate.getTime() < Date.now();
+    if (isExpired) {
+      // Refetch the data
+      return;
+    }
+
+    return data;
+  },
+});
+```
+
+우선, 요청을 보내고 있는 "https://icanhazdadjoke.com/"은 랜덤 농담을 반환하는 API의 URL입니다.
+
+getCachedData 옵션을 적용하지 않았을 때의 화면은 다음과 같습니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/5.gif" />
+getCachedData 미적용
+
+**문제 상황**: 현재, 사용자가 Index 페이지를 방문할 때마다 API를 호출하여 새로운 농담을 생성하고 있습니다. 이로 인해 매번 페이지를 새로 로드할 때마다 새로운 농담을 받아오게 됩니다.
+
+**목표**: 매번 API를 호출하는 대신, 일정 시간 동안 동일한 농담을 유지하고, 데이터가 오래된 경우에만 새로운 농담을 생성하도록 하여 불필요한 API 호출을 줄이고 성능을 최적화하고자 합니다.
+
+이제 위의 코드를 통해 어떻게 캐싱을 적용했는지 살펴봅시다.
+
+현재 API 응답은 다음과 같은 데이터 형식을 가지고 있습니다.
+
+```json
+{
+  "id": "mrHQKBA5MCd",
+  "joke": "My boss told me that he was going to fire the person with the worst posture. I have a hunch, it might be me.",
+  "status": 200
+}
+```
+
+데이터의 만료 시간을 설정하려면, 데이터가 처음 패칭 된 시점을 기록해야 합니다. 이를 위해 useFetch의 `transform` 옵션을 활용할 수 있습니다. 아래 코드는 `transform` 옵션을 사용하여 데이터와 함께 수집 시점을 저장하는 코드입니다.
+
+```js
+transform(input) {
+    return {
+      ...input,
+      fetchedAt: new Date(),
+    };
+  },
+```
+
+이렇게 fetchedAt 속성을 추가하면, 데이터가 패칭된 시간을 기록하여 이후 만료 시간을 판단하는 데 사용할 수 있습니다.
+
+### getCachedData를 활용한 캐싱 적용
+
+getCachedData를 사용하여 캐싱을 적용하려면, 가장 중요한 것은 **key**입니다. useFetch와 useAsyncData는 데이터를 패칭 할 때 특정 키값으로 관리하며, 이 키값을 통해 `useNuxtApp` 훅으로 받아온 nuxtApp 인스턴스를 통해 전역에서 데이터에 접근할 수 있습니다.
+
+getCachedData는 다음과 같이 키를 파라미터로 받아 데이터를 조회합니다.
+
+```js
+const data = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+```
+
+이 코드를 통해, 주어진 키값으로 데이터가 조회되면 캐시 된 데이터를 반환하여 추가적인 API 호출 없이 캐시된 데이터를 재사용할 수 있습니다.
+
+데이터가 존재하지 않거나 조회된 데이터가 오래된 경우에는 다음과 같은 로직을 통해 새로운 데이터를 요청합니다. 데이터가 오래되었는지 확인하려면, data.fetchedAt 값을 사용하여 데이터의 만료 날짜를 계산합니다. 만료 기간을 5초로 설정한 경우, 아래와 같은 로직으로 데이터가 만료되었는지 확인할 수 있습니다.
+
+**getCachedData에서는 null, undefined 또는 그냥 return 하면 refetching을 발생**시킵니다.
+
+```js
+const expirationDate = new Date(data.fetchedAt);
+expirationDate.setTime(expirationDate.getTime() + 10 * 500);
+const isExpired = expirationDate.getTime() < Date.now();
+if (isExpired) {
+  // Refetch the data
+  return;
+}
+```
+
+위의 내용을 종합하면 아래와 같이 로직의 흐름도를 작성할 수 있는 것입니다.
+
+1. nuxtApp 인스턴스를 통해 key값으로 조회되는 데이터가 있는지 확인
+   1. 데이터가 없다면 -> return (refetching)
+   2. 데이터가 있다면 -> 만료된 데이터인지 확인
+      1. 만료된 데이터라면 -> return (refetching)
+      2. 만료 시간 이전의 데이터라면 -> 기존의 data를 return
+
+캐싱을 적용한 화면은 다음과 같습니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_caching/6.gif" />
+getCachedData 적용
+
+위의 예제는 간단하지만, 실제 개발 시에는 다양한 상황이 존재하므로, 데이터의 특성과 사용 패턴에 맞게 적절한 만료 시간을 설정하여 성능을 최적화할 수 있어야 합니다.

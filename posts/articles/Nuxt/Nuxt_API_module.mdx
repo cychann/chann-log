@@ -1,0 +1,316 @@
+---
+title: Nuxt3 스마트한 API 호출 관리 - Factory Pattern, 모듈화
+description: Nuxt3에서 Factory Pattern을 적용하여 API 호출 로직을 구조화하고 모듈화
+thumbnail: "/posts/articles/Nuxt/Nuxt_API_module/thumbnail.jpeg"
+date: 2024-10-24
+tags: API, Module, Factory Pattern
+---
+
+프로젝트가 커지고 다양한 데이터를 처리해야 할 때, API 호출 로직을 효율적으로 관리하는 것은 프론트엔드 개발자에게 필수적인 역량입니다.
+
+구조화되지 않은 API 호출 코드는 복잡성과 중복을 증가시켜 코드의 가독성과 유지보수성을 떨어뜨릴 수 있습니다. 따라서 초기 단계에서 API 호출 로직을 체계적으로 설계하고 구성하는 것이 매우 중요합니다.
+
+Nuxt3는 useFetch, useAsyncData, $fetch와 같은 다양한 도구를 제공하여 API 호출을 보다 효율적으로 관리할 수 있도록 돕습니다.
+
+그러나 기존에 fetch나 axios를 사용해왔다면, 이러한 새로운 데이터 패칭 방식이 다소 생소하게 느껴질 수 있습니다. 하지만 이 개념을 잘 이해하고 프로젝트에 적용하면, 코드의 확장성과 유연성을 크게 높일 수 있습니다.
+
+이 글에서는 Nuxt3에서 API 호출을 깔끔하고 효율적으로 관리하기 위해 디자인 패턴을 적용한 경험과 그 과정에서의 고민을 공유하고자 합니다.
+
+---
+
+Nuxt3에서 가장 원초적으로 API를 호출하는 코드는 다음과 같습니다.
+
+```js
+const { data } = useFetch("/api/test");
+```
+
+하지만 이러한 코드가 여러 곳에서 각각 호출된다면 다음과 같은 문제가 발생할 수 있습니다.
+
+1. **유지보수의 어려움**
+
+가장 큰 문제는 유지보수의 어려움입니다. API 호출 로직을 수정해야 할 때, 호출이 사용된 모든 위치를 찾아 일일이 수정해야 합니다. API 경로가 변경되거나, 요청 옵션이 바뀌면 코드 전체를 수동으로 업데이트해야 하기 때문에 작업이 번거롭고 실수 가능성도 높아집니다.
+
+2. **공통 로직 적용의 비일관성**
+
+API 호출에는 종종 공통된 로직이 필요합니다. 예를 들어, 인증 토큰을 포함하거나 에러 처리를 통일된 방식으로 적용하는 경우가 대표적입니다. 하지만 위와 같이 호출을 각각의 컴포넌트에서 처리한다면, 공통된 로직을 일관되게 적용하기 어렵고, 코드 중복이 발생할 가능성이 큽니다.
+
+3. **비즈니스 로직과 API 호출 로직의 혼재**
+
+API 호출 로직과 비즈니스 로직이 혼재되어 코드의 가독성이 떨어질 수 있습니다. 비즈니스 로직이 복잡해질수록, API 호출과 관련된 세부 사항들이 뒤섞여서 코드가 산만해지고 유지보수가 힘들어집니다.
+
+이 밖에도 여러가지 문제점들이 있습니다.
+
+```js
+// 구조화되지 않은 API 호출
+const { data } = useFetch("/api/test", {
+  onRequestError: () => {
+    // 에러 처리 로직...
+  },
+  headers: {
+    // 인증 처리...
+  },
+  transform: (data) => {
+    // 데이터를 변환하는 비즈니스 로직...
+  },
+});
+
+// .........................................................................
+
+// 구조화된 API 로직 -> getAPITest라는 별도의 함수로 데이터를 받아와서 뿌려주기만 하면 됨
+// 공통 로직 (에러 처리, 인증 등)이 함수 내부에서 처리되므로 컴포넌트는 데이터 출력에만 집중할 수 있음
+const { data } = getAPITest();
+```
+
+위와 같이 API 호출과 에러 처리, 인증, 데이터 변환 등의 로직이 한 곳에 섞여 있습니다. 각 호출마다 이런 로직을 일일이 추가해야 하니 코드 중복도 많아지고 관리도 어려워집니다.
+
+구조화된 형태에서는 API 호출을 별도의 함수로 분리해놓았다고 가정합니다.
+이제 컴포넌트에서는 **API 호출 함수만 호출**하고, 데이터만 받아서 처리하면 됩니다. 에러 처리, 인증, 데이터 변환 등은 함수 내부에 통합되어 있기 때문에 코드가 깔끔해지고, 재사용성과 유지보수성이 크게 향상됩니다.
+
+위의 간단한 예시만 보더라도 **API 호출을 구조화**해야 하는 이유는 분명합니다. 유지보수의 용이성, 일관된 공통 로직 적용, 그리고 가독성 향상을 위해 API 호출 로직을 모듈화하고 추상화하는 것이 필수적입니다.
+
+---
+
+하지만 한 가지 문제가 있습니다. **Nuxt3에서의 데이터 패칭은 기본적으로 `$fetch`에 의존**하고 있습니다. 즉, $fetch를 단독으로 사용하거나, $fetch와 useAsyncData, 또는 $fetch와 useFetch를 조합하여 사용하게 됩니다. 결국 모든 API 호출은 $fetch에 의존하게 되므로, $fetch 메소드를 수정하거나 커스텀할 수 있어야 합니다.
+
+다행히 Nuxt3에서는 $fetch를 커스텀할 수 있는 기능을 제공하고 있습니다. 아래 링크에서 $fetch 커스텀에 대한 내용을 확인할 수 있습니다:
+https://nuxt.com/docs/guide/recipes/custom-usefetch
+
+$fetch는 전반적인 API 호출 로직에 관여하므로, 커스텀된 $fetch는 모듈화보다는 API 호출의 공통 로직을 처리하는 데 특히 유용합니다.
+
+따라서 요청 시 토큰 정보를 담거나 인증 에러를 처리하는 로직과 API baseURL을 기본으로 설정하는 코드를 작성해 보았습니다.
+
+```ts
+import type { $Fetch, FetchOptions } from "ofetch";
+import { handle401Error } from "@/utils/httpHandler";
+
+const setAuthorizationHeader = (options: any, token: string) => {
+  const headers = (options.headers ||= {});
+  headers["Authorization"] = "Bearer " + token;
+};
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const fetchOptions: FetchOptions =
+    baseURL: nuxtApp.$config.public.apiBase,
+    async onRequest({ options }) {
+      const tokenStore = useTokenStore();
+      const { accessToken } = storeToRefs(tokenStore);
+      if (accessToken.value) {
+        setAuthorizationHeader(options, accessToken.value);
+      }
+    },
+    async onResponseError(context): Promise<void> {
+      if (context.response.status === 401) {
+        await handle401Error(context);
+      }
+    },
+  };
+
+  const api = $fetch.create(fetchOptions) as $Fetch;
+
+  return {
+    provide: {
+      api,
+    },
+  };
+});
+```
+
+이와 같이 API 호출의 공통 로직을 효율적으로 처리할 수 있게 되었습니다. 상황에 맞게 $fetch 메소드를 커스텀하면 됩니다.
+
+---
+
+# API 호출 모듈화
+
+API 호출을 모듈화하면 관련된 API 요청을 함께 관리할 수 있습니다. 일반적으로 연관된 API 호출끼리 모듈화하며, API URL도 관련된 모델끼리 묶어서 처리하는 것이 좋습니다.
+
+예를 들어, 인증 관련 API는 /accounts, 사용자 관련 API는 /user와 같이 구성됩니다. 이러한 방식은 API 호출의 일관성을 유지하고, 코드의 가독성과 유지보수성을 향상시키는 데 도움이 됩니다.
+
+다음은 사용자와 관련된 API를 모아놓은 모듈의 예시입니다:
+
+```ts
+type User = {
+  id: number;
+  last_login: string;
+  created: string;
+  modified: string;
+  name: string;
+  email: string;
+  password: string;
+  birthday: string | null;
+  number: string | null;
+  profile: string | null;
+  is_active: boolean;
+  groups: any[];
+};
+
+const { $api } = useNuxtApp();
+
+export class UserModule {
+  private RESOURCE = "/user";
+
+  async updateUserById(userId: number, userData: Partial<User>) {
+    return $api(`${this.RESOURCE}/v2/user/me/`, {
+      method: "PATCH",
+      body: userData,
+    });
+  }
+
+  async getUserById(userId: number) {
+    return useAsyncData<User>(
+      "user" + userId,
+      () =>
+        $api(`${this.RESOURCE}/v2/user/detail/${userId}/`, {
+          method: "GET",
+        }),
+      {
+        server: true,
+        lazy: true,
+      }
+    );
+  }
+}
+```
+
+이렇게 모듈화하면, 해당 모듈은 사용자와 관련된 API 호출만 관리하게 됩니다.
+
+이로 인해 특정 API 호출에 문제가 발생했을 때, 해당 코드만 수정하면 되므로 유지보수성과 재사용성이 크게 향상됩니다.
+
+---
+
+# API 호출의 추상화
+
+하지만 저는 API 호출을 일관되게 유지하기 위해 $api를 통해 호출하는 부분을 다시 추상화하고자 했습니다. 그 이유는 다음과 같습니다:
+
+1. **API 호출의 일관성 유지**
+
+   - 모든 API 호출을 위한 통합된 인터페이스를 제공하여, 모든 요청이 동일한 방식으로 이루어지도록
+   - 기본값으로 설정할 수 있는 부분(예: Content-Type: application/json)은 코드에 포함시키지 않고 자동으로 처리
+
+2. **useAsyncData 관리**
+
+   - useAsyncData를 감싸야 하는 부분과 그렇지 않은 로직을 분리하여 관리할 수 있는 추상화 개념을 도입해 가독성을 향상
+
+3. **유지보수 용이성**
+
+   - API 호출 방식을 변경해야 할 경우(예: 새로운 API 클라이언트를 도입하거나 요청 로직을 변경할 경우), 추상화된 곳에서 해당 API 호출 방식을 추가하거나 수정
+
+4. **매개변수 처리 개선**
+   - 모듈화된 API 호출 로직에서 매개변수 처리 방식을 개선
+
+# Factory Pattern의 도입
+
+이러한 개념을 적용하기 위해 **Factory Pattern**을 활용했습니다. Factory 패턴은 객체 생성 로직을 별도의 클래스나 메서드로 캡슐화하여 객체 생성의 책임을 분리하고 코드의 재사용성을 높이는 디자인 패턴입니다. 이를 통해 중복 코드를 줄이고, 객체 생성 로직을 중앙 집중화하여 유지보수성을 향상시킬 수 있습니다.
+
+이러한 이유로, API 호출 로직을 중앙집중화할 수 있는 **FetchFactory라는 추상화 개념**을 추가했습니다.
+
+```ts
+import type { $Fetch, FetchOptions } from "ofetch";
+import type { AsyncDataOptions } from "#app";
+
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+class FetchFactory {
+  private readonly $fetch: $Fetch;
+
+  constructor(fetcher: $Fetch) {
+    this.$fetch = fetcher;
+  }
+
+  async call<T>(
+    method: HttpMethod,
+    url: string,
+    data?: object,
+    fetchOptions?: FetchOptions<"json">
+  ): Promise<T> {
+    return this.$fetch<T>(url, {
+      method,
+      body: data,
+      ...fetchOptions,
+    });
+  }
+
+  async useAsyncFetch<T>(
+    key: string,
+    method: HttpMethod,
+    url: string,
+    data?: object,
+    asyncDataOptions?: AsyncDataOptions<T>
+  ) {
+    return useAsyncData<T>(
+      key,
+      () => this.call(method, url, data),
+      asyncDataOptions
+    );
+  }
+}
+
+export default FetchFactory;
+```
+
+이제 기존의 UserModule을 아래와 같이 수정하여 Factory Pattern을 적용할 수 있습니다:
+
+```ts
+class UserModule extends FetchFactory {
+  private RESOURCE = "/accounts";
+
+  async getUserById(userId: number, asyncDataOptions?: AsyncDataOptions<User>) {
+    const url = `${this.RESOURCE}/v2/user/detail/${userId}/`;
+    const fetchOptions: FetchOptions<"json"> = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    return this.useAsyncFetch<User>(
+      "user" + userId,
+      "GET",
+      url,
+      undefined,
+      asyncDataOptions
+    );
+  }
+
+  async updateUserById(userId: number, userData: Partial<User>) {
+    const url = `${this.RESOURCE}/v2/user/me/`;
+    return this.call("PATCH", url, userData, undefined);
+  }
+}
+```
+
+기존에 설정했던 $fetch 커스텀 부분에 모듈을 추가하여 플러그인처럼 활용할 수 있습니다.
+
+```ts
+import type { $Fetch, FetchOptions } from "ofetch";
+
+import UserModule from "@/utils/repository/user";
+import { handle401Error } from "@/utils/httpHandler";
+
+interface IApiInstance {
+  user: UserModule;
+}
+
+export default defineNuxtPlugin((nuxtApp) => {
+  // ....
+
+  const apiFetcher = $fetch.create(fetchOptions) as $Fetch;
+
+  const modules: IApiInstance = {
+    user: new UserModule(apiFetcher),
+  };
+
+  return {
+    provide: {
+      api: modules,
+    },
+  };
+});
+```
+
+이제 플러그인에서 제공하는 $api를 사용하여 API 호출을 손쉽게 진행할 수 있습니다.
+
+```ts
+const { $api } = useNuxtApp();
+
+const { data: user } = await $api.user.getUserById(user.id);
+```
+
+이와 같이 Factory Pattern을 적용하여 API 호출 로직을 중앙집중화하고 관리할 수 있게 되었습니다. 이를 통해 코드의 일관성과 유지보수성을 높이며, API 호출에 대한 가독성을 개선할 수 있게 되었습니다.
