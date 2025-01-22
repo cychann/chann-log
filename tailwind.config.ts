@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#4662D5",
+        primary: "var(--primary)",
       },
       fontFamily: {
         pretendard: ["Pretendard"],
@@ -47,6 +47,17 @@ export default {
             },
             "code::after": {
               content: "none",
+            },
+
+            blockquote: {
+              fontWeight: "bold",
+              fontStyle: "normal",
+              borderLeftColor: "var(--primary)",
+              backgroundColor: "rgba(0, 0, 0, 0.03)",
+              padding: "1rem",
+              p: {
+                margin: "0",
+              },
             },
           },
         },
