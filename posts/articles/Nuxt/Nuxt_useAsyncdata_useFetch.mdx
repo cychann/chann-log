@@ -6,9 +6,7 @@ date: 2024-07-22
 tags: useAsyncData, useFetch, data fetching
 ---
 
-최근 게시글에서 Nuxt3에서의 데이터 호출 방식인 $fetch, useAsyncData, useFetch에 대해 알아보았습니다.
-
-https://cychann.tistory.com/entry/Data-fetching-in-Nuxt3-fetch-useFetch-useAsyncData
+[최근 게시글](https://cychann.tistory.com/entry/Data-fetching-in-Nuxt3-fetch-useFetch-useAsyncData)에서 Nuxt3에서의 데이터 호출 방식인 $fetch, useAsyncData, useFetch에 대해 알아보았습니다.
 
 이 개념들을 공부하다 보면 저와 같은 궁금증을 가지게 될 수 있습니다. 바로, **useAsyncData와 useFetch의 차이점은 무엇일까?** 라는 질문이죠.
 
@@ -16,33 +14,23 @@ Nuxt 공식 문서에 따르면, useFetch(url)은 `useAsyncData('', () => $fetch
 
 실제로 Nuxt 커뮤니티에서도 이 주제에 대한 활발한 논의가 이루어지고 있습니다.
 
-<p align="center">
-  <img
-    src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/1.png"
-    width="50%"
-  />
-  <img
-    src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/2.png"
-    width="50%"
-  />
-</p>
+<div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+  <Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/1.png" />
+  <Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/2.png" />
+</div>
 
-<p align="center">
-  <img
-    src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/3.png"
-    width="50%"
-  />
-  <img
-    src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/4.png"
-    width="50%"
-  />
-</p>
+<div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+  <Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/3.png" />
+  <Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/4.png" />
+</div>
 
 useAsyncData vs useFetch 뜨거운 논쟁
 
 따라서 이번 게시글에서는 useAsyncData와 useFetch의 차이점을 분석한 제 의견을 정리하여 공유하려고 합니다.
 
 ---
+
+# useAsyncData vs useFetch
 
 ```js
 useFetch(url)
@@ -97,7 +85,7 @@ export default defineEventHandler(async (event) => {
 
 이 코드를 실행하여, Inc Page 버튼을 눌렀을 때 +1이 된 page 값을 받아오기를 기대했지만, 실제로는 페이지가 변경되지 않고 데이터 요청이 이루어지지 않습니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/5.gif" />
+<Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/5.gif" />
 
 그 이유는 Vue 3의 **ref와 computed에서 .value를 사용할 때 발생하는 반응성 차이** 때문입니다.
 
@@ -117,7 +105,7 @@ const { data: useAsyncDataResult } = useAsyncData("page", () =>
 );
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/6.gif" />
+<Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/6.gif" />
 
 하지만 이때 useFetch는 잘 처리되지만, useAsyncData를 사용했을 때는 객체 자체가 렌더링되는 문제가 발생합니다. 그 이유는 다음과 같습니다.
 
@@ -147,7 +135,7 @@ const { data: useAsyncDataResult } = useAsyncData(
 );
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/7.gif" />
+<Image src="/posts/articles/Nuxt/Nuxt_useAsyncdata_useFetch/7.gif" />
 
 이렇게 하면 useAsyncData는 잘 작동하지만, 이번엔 useFetch가 작동하지 않네요😅
 
@@ -176,6 +164,8 @@ const { data: useAsyncDataResult } = useAsyncData(
 콜백 함수를 사용하여 외부 값을 참조할 수 있게 됩니다. 그러나 반응성을 부여하기 위해서는 ref와 computed의 .value 값을 꺼내서 값으로 넣어주고, watch 옵션으로 반응성을 부여해야 합니다.
 
 ---
+
+# useAsyncData를 사용해야만 하는 경우
 
 추가로, useAsyncData가 콜백 함수로 데이터를 처리한다는 점에서 useFetch로는 불가능한 상황들이 몇 가지 있습니다.
 
@@ -206,6 +196,8 @@ const { data: discounts, status } = await useAsyncData(
 ```
 
 ---
+
+# 마치며..
 
 이처럼 useFetch와 useAsyncData + $fetch는 유사한 동작을 수행하지만, 세부적으로 차이가 존재합니다.
 

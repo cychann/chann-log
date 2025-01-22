@@ -302,9 +302,7 @@ export interface API {
 
 특히 blocks API는 블록을 삽입하고 삭제하며, 현재 선택된 블록의 인덱스를 확인하는 등의 기능을 제공합니다. 이런 기능들은 복잡한 블록 구조를 다룰 때 매우 유용합니다. 예를 들어, 사용자 입력에 따라 동적으로 새로운 블록을 추가하거나 삭제해야 하는 경우, blocks API의 도움을 받아 쉽게 구현할 수 있습니다.
 
-공식 문서에서 이러한 Core API의 자세한 설명을 확인할 수 있는데, 처음 Editor.js를 사용한다면 공식문서의 내용 꼼꼼히 살펴보는 것이 많은 도움이 될 것입니다.
-
-https://editorjs.io/api/
+공식 문서에서 이러한 Core API의 자세한 설명을 확인할 수 있는데, 처음 Editor.js를 사용한다면 [공식문서](https://editorjs.io/api/)의 내용 꼼꼼히 살펴보는 것이 많은 도움이 될 것입니다.
 
 **data**는 블록의 내부 데이터를 담고 있어, 해당 블록이 어떤 상태나 정보를 저장할 것인지 초기화할 수 있습니다.
 
@@ -348,7 +346,7 @@ render() 메서드는 블록이 에디터에 어떻게 렌더링 될지를 결�
 
 툴박스 설정을 통해 사용자에게 블록을 쉽게 추가할 수 있는 UI를 제공합니다.
 
-<img src="/posts/articles/Web/EditorJS/1.png" />
+<Image src="/posts/articles/Web/EditorJS/1.png" />
 
 ## 5. pasteConfig()
 
@@ -378,7 +376,7 @@ BlockTool 골격 내에서, 그 외에 필요한 함수는 직접 정의하여 �
 
 # Inline Tool
 
-<img src="/posts/articles/Web/EditorJS/2.png" />
+<Image src="/posts/articles/Web/EditorJS/2.png" />
 
 Editor.js는 블록 기반의 콘텐츠 편집을 기본으로 하면서도, 인라인 스타일이나 특정 텍스트 수정 기능을 추가할 수 있도록 **Inline Tool**을 제공합니다.
 
@@ -578,7 +576,7 @@ Editor.js에서 **Block Tool**과 **Inline Tool**을 구현할 수 있으면 거
 
 Editor.js를 사용하면 기본적으로 커서 왼쪽에 **+ 아이콘**을 통해 블록을 삽입할 수 있습니다.
 
-<img src="/posts/articles/Web/EditorJS/2.png" />
+<Image src="/posts/articles/Web/EditorJS/2.png" />
 
 하지만 저는 이 메뉴를 오른쪽에 사이드바 형태로 제공해야 했습니다.
 
@@ -590,7 +588,7 @@ Editor.js에서는 editor.blocks.insert() 메서드를 사용해 블록을 특�
 
 (원래 기존의 +아이콘으로 블록을 삽입하면, 활성화된 위치에 블록을 자동으로 삽입하게 되므로 고려하지 않아도 됨.)
 
-이 문제를 해결하기 위해 **Editor의 현재 블록 인덱스(currentIndex)**를 전역 상태로 관리하도록 설계했습니다.
+이 문제를 해결하기 위해 <strong>Editor의 현재 블록 인덱스(currentIndex)</strong>를 전역 상태로 관리하도록 설계했습니다.
 
 이를 통해 정확한 위치에 블록을 삽입하고, 동시에 에디터 사용성을 매끄럽게 유지할 수 있었습니다.
 
@@ -658,16 +656,11 @@ const addBlock = (type: string, data: object) => {
 하지만 위 코드처럼 **현재 활성화된 블록이 paragraph이고 내용이 비어 있는지 확인하는 로직을 추가**하여, 다음과 같이 사용성을 개선할 수 있습니다.
 
 <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-  <img
+  <Image
     src="/posts/articles/Web/EditorJS/4.png"
-    alt="Image 1"
-    style={{ width: "45%" }}
+    alt="빈 paragraph 처리하지 않았을 때"
   />
-  <img
-    src="/posts/articles/Web/EditorJS/5.png"
-    alt="Image 2"
-    style={{ width: "45%" }}
-  />
+  <Image src="/posts/articles/Web/EditorJS/5.png" alt="처리했을 때" />
 </div>
 
 제 예시 코드에서도 확인할 수 있듯이, **Editor.js의 API**를 활용하면 다양한 기능을 효과적으로 구현할 수 있습니다.
@@ -707,8 +700,10 @@ Editor.js를 전역 상태로 관리할 때 유용한 점은 분명 많지만, *
 
 그렇지 않으면 **에디터가 여러 번 초기화되거나 중복 생성되는 문제가 발생**할 수 있습니다.
 
-<img src="/posts/articles/Web/EditorJS/6.png" />
-<figcaption>에디터(class: code-editor)가 2개 활성화된 화면</figcaption>
+<Image
+  alt="에디터(class: code-editor)가 2개 활성화된 화면"
+  src="/posts/articles/Web/EditorJS/6.png"
+/>
 
 아래는 제가 사용한 코드에서 이 문제를 방지하기 위해 적용한 방법입니다:
 
@@ -747,8 +742,10 @@ export default EditorContent;
 
 **useRef를 활용해 에디터가 이미 생성되었는지 확인**하고, 생성되지 않은 경우에만 인스턴스를 초기화하도록 처리했습니다.
 
-<img src="/posts/articles/Web/EditorJS/7.png" />
-<figcaption>올바르게 에디터(class: code-editor)가 1개만 설정된 모습</figcaption>
+<Image
+  alt="올바르게 에디터(class: code-editor)가 1개만 설정된 모습"
+  src="/posts/articles/Web/EditorJS/7.png"
+/>
 
 ## 3. SSR에서 Editor.js 적용하기
 
@@ -782,12 +779,11 @@ export default function HomePage() {
 
 이 문제를 Nuxt.js에서 **동적으로 컴포넌트를 로딩**하도록 설정하여 해결할 수 있었습니다.
 
-CSR과 SSR에 대한 개념이 아직 익숙하지 않다면, 제가 작성한 아래 블로그를 참고하면 도움이 될 것입니다.
+CSR과 SSR에 대한 개념이 아직 익숙하지 않다면, 제가 작성한 [아래 블로그](https://cychann.tistory.com/entry/Nuxt3-rendering-mode-lifecycle)를 참고하면 도움이 될 것입니다.
 
 Editor.js로 개발하며 겪었던 시행착오를 바탕으로 정리한 내용입니다.
 
 Nuxt.js를 중심으로 설명하고 있지만 Next.js에서도 동일한 개념을 적용할 수 있으니 유용할 것입니다.
-https://cychann.tistory.com/entry/Nuxt3-rendering-mode-lifecycle
 
 ## 4. inlineToolbar 설정
 
@@ -869,7 +865,7 @@ Editor.js API에 대한 이해를 바탕으로 프로젝트를 진행하다 보�
 
 혹시라도 Editor.js를 사용하려는 분들께 이 글이 도움이 되었으면 좋겠습니다.
 
-제가 실제로 작업했던 프로젝트는 <a href="https://github.com/cychann/React_EditorJS">해당 GitHub 링크</a> 에서 확인 가능합니다:
+제가 실제로 작업했던 프로젝트는 [해당 GitHub 링크](https://github.com/cychann/React_EditorJS)에서 확인 가능합니다:
 
 ```
 <Callout type="warn">Next.js 14.1 버전을 기준으로 작성되었습니다.</Callout>

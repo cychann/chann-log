@@ -236,17 +236,18 @@ const SearchInput = ({ value, onChange, placeholder, onSearch }) => {
     });
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && onSearch) {
+      onSearch(value);
+    }
+  };
+
   return (
     <InputField
       value={value}
       onChange={handleChange} // 변경된 동작
       placeholder={placeholder}
-      onKeyPress={(e) => {
-        // 이 prop은 InputField에서 지원하지 않음
-        if (e.key === "Enter" && onSearch) {
-          onSearch(value);
-        }
-      }}
+      onKeyPress={handleKeyPress}
     />
   );
 };
@@ -298,7 +299,7 @@ export default App;
 - **인터페이스 불일치**
 
   - InputField는 onChange에 표준 이벤트 객체를 전달
-  - SearchInput은 onChange에 커스텀 객체 {value, timestamp}를 전달
+  - SearchInput은 onChange에 커스텀 객체 (value, timestamp) 를 전달
   - 이로 인해 동일한 핸들러를 사용할 수 없고, 별도의 핸들러가 필요함
 
 - **제한 사항 추가**
@@ -308,11 +309,9 @@ export default App;
   - 이는 부모 컴포넌트의 동작 규약을 위반
 
 - **HTML 요소 타입 변경**
-
   - InputField는 type="text" 사용
   - SearchInput은 type="search" 사용
   - 이는 기본 동작과 스타일에 차이를 발생
-
 - **대체 불가능**
   - 위의 변경들로 인해 InputField를 사용하는 곳에 SearchInput을 대체 사용할 수 없음
   - 이는 LSP의 핵심인 "자식 클래스는 부모 클래스로 대체 가능해야 한다"는 원칙을 위반

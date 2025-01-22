@@ -6,7 +6,7 @@ date: 2024-02-20
 tags: vue, drag and drop API
 ---
 
-<img src="/posts/articles/Vue/vue_hashtag/thumbnail.gif" />
+<Image src="/posts/articles/Vue/vue_hashtag/thumbnail.gif" />
 
 **#해시 태그** 기능은 게시물을 구현할 때 거의 빠지지 않고 사용되는 기능이라고 할 수 있습니다. 태그를 구현하는 방법에는 여러가지가 있지만, 위의 GIF와 같이 동적으로 태그를 생성하는 디자인이 가장 많이 사용된다고 할 수 있습니다. 티스토리에서도, Velog에서도 이와 같은 방식으로 해시 태그 기능을 제공하고 있습니다.
 
@@ -122,7 +122,7 @@ const onKeyUpBackspace = (e) => {
 };
 ```
 
-<img src="/posts/articles/Vue/vue_hashtag/1.gif" />
+<Image src="/posts/articles/Vue/vue_hashtag/1.gif" />
 
 # 3. 드래그 앤 드롭으로 순서 변경 가능하도록
 
@@ -132,8 +132,8 @@ const onKeyUpBackspace = (e) => {
 
 드래그 앤 드롭(drag and drop) API에 관한 내용은 아래 문서들을 참조했습니다.
 
-https://developer.mozilla.org/ko/docs/Web/API/DataTransfer
-https://www.tcpschool.com/html/html5_api_dragAndDrop
+- https://developer.mozilla.org/ko/docs/Web/API/DataTransfer
+- https://www.tcpschool.com/html/html5_api_dragAndDrop
 
 Vue에서 제공하는 Drag Event Handler + Javascript의 drag and drop API로 작성한 코드입니다.
 
@@ -178,8 +178,8 @@ const onDrop = (index, event) => {
 그 이유는 **@dragover 이벤트에 대한 처리**를 따로 해주지 않아서 발생했던 문제입니다.
 
 dragover event는 **드래그 중인 아이템이 지나가는 동안 계속해서 발생**합니다.
-해당 이벤트를 **preventDefault()** 처리해주지 않으면 브라우저의 기본 동작이 실행되어 드래그 앤 드롭 동작이 원할하게 이루어지지 않습니다.
+해당 이벤트를 `preventDefault()` 처리해주지 않으면 브라우저의 기본 동작이 실행되어 드래그 앤 드롭 동작이 원할하게 이루어지지 않습니다.
 
 따라서 해당 관련 함수를 작성해서 드래그 앤 드롭 기능을 성공적으로 구현할 수 있었습니다.
 
-<img src="/posts/articles/Vue/vue_hashtag/2.gif" />
+<Image src="/posts/articles/Vue/vue_hashtag/2.gif" />
