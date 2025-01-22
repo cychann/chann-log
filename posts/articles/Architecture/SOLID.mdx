@@ -1,0 +1,644 @@
+---
+title: SOLID 원칙 (Feat. 프론트엔드에서의 적용 사례)
+description: SOLID 원칙에 대해 알아보고, 프론트엔드 개발에 어떻게 적용해볼 수 있을지 알아봅니다.
+thumbnail: "/posts/articles/Architecture/SOLID/thumbnail.png"
+date: 2024-08-21
+tags: OOP, SOLID
+---
+
+**객체 지향 프로그래밍**의 기본 개념은 작은 독립적인 단위의 객체를 만들어 조립하는 것입니다. 이 개념이 정립되고 다듬어지면서, 프로그래밍의 세계에서 큰 빛을 발하게 되었습니다. 하지만, 단순히 클래스와 객체를 많이 사용한다고 해서 좋은 코드가 만들어지는 것은 아닙니다.
+
+좋은 객체 지향 설계를 위해서는 **객체들 간의 관계를 신중하게 설정**하고, **초기 설계 단계에서 많은 노력을 기울여야**합니다. 객체 지향 프로그래밍은 그 자체로 복잡함이 따르지만, 이러한 복잡함을 관리하기 위한 여러 원칙과 방법이 발전해왔습니다.
+
+그 중에서도 프로그래밍 세계에서 널리 통용되는 **SOILD 원칙**에 대해 정리해보았습니다.
+
+# SOLID 원칙이란?
+
+SOLID는 좋은 설계를 위한 다섯 가지 원칙으로, 이를 지키면 견고한 소프트웨어를 만들 수 있습니다. 또한, 코드의 유지 보수성과 확장성을 크게 향상시킬 수 있습니다. 이 원칙들은 처음 접할 때는 다소 어려울 수 있지만, 이해하고 나면 코드 설계 시 중요한 이정표가 됩니다.
+
+아직 개발 경험이 부족해서인지, SOLID 원칙을 완벽히 이해하고 적용하는 것이 어렵게 느껴집니다.
+
+그러나 이 원칙들을 공부하면서 컴포넌트를 어떻게 분리하고 설계해야 할지 더 깊이 고민하게 되었습니다. 프론트엔드 개발자로서 어떻게 코드를 모듈화하고, 각 컴포넌트의 역할과 책임을 명확히 할 수 있을지 판단할 수 있는 능력은 정말 많이 중요하다고 생각합니다.
+
+이 SOLID 원칙을 코드에 잘 녹여내기 위해 끊임없이 사고하는 훈련이 앞으로 저의 개발 능력에 큰 도움이 될 것이라고 생각합니다.
+
+SOLID 원칙은 다음과 같은 다섯 가지로 구성되어 있습니다.
+
+- **SRP (Single Responsibility Principle)** - 단일 책임 원칙
+- **OCP (Open Close Principle)** - 개방 폐쇄 원칙
+- **LSP (Liskov Substitution Principle)** - 리스코프 치환 원칙
+- **ISP (Interface Segregation Principle)** - 인터페이스 분리 원칙
+- **DIP (Dependency Inversion Principle)** - 의존성 역전 원칙
+
+이 5가지 원칙들은 서로 독립된 개별적인 개념이 아니라, **서로 개념적으로 연관**되어 있습니다. 원칙끼리 서로가 서로를 이용하기도 하고 포함하기도 합니다.
+
+# SRP (Single Responsibility Principle) - 단일 책임 원칙
+
+단일 책임 원칙은 하나의 클래스가 **오직 하나의 기능만을 담당**해야 하며, 클래스가 제공하는 모든 서비스가 하나의 책임을 수행하는 데 집중되어야 한다는 원칙입니다. 쉽게 말해, **클래스를 변경해야 하는 이유는 단 하나여야 한다**는 것입니다.
+
+하나의 클래스에 여러 책임(기능)이 있다면, 특정 기능이 변경될 때 다른 기능에도 영향을 미치게 되어, 수정해야 할 코드가 많아질 수 있습니다. 예를 들어, A 기능을 수정하면 B 기능도 수정해야 하고, 다시 C 기능까지 수정해야 하는 상황이 발생할 수 있습니다.
+
+SRP 원칙을 따르면 **한 책임의 변경이 다른 책임으로 연쇄적으로 영향을 미치는 문제를 줄일 수 있습니다.**
+
+핵심은 책임을 분리하는 것뿐만 아니라, **분리된 클래스들 간의 관계에서 복잡도를 줄이도록 설계**하는 것입니다.
+
+이 SRP에 대해서는, 리액트 공식문서에서도 언급될만큼 중요한 원칙입니다.
+
+SRP 원칙이 위반된 사례와 그 코드를 수정한 정말 간단한 예제를 들어보겠습니다.
+
+```jsx
+import React, { useEffect, useState } from "react";
+
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // API 호출 (데이터 가져오기)
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    const response = await fetch("/api/user");
+    const data = await response.json();
+    setUser(data);
+  };
+
+  return (
+    <div>
+      {user ? (
+        <div>
+          <h1>{user.name}</h1>
+          <p>{user.email}</p>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+여기서 UserProfile 컴포넌트는 데이터를 가져오는 것과 UI를 렌더링하는 두 가지 책임을 모두 가지고 있습니다. 위의 코드에서 SRP 원칙을 준수하도록 수정하면 다음과 같습니다.
+
+```jsx
+// userService.js (API 호출을 위한 서비스)
+export const fetchUser = async () => {
+  const response = await fetch("/api/user");
+  const data = await response.json();
+  return data;
+};
+
+// UserProfile.js (UI 컴포넌트)
+import React, { useEffect, useState } from "react";
+import { fetchUser } from "./userService";
+
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const data = await fetchUser();
+      setUser(data);
+    };
+
+    getUserData();
+  }, []);
+
+  return (
+    <div>
+      {user ? (
+        <div>
+          <h1>{user.name}</h1>
+          <p>{user.email}</p>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+API 호출이 별도의 서비스로 분리되었습니다. 이제 ‘UserProfile’ 컴포넌트는 이제 UI 렌더링만 담당하게 됩니다. API 호출 코드에 문제가 있다면 userService.js의 코드를 수정하면 되고, UI에 문제가 있다면 UserProfile.js를 수정하면 됩니다.
+
+# 2. OCP (Open Close Principle) - 개방 폐쇄 원칙
+
+**개방 폐쇄 원칙**은 소프트웨어 구성 요소(컴포넌트, 클래스, 모듈, 함수 등)가 **확장에는 열려 있고, 변경(수정)에는 닫혀 있어야** 한다는 원칙입니다.
+
+간단히 말하면, 요구사항이 변경될 때 기존 코드를 변경하는 것이 아니라 새로운 코드를 추가하는 방향을 추구하는 원칙입니다. 이렇게 하면 코드의 안정성을 유지하면서 새로운 요구 사항을 수용할 수 있습니다.
+
+프론트엔드에서 자주 접할 수 있는 컴포넌트 확장 상황을 통해 OCP를 적용하는 예제를 살펴봅니다.
+
+다음은 버튼 컴포넌트를 구현하는 예제입니다. 버튼의 스타일을 변경할 때마다 기존 코드를 수정해야 하는 방식입니다.
+
+```jsx
+import React from "react";
+
+const Button = ({ type, onClick, children }) => {
+  let className = "btn";
+
+  if (type === "primary") {
+    className += " btn-primary";
+  } else if (type === "secondary") {
+    className += " btn-secondary";
+  }
+
+  return (
+    <button className={className} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
+
+export default Button;
+```
+
+물론 위처럼 작성될 일은 많이 없겠지만, 예시 설명을 위해 극적으로 상황을 가정해보았습니다.
+
+이 코드에서는 버튼의 스타일을 변경하기 위해 ‘Button’ 컴포넌트의 코드를 수정해야 합니다. 새로운 버튼 스타일이 필요할 때마다 if문을 추가해야하는 불편함이 있습니다.
+
+OCP 원칙을 준수하도록 Button 컴포넌트를 수정하여 버튼 스타일을 확장할 때 기존 코드를 수정하지 않고 새로운 스타일을 추가할 수 있습니다.
+
+```jsx
+import React from "react";
+
+// 기본 버튼 컴포넌트
+const Button = ({ className, onClick, children }) => {
+  return (
+    <button className={className} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
+
+// 기본 버튼 컴포넌트에서 확장된 메인 버튼 컴포넌트
+const PrimaryButton = (props) => {
+  return <Button className="btn btn-primary" {...props} />;
+};
+
+// 기본 버튼 컴포넌트에서 확장된 또 다른 버튼 컴포넌트
+const SecondaryButton = (props) => {
+  return <Button className="btn btn-secondary" {...props} />;
+};
+
+export { PrimaryButton, SecondaryButton };
+```
+
+이 리팩토링된 코드에서는 각 버튼 스타일을 별도의 컴포넌트로 정의하여 필요에 따라 새로운 버튼 스타일을 쉽게 추가할 수 있습니다. 새로운 버튼 스타일을 추가하려면 기존 Button 컴포넌트를 변경할 필요 없이 새로운 버튼 컴포넌트를 추가하면 됩니다.
+
+# 3. LSP (Liskov Substitution Principle) - 리스코프 치환 원칙
+
+리스코프 치환 원칙(Liskov Substitution Principle, LSP)은 **서브 타입(자식 클래스)은 언제나 기반 타입(부모 클래스)으로 교체할 수 있어야 한다**는 것을 의미합니다. 즉, 서브 타입은 항상 기반 타입과 호환되어야 하며, 이 원칙을 통해 객체 지향 프로그래밍의 핵심 개념인 **다형성**을 올바르게 활용할 수 있습니다.
+
+**핵심은 부모 클래스의 행동 규약을 자식 클래스가 위반하지 않아야 한다는 것!**
+
+프론트엔드 개발에서 LSP를 적용하는 대표적인 예시는 컴포넌트 설계와 상속을 통해 발생할 수 있습니다. 이 포스트에서는 React를 예시로 들어 LSP를 정리해봤습니다.
+
+**LSP를 위반하는 경우**
+
+```jsx
+import React from "react";
+
+// 기본 입력 필드 컴포넌트 (부모)
+const InputField = ({ value, onChange, placeholder }) => {
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+    />
+  );
+};
+
+// 검색 입력 필드 컴포넌트 (자식)
+const SearchInput = ({ value, onChange, placeholder, onSearch }) => {
+  // 부모의 동작을 완전히 변경/재정의
+  const handleChange = (e) => {
+    // 공백 입력을 막음 (부모는 허용했는데 자식이 제한)
+    if (e.target.value.trim() === "") {
+      return;
+    }
+
+    // 최대 10글자로 제한 (부모에 없던 제한 추가)
+    if (e.target.value.length > 10) {
+      return;
+    }
+
+    // 부모의 onChange 동작을 변경
+    onChange({
+      value: e.target.value, // 이벤트 객체 대신 다른 형태의 데이터 전달
+      timestamp: new Date(),
+    });
+  };
+
+  return (
+    <InputField
+      value={value}
+      onChange={handleChange} // 변경된 동작
+      placeholder={placeholder}
+      onKeyPress={(e) => {
+        // 이 prop은 InputField에서 지원하지 않음
+        if (e.key === "Enter" && onSearch) {
+          onSearch(value);
+        }
+      }}
+    />
+  );
+};
+
+// 사용 예시
+function App() {
+  const [text, setText] = React.useState("");
+
+  // 기본 InputField용 핸들러
+  const handleInputChange = (e) => {
+    setText(e.target.value); // 이벤트 객체의 value를 사용
+  };
+
+  // SearchInput이 전달하는 변경된 형태의 데이터를 처리하기 위한 별도의 핸들러 필요
+  const handleSearchChange = (data) => {
+    setText(data.value); // 변경된 데이터 구조
+    console.log("입력 시간:", data.timestamp);
+  };
+
+  const handleSearch = (value) => {
+    alert(`검색어: ${value}`);
+  };
+
+  return (
+    <div>
+      {/* 기본 입력 필드 사용 */}
+      <InputField
+        value={text}
+        onChange={handleInputChange} // 정상적인 이벤트 핸들러
+        placeholder="텍스트를 입력하세요"
+      />
+
+      {/* LSP를 위반하는 검색 입력 필드 사용 */}
+      <SearchInput
+        value={text}
+        onChange={handleSearchChange} // 변경된 데이터 구조를 처리하는 핸들러
+        placeholder="검색어를 입력하세요 (최대 10글자)"
+        onSearch={handleSearch}
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+위 코드가 LSP를 위반하는 이유는 다음과 같습니다:
+
+- **인터페이스 불일치**
+
+  - InputField는 onChange에 표준 이벤트 객체를 전달
+  - SearchInput은 onChange에 커스텀 객체 {value, timestamp}를 전달
+  - 이로 인해 동일한 핸들러를 사용할 수 없고, 별도의 핸들러가 필요함
+
+- **제한 사항 추가**
+
+  - InputField는 모든 입력을 허용
+  - SearchInput은 공백 입력 불가, 10글자 제한 등 임의의 제한을 추가
+  - 이는 부모 컴포넌트의 동작 규약을 위반
+
+- **HTML 요소 타입 변경**
+
+  - InputField는 type="text" 사용
+  - SearchInput은 type="search" 사용
+  - 이는 기본 동작과 스타일에 차이를 발생
+
+- **대체 불가능**
+  - 위의 변경들로 인해 InputField를 사용하는 곳에 SearchInput을 대체 사용할 수 없음
+  - 이는 LSP의 핵심인 "자식 클래스는 부모 클래스로 대체 가능해야 한다"는 원칙을 위반
+
+위 코드를 다음과 같이 수정하여 LSP를 준수하도록 작성해볼 수 있습니다.
+
+**LSP를 준수하는 경우**
+
+React 컴포넌트에서 상위 컴포넌트를 확장한 하위 컴포넌트가 부모 컴포넌트의 규약을 어기지 않고, 부모 컴포넌트로 치환 가능할 때 LSP가 준수된다고 할 수 있습니다.
+
+```jsx
+import React from "react";
+
+// 기본 입력 필드 컴포넌트 (부모)
+const InputField = ({ value, onChange, placeholder }) => {
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+    />
+  );
+};
+
+// 검색 입력 필드 컴포넌트 (자식)
+const SearchInput = ({ value, onChange, placeholder, onSearch }) => {
+  // 부모의 모든 props를 그대로 사용하면서 검색 기능만 추가
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && onSearch) {
+      onSearch(value);
+    }
+  };
+
+  return (
+    <InputField
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      onKeyPress={handleKeyPress}
+    />
+  );
+};
+
+// 사용 예시
+function App() {
+  const [text, setText] = React.useState("");
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSearch = (value) => {
+    alert(`검색어: ${value}`);
+  };
+
+  return (
+    <div>
+      {/* 기본 입력 필드 사용 */}
+      <InputField
+        value={text}
+        onChange={handleChange}
+        placeholder="텍스트를 입력하세요"
+      />
+
+      {/* 검색 입력 필드 사용 */}
+      <SearchInput
+        value={text}
+        onChange={handleChange}
+        placeholder="검색어를 입력하세요"
+        onSearch={handleSearch}
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+위 예시가 LSP를 잘 보여주는 이유는 다음과 같습니다.
+
+1. SearchInput은 InputField의 모든 기본 기능(value, onChange, placeholder)을 그대로 유지합니다.
+2. SearchInput은 기존 기능을 변경하지 않고, 추가 기능(엔터키로 검색)만 확장했습니다.
+3. InputField를 사용하는 모든 곳에서 SearchInput으로 대체해도 기존 동작이 정상적으로 작동합니다.
+4. 사용자는 두 컴포넌트를 동일한 방식으로 사용할 수 있습니다.
+
+LSP를 위반하면 코드의 유지보수가 어려워지고, 컴포넌트의 재사용성이 떨어지며, 예상치 못한 버그가 발생할 수 있습니다.
+
+함수형 프로그래밍에서 LSP는 컴포넌트 간의 대체 가능성을 통해 준수될 수 있다고 생각해봤습니다. 정답이 아닐 수 있겠지만, 이와 같이 LSP 원칙을 염두에 두고 컴포넌트를 설계하면, 컴포넌트 간의 일관성을 유지하고 더 견고하고 유지보수 가능한 코드를 작성할 수 있을 것이라고 생각합니다.
+
+# 4. ISP (Interface Segregation Principle) - 인터페이스 분리 원칙
+
+ISP, 즉 인터페이스 분리 원칙은 **클래스가 자신이 사용하지 않는 인터페이스에 의존하지 않도록** 인터페이스를 목적에 맞게 잘게 분리해야 한다는 설계 원칙입니다.
+
+한 클래스가 다른 클래스에 의존할 때, **가능한 최소한의 인터페이스만 사용하도록** 하는 것이 핵심입니다. 이를 통해 코드의 유연성과 유지보수성을 높이고, 불필요한 의존성으로 인한 변경의 영향을 최소화할 수 있습니다.
+
+이 원칙은 프론트엔드 개발에서도 중요한 역할을 합니다. 프론트엔드에서는 주로 컴포넌트의 설계와 API 통신에서 ISP를 적용할 수 있습니다. 특히, 컴포넌트가 서로 다른 기능을 수행해야 할 때, 불필요한 의존성을 피하고 필요한 부분만 노출하는 인터페이스를 정의하는 것이 중요합니다.
+
+아래의 예시에서, React 컴포넌트 설계에서 ISP를 어떻게 적용할 수 있는지 살펴봅시다.
+
+**잘못된 설계**
+
+```jsx
+// 인터페이스를 구현한 단일 컴포넌트
+function UserProfile({ user, onFollow, onSendMessage }) {
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <button onClick={onFollow}>Follow</button>
+      <button onClick={onSendMessage}>Send Message</button>
+    </div>
+  );
+}
+```
+
+위의 UserProfile 컴포넌트는 onFollow와 onSendMessage라는 두 가지 기능을 제공합니다. 하지만 만약 어떤 상황에서는 사용자 프로필을 표시하기만 하고, 팔로우나 메시지 전송 기능이 필요 없다면? 불필요한 의존성을 가진 인터페이스가 발생하게 됩니다. 이는 인터페이스 분리 원칙을 위반하는 예시입니다.
+
+**ISP를 준수한 설계**
+
+```jsx
+// 팔로우 기능을 분리한 컴포넌트
+function UserFollow({ onFollow }) {
+  return <button onClick={onFollow}>Follow</button>;
+}
+
+// 메시지 전송 기능을 분리한 컴포넌트
+function UserMessage({ onSendMessage }) {
+  return <button onClick={onSendMessage}>Send Message</button>;
+}
+
+// 사용자 프로필 컴포넌트
+function UserProfile({ user, withFollow, withMessage }) {
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      {withFollow && <UserFollow onFollow={withFollow} />}
+      {withMessage && <UserMessage onSendMessage={withMessage} />}
+    </div>
+  );
+}
+```
+
+위의 예시에서는 UserFollow와 UserMessage 컴포넌트를 별도로 분리하여 필요한 기능만 UserProfile에 포함하도록 설계했습니다. 이렇게 하면 UserProfile 컴포넌트는 불필요한 인터페이스에 의존하지 않으며, 필요한 경우에만 해당 기능을 포함할 수 있습니다.
+
+이러한 설계는 유지보수성과 확장성을 높이는 동시에, 의존성을 최소화하여 더 유연한 코드를 작성할 수 있도록 도와줍니다.
+
+# 5. DIP (Dependency Inversion Principle) - 의존성 역전 원칙
+
+의존성 역전 원칙(DIP)은 클래스 간의 결합도를 낮추기 위한 원칙으로, **구현 세부 사항이 아닌, 추상화된 상위 요소(인터페이스 또는 추상 클래스)에 의존하도록 설계해야 한다**는 것을 의미합니다.
+
+즉, **구체적인 구현 클래스에 의존하지 말고, 인터페이스나 추상 클래스와 같은 상위 요소에 의존**하라는 것입니다. 이는 변화가 잦거나 불안정한 구현에 의존하지 않고, 비교적 변화가 적은 안정적인 추상화에 의존함으로써 코드의 유연성과 유지보수성을 높이는 것을 목표로 합니다.
+
+프론트엔드 개발에서 DIP를 적용하는 대표적인 방법 중 하나는 서비스나 API 호출을 처리할 때 인터페이스를 사용하는 것입니다. 예를 들어, 데이터를 가져오는 API 서비스가 있다고 가정해보겠습니다.
+
+**잘못된 설계**
+
+```js
+class ApiService {
+  fetchData() {
+    return fetch("<https://api.example.com/data>").then((response) =>
+      response.json()
+    );
+  }
+}
+
+class DataComponent {
+  constructor(apiService) {
+    this.apiService = apiService;
+  }
+
+  loadData() {
+    this.apiService.fetchData().then((data) => {
+      console.log(data);
+    });
+  }
+}
+
+// 직접적으로 ApiService에 의존
+const apiService = new ApiService();
+const dataComponent = new DataComponent(apiService);
+dataComponent.loadData();
+```
+
+위의 예시에서 DataComponent는 ApiService라는 구체적인 클래스에 직접 의존하고 있습니다. 만약 ApiService가 변경된다면 DataComponent도 변경해야 하므로, 두 클래스 간의 결합도가 높아지게 됩니다.
+
+**DIP를 준수한 설계**
+
+```jsx
+// 추상화된 인터페이스
+class IDataService {
+  fetchData() {
+    throw new Error("Method not implemented.");
+  }
+}
+
+// 구현 클래스 1
+class ApiService extends IDataService {
+  fetchData() {
+    return fetch("<https://api.example.com/data>").then((response) =>
+      response.json()
+    );
+  }
+}
+
+// 구현 클래스 2
+class MockService extends IDataService {
+  fetchData() {
+    return Promise.resolve({ mock: "data" });
+  }
+}
+
+class DataComponent {
+  constructor(dataService) {
+    this.dataService = dataService;
+  }
+
+  loadData() {
+    this.dataService.fetchData().then((data) => {
+      console.log(data);
+    });
+  }
+}
+
+// 인터페이스에 의존하여 구현
+const apiService = new ApiService();
+const mockService = new MockService(); // 테스트 시에는 MockService를 사용
+const dataComponent = new DataComponent(apiService);
+dataComponent.loadData();
+```
+
+위의 예시에서는 IDataService라는 추상화된 인터페이스를 통해 ApiService와 MockService를 구현했습니다. 이제 DataComponent는 구체적인 구현이 아닌, 추상화된 IDataService에 의존하게 됩니다.
+
+이로 인해 ApiService가 변경되더라도 IDataService 인터페이스만 유지되면 DataComponent는 영향을 받지 않으며, 테스트나 다른 상황에서는 MockService와 같은 대체 구현체를 쉽게 사용할 수 있습니다.
+
+그렇다면 함수형 컴포넌트에서는 어떻게 DIP 원칙을 적용해볼 수 있을까요?
+
+저는 **의존성을 주입하는 방식과 구체적인 구현 대신 추상화된 인터페이스나 함수에 의존하는 방식으로 구현**할 수 있겠다고 생각했습니다.
+
+함수형 컴포넌트에서는 클래스형 컴포넌트와 달리 인터페이스나 추상 클래스를 명시적으로 사용할 수는 없지만, **상위 컴포넌트로부터 필요한 함수나 데이터를 주입받아 처리**함으로써 DIP를 적용할 수 있습니다.
+
+예시 코드로 한 번 살펴봅시다.
+
+**잘못된 설계**
+
+```jsx
+import React, { useEffect, useState } from "react";
+
+function DataComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // 직접적으로 API 호출 로직을 내부에 구현
+    fetch("https://api.example.com/data")
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  }, []);
+
+  return <div>{data ? JSON.stringify(data) : "Loading..."}</div>;
+}
+
+export default DataComponent;
+```
+
+위의 DataComponent는 API 호출 로직을 직접적으로 포함하고 있어, API가 변경될 경우 컴포넌트도 변경해야 합니다. 이는 DIP를 위반한 구조입니다.
+
+**DIP를 준수한 설계**
+
+```jsx
+import React, { useEffect, useState } from "react";
+
+function DataComponent({ fetchData }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // 주입된 fetchData 함수를 사용하여 데이터 로드
+    fetchData().then((data) => setData(data));
+  }, [fetchData]);
+
+  return <div>{data ? JSON.stringify(data) : "Loading..."}</div>;
+}
+
+export default DataComponent;
+```
+
+위의 DataComponent는 fetchData라는 함수를 **상위 컴포넌트로부터 주입받아 사용**합니다. 이제 DataComponent는 API 호출 로직에 의존하지 않고, fetchData 함수에만 의존하게 되므로 DIP를 준수하는 구조가 됩니다.
+
+이렇게 구조가 바뀌면, 이제 상위 컴포넌트에서 실제 API 호출 함수 또는 테스트용 Mock 함수를 주입할 수 있습니다.
+
+```jsx
+import React from "react";
+import DataComponent from "./DataComponent";
+
+function ApiService() {
+  return fetch("https://api.example.com/data").then((response) =>
+    response.json()
+  );
+}
+
+function MockService() {
+  return Promise.resolve({ mock: "data" });
+}
+
+function App() {
+  return (
+    <div>
+      {/* 실제 서비스용 */}
+      <DataComponent fetchData={ApiService} />
+      {/* 테스트용 */}
+      <DataComponent fetchData={MockService} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+이 구조에서는 DataComponent가 어떤 데이터 소스에서 데이터를 가져오는지 알 필요가 없으며, ApiService나 MockService 등 원하는 함수를 주입할 수 있습니다.
+
+컴포넌트를 설계할 때, 각각의 컴포넌트가 단일한 책임에 맞게 잘 분리되어 있다면, 불필요한 속성(props)이 없는 독립적인 컴포넌트로 구성될 수 있습니다.
+
+그러나 컴포넌트만으로는 페이지를 완성할 수 없습니다. 페이지를 구성하기 위해서는 여러 컴포넌트를 조합(composition)해야 합니다.
+
+이때, 인터페이스 분리 원칙(ISP)과 의존성 역전 원칙(DIP)은 컴포넌트 간의 결합도를 낮추고, 더 유연하게 컴포넌트를 조합할 수 있게 도와주는 중요한 설계 원칙입니다.
+
+---
+
+이렇게 SOLID 원칙에 대한 내용을 정리하고 프론트엔드 개발에서의 활용 가능성을 살펴보았습니다. SOLID 원칙이 법칙이 아니라 원칙이기 때문에, 적용하는 기준이 상황과 개인에 따라 달라질 수 있고, 그 기준이 명확하지 않기 때문에 어렵게 느껴지기는 합니다.
+
+하지만 꾸준히 SOLID 원칙을 염두에 두고 사고하며 개발에 임하면 좋은 코드를 작성하는 개발자로 성장할 수 있을 것이라 생각하기에 항상 인지하며 개발하려고 노력하고 있습니다.

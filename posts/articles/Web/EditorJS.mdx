@@ -1,7 +1,7 @@
 ---
 title: Editor.js 라이브러리를 활용한 에디터 제작기
 description: Editor.js 라이브러리를 활용한 에디터를 제작한 방법과 경험을 공우합니다.
-thumbnail: "/test.png"
+thumbnail: "/posts/articles/Web/EditorJS/thumbnail.png"
 date: 2024-11-21
 tags: editor.js, react, 라이브러리
 ---
@@ -348,7 +348,7 @@ render() 메서드는 블록이 에디터에 어떻게 렌더링 될지를 결�
 
 툴박스 설정을 통해 사용자에게 블록을 쉽게 추가할 수 있는 UI를 제공합니다.
 
-<img src="https://blog.kakaocdn.net/dn/b3FfAs/btsKPdOLPGr/wSavfafbwKMYZBLyhz2Kmk/img.png" />
+<img src="/posts/articles/Web/EditorJS/1.png" />
 
 ## 5. pasteConfig()
 
@@ -378,7 +378,7 @@ BlockTool 골격 내에서, 그 외에 필요한 함수는 직접 정의하여 �
 
 # Inline Tool
 
-<img src="https://blog.kakaocdn.net/dn/yp5Ly/btsKQwfkaKn/B7f7Zl0aP7tf2q81Qd6JQk/img.png" />
+<img src="/posts/articles/Web/EditorJS/2.png" />
 
 Editor.js는 블록 기반의 콘텐츠 편집을 기본으로 하면서도, 인라인 스타일이나 특정 텍스트 수정 기능을 추가할 수 있도록 **Inline Tool**을 제공합니다.
 
@@ -578,7 +578,7 @@ Editor.js에서 **Block Tool**과 **Inline Tool**을 구현할 수 있으면 거
 
 Editor.js를 사용하면 기본적으로 커서 왼쪽에 **+ 아이콘**을 통해 블록을 삽입할 수 있습니다.
 
-<img src="https://blog.kakaocdn.net/dn/bDver5/btsKXgP6d3x/kFjnnjAKHOjp7vTDH3haJK/img.png" />
+<img src="/posts/articles/Web/EditorJS/2.png" />
 
 하지만 저는 이 메뉴를 오른쪽에 사이드바 형태로 제공해야 했습니다.
 
@@ -659,12 +659,12 @@ const addBlock = (type: string, data: object) => {
 
 <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
   <img
-    src="https://blog.kakaocdn.net/dn/bGs9dA/btsKQdm1tEO/PVyffSoRhWsTnc3mNZyi3k/img.png"
+    src="/posts/articles/Web/EditorJS/4.png"
     alt="Image 1"
     style={{ width: "45%" }}
   />
   <img
-    src="https://blog.kakaocdn.net/dn/QAeRo/btsKRQxiMI8/kgBBT5KyplVlSiihll1kpk/img.png"
+    src="/posts/articles/Web/EditorJS/5.png"
     alt="Image 2"
     style={{ width: "45%" }}
   />
@@ -707,7 +707,7 @@ Editor.js를 전역 상태로 관리할 때 유용한 점은 분명 많지만, *
 
 그렇지 않으면 **에디터가 여러 번 초기화되거나 중복 생성되는 문제가 발생**할 수 있습니다.
 
-<img src="https://blog.kakaocdn.net/dn/b2KSFM/btsKRSBT4oI/GgUvmYd1v5EyHT71dWPY1k/img.png" />
+<img src="/posts/articles/Web/EditorJS/6.png" />
 <figcaption>에디터(class: code-editor)가 2개 활성화된 화면</figcaption>
 
 아래는 제가 사용한 코드에서 이 문제를 방지하기 위해 적용한 방법입니다:
@@ -747,7 +747,7 @@ export default EditorContent;
 
 **useRef를 활용해 에디터가 이미 생성되었는지 확인**하고, 생성되지 않은 경우에만 인스턴스를 초기화하도록 처리했습니다.
 
-<img src="https://blog.kakaocdn.net/dn/HbHD8/btsKRdGyl9E/AEAO8zE7CePETkS88bqHU1/img.png" />
+<img src="/posts/articles/Web/EditorJS/7.png" />
 <figcaption>올바르게 에디터(class: code-editor)가 1개만 설정된 모습</figcaption>
 
 ## 3. SSR에서 Editor.js 적용하기

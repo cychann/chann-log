@@ -1,0 +1,366 @@
+---
+title: Vue Transition - UI에 생명 불어넣기
+description: Vue Transition을 이용하여 자연스럽고 안정적인 사용자 경험을 제공하는 방법에 대해 알아봅니다.
+thumbnail: "/posts/articles/Vue/transition/thumbnail.jpeg"
+date: 2024-10-29
+tags: Transition, UI/UX
+---
+
+# Transition?
+
+Transition의 사전적 정의는 “전이, 이행, 변천, 과도기”입니다.
+
+웹 개발 관점에서 Transition은 한 상태에서 다른 상태로 변화하는 과정을 의미합니다.
+
+이 과정은 단순히 화면 전환뿐만 아니라 **모든 UI 상태 변화에 적용**될 수 있습니다. 예를 들어, 버튼이 눌렸을 때 색상이 변화하거나, 요소가 점차적으로 나타나고 사라지는 등 다양한 액션에서 **Transition은 더욱 자연스럽고 안정적인 사용자 경험을 제공**합니다.
+
+<img src="/posts/articles/Vue/transition/thumbnail.jpeg" />
+
+개발자가 이 변화의 흐름을 효과적으로 제어하려면 **초기 및 종료 상태에 대한 정의**가 필요합니다. 이를 통해 각 상태 전환을 세밀하게 조작할 수 있으며, 결과적으로 부드럽고 직관적인 UI 전환 효과를 구현할 수 있습니다.
+
+아래는 인프런 사이트의 카드 디자인을 참조하여 비교한 예시입니다.
+
+왼쪽은 기존 사이트에서 Transition 속성이 적용된 모습이고, 오른쪽은 개발자 도구를 통해 Transition 속성을 제거한 경우입니다.
+
+<div>
+  <img src="/posts/articles/Vue/transition/1.gif" />
+  <img src="/posts/articles/Vue/transition/2.gif" />
+</div>
+Transition 적용 / Transition 미적용
+
+사소해 보일 수 있지만, Transition이 적용된 UI가 훨씬 부드럽고 깔끔하게 느껴지는 것을 확인할 수 있습니다. 이처럼 Transition은 사용자 경험에 있어서 중요한 역할을 합니다.
+
+---
+
+# CSS Transition
+
+CSS의 transition 속성은 요소의 스타일 변화가 즉각적으로 발생하지 않고, 일정한 시간 동안 부드럽게 변화하도록 만들어 줍니다. 이를 통해 버튼 색상 변화, 요소 위치 이동, 불투명도 변화 등 다양한 시각적 효과를 자연스럽게 구현할 수 있습니다.
+
+CSS에서 transition을 사용하는 방법은 매우 간단합니다. 변화를 원하는 요소에 transition 속성과 함께 변화할 property, duration, timing-function, 그리고 delay 등을 정의하기만 하면 됩니다. 예를 들어, 버튼에 마우스를 올렸을 때 배경색이 서서히 변하게 하려면 다음과 같이 작성할 수 있습니다:
+
+```css
+button {
+  background-color: #3498db;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #2ecc71;
+}
+```
+
+다만, CSS에서 transition을 정의하는 방식에는 한계가 있습니다. 특정 조건이나 상태에 따라 복잡한 전환을 제어해야 할 때는 JavaScript와 CSS를 함께 사용해야 하는 경우가 많아지며, 특히 element나 component단위로 transition을 관리하기는 어려워질 수 있습니다.
+
+이때 만약 Vue.js로 개발하고 있다면, Vue의 Transition 기능을 활용할 수 있습니다. Vue는 element나 component 단위의 transition을 손쉽게 처리할 수 있도록 도와주어, 복잡한 transition도 간단하게 구현할 수 있습니다.
+
+# Vue Transition
+
+Vue는 **상태 변화에 대응하여 요소(Element)나 컴포넌트(Component)가 DOM에 들어오고 나갈 때 트랜지션 및 애니메이션 작업을 쉽게 처리**할 수 있도록 도와주는 `<Transition>`라는 빌트인 컴포넌트를 제공합니다.
+
+위에서 element나 component단위로 transition을 적용할 수 있다고 했는데요, Vue에서는 특정한 조건이 되면 요소를 노출시키고 감추는 v-if 및 v-show 기능을 제공합니다. 조건이 true일 때는 요소가 보여지고, false일 때는 요소가 숨겨집니다.
+
+만약 CSS만으로 해당 동작에 transition을 적용한다면, 아래와 같이 ref 상태에 따라 클래스를 지정하고 CSS를 통해 전환 효과를 주는 복잡한 방법이 필요합니다.
+
+```html
+<template>
+  <button @click="show = !ishow">토클</button>
+  <div :class="['box', { 'fade-in': show, 'fade-out': !show}]">안녕</div>
+</template>
+
+<script setup>
+  import { ref } from "vue";
+
+  const show = ref(false);
+</script>
+
+<style>
+  .box {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-in {
+    opacity: 1;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+</style>
+```
+
+위 코드에서는 isVisible의 상태에 따라 fade-in 또는 fade-out 클래스를 적용하여 요소의 opacity를 변경합니다. 이렇게 하면 요소가 부드럽게 나타나고 사라지게 되지만, 추가적인 CSS 클래스를 관리해야 하는 복잡성이 있습니다.
+
+반면, Vue의 `<Transition>` 컴포넌트를 활용하면 아래와 같이 훨씬 간단하게 상태 변화에 애니메이션을 적용할 수 있습니다.
+
+```html
+<template>
+  <button @click="show = !show">토글</button>
+  <Transition>
+    <p v-if="show">안녕</p>
+  </Transition>
+</template>
+
+<script setup>
+  import { ref } from "vue";
+
+  const show = ref(false);
+</script>
+
+<style>
+  /* 해당 클래스에 대해서는 뒤에서 설명 예정 */
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+</style>
+```
+
+<img src="/posts/articles/Vue/transition/3.gif" />
+
+이렇게 `<Transition>`을 사용하면, 애니메이션을 위한 복잡한 클래스 관리 없이 자연스럽고 간편하게 요소의 상태 변화를 처리할 수 있습니다.
+
+그러나 무작정 `<Transition>`을 사용할 수 있는 것은 아니며, 다음 특정 조건 중 하나를 충족해야 애니메이션이 발생합니다:
+
+- `v-if`를 통한 조건부 렌더링
+- `v-show`를 통한 조건부 표시
+- 스페셜 엘리먼트 `<component>`를 통해 전환되는 동적 컴포넌트
+- `key`라는 특수한 속성 값 변경
+
+## Transition Classes
+
+`<Transition>`은 기본 슬롯을 통해 전달된 엘리먼트 또는 컴포넌트에 진입(enter) 및 진출(leave) 애니메이션을 적용하는 데 사용됩니다.
+
+이 과정에서 다음과 같은 6개의 CSS 클래스를 자동으로 적용하여 애니메이션 효과를 생성합니다:
+
+<img src="/posts/articles/Vue/transition/4.png" />
+https://ko.vuejs.org/guide/built-ins/transition#javascript-hooks
+
+- `v-enter-from`: 요소가 나타나기 시작할 때 적용됩니다. 이 클래스는 요소가 삽입되기 전의 상태를 정의합니다.
+- `v-enter-active`: 요소가 나타나는 transition이 진행되는 동안 적용됩니다. 이 클래스에서는 transition의 duration, delay, easing curve를 정의할 수 있습니다.
+- `v-enter-to`: 요소가 나타나는 transition이 완료될 때 적용됩니다. 이 클래스는 요소의 최종 상태를 정의합니다.
+- `v-leave-from`: 요소가 사라지기 시작할 때 적용됩니다. 이 클래스는 요소가 제거되기 전 상태를 정의합니다.
+- `v-leave-active`: 요소가 사라지는 transition이 진행되는 동안 적용됩니다. 이 클래스에서도 transition의 duration, delay, easing curve를 정의할 수 있습니다.
+- `v-leave-to`: 요소가 사라지는 transition이 완료될 때 적용됩니다. 이 클래스는 요소의 최종 상태를 정의합니다.
+
+## Named Transitions
+
+transition은 **name prop**을 통해서도 별도의 이름을 지정할 수 있습니다.
+
+```html
+<Transition name="fade"> ... </Transition>
+```
+
+이름이 지정된 transition의 경우, transition클래스에는 v 대신 이름이 접두사로 붙습니다. 예를 들어 위의 transition에 적용된 클래스는 v-enter-active 대신 fade-enter-active가 됩니다.fade transition을 위한 CSS는 다음과 같아야 합니다:
+
+```css
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+```
+
+---
+
+> 주의❗<Transition> 컴포넌트는 단일 요소나 컴포넌트만 지원하며, 포함된 콘텐츠가 컴포넌트인 경우 반드시 단일 루트 엘리먼트가 필요합니다. 예를 들어, 다음 코드에서는 애니메이션이 적용되지 않습니다.
+
+```html
+<Transition>
+  <div>
+    <p v-if="show">안녕</p>
+    <p>안녕안녕</p>
+  </div>
+</Transition>
+```
+
+현재 코드에서는 `<Transition>` 컴포넌트가 v-if로 트리거할 대상이 루트 요소인 `<div>`가 아니라, 자식 요소에 적용되어 있어서 애니메이션이 정상적으로 적용되지 않는 문제가 발생합니다.
+
+<img src="/posts/articles/Vue/transition/5.gif" />
+
+## Nested Transitions
+
+하지만 자식 요소에도 transition을 적용하고 싶다면, **중첩된 트랜지션(Nested Transitions)**을 사용할 수 있습니다. 아래 코드는 중첩된 트랜지션을 통해 각 요소의 진입/진출 순서를 지정하는 예시입니다:
+
+```html
+<script setup>
+  import { ref } from "vue";
+
+  const show = ref(true);
+</script>
+
+<template>
+  <button @click="show = !show">토글</button>
+  <Transition name="nested">
+    <div v-if="show" class="outer">
+      <div class="inner">안녕</div>
+    </div>
+  </Transition>
+</template>
+
+<style>
+  .outer,
+  .inner {
+    background: #cc9696;
+    padding: 30px;
+    min-height: 100px;
+  }
+
+  .inner {
+    background: #ccc;
+  }
+
+  .nested-enter-active,
+  .nested-leave-active {
+    transition: all 1s ease-in-out;
+  }
+  /* 부모 엘리먼트의 지연된 진출 */
+  .nested-leave-active {
+    transition-delay: 1s;
+  }
+
+  .nested-enter-from,
+  .nested-leave-to {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  /* 중첩 셀렉터를 사용하여 중첩(자식) 엘리먼트를 트랜지션할 수도 있습니다. */
+  .nested-enter-active .inner,
+  .nested-leave-active .inner {
+    transition: all 1s ease-in-out;
+  }
+  /* 중첩된(자식) 엘리먼트의 지연된 진입 */
+  .nested-enter-active .inner {
+    transition-delay: 1s;
+  }
+
+  .nested-enter-from .inner,
+  .nested-leave-to .inner {
+    transform: translateX(30px);
+
+    opacity: 0;
+  }
+</style>
+```
+
+제가 의도한 동작은 아래와 같습니다.
+
+- **진출 (leave)**: 부모 요소가 먼저 사라지고(1초), 이후 자식 요소가 사라지도록 설정
+- **진입 (enter)**: 자식 요소가 먼저 나타나고(1초), 이후 부모 요소가 나타나도록 설정
+
+이렇게 하기 위해 부모와 자식 요소 각각의 transition-duration을 1초로 설정하고, 진입과 퇴장 시 transition-delay를 각각 1초로 지정했습니다.
+
+하지만 위 코드를 실행하면 한 가지 문제가 발생합니다. 아래 결과를 같이 살펴봅시다.
+
+<img src="/posts/articles/Vue/transition/6.gif" />
+
+**진출(leave) 시**에는 자식 요소가 먼저 사라진 후 부모 요소가 사라지므로 의도한 대로 동작합니다.
+하지만 **진입(enter) 시**에는 자식 요소가 자연스럽게 등장하지 않고 갑자기 나타나는 문제가 발생합니다.
+
+왜 이런 문제가 발생할까요?
+
+이는 `<Transition>` 컴포넌트가 **기본적으로 첫 번째 transitionend나 animationend 이벤트를 감지해 transition 완료 시점을 자동으로 판단**하기 때문입니다. 이로 인해 등장 시에는 모든 요소가 완료되기 전에 transition이 종료된 것으로 인식됩니다.
+
+따라서 위 코드에서 **진출(leave)**될 때는 자식 요소가 먼저 없어지고 부모 요소가 없어지도록 설정했기 때문에 문제가 없지만, **진입(enter)**될때는 부모 요소가 먼저 들어오고 이때 transition이 완료되었다고 판단하기 때문에 이후의 transition요소가 작동하지 않는 것입니다.
+
+모든 내부 요소가 transition을 완료할 때까지 기다리게 하고 싶다면, `<Transition>` 컴포넌트에 duration prop을 추가해 transition 전체 지속 시간을 설정할 수 있습니다.
+
+위 코드에서는 부모와 자식 요소의 transition 지속 시간을 더한 1s + 1s = 2s으로 설정해주면 되겠죠?
+
+```html
+<Transition :duration=”2000">
+```
+
+필요한 경우 객체를 사용하여 진입/진출 지속 시간에 대해 별도의 값을 지정할 수도 있습니다:
+
+```html
+<Transition :duration=”{ enter: 1000, leave: 1000 }”>
+```
+
+이렇게 설정하면 의도한 대로 부모와 자식 요소가 자연스럽게 transition되며, 중첩된 애니메이션이 잘 동작하게 됩니다.
+
+## Transition Mode
+
+transition을 많이 적용해봤다면, 진입 시 element와 진출 시의 element가 충돌하며 레이아웃이 깨지는 문제를 한 번 쯤은 겪어보셨을 겁니다.
+
+아래 예제를 통해 이 문제를 살펴보겠습니다.
+
+```html
+<script setup>
+  import { ref } from "vue";
+
+  const docState = ref("saved");
+</script>
+
+<template>
+  <span style="margin-right: 20px">클릭 시 상태 변경:</span>
+  <div class="btn-container">
+    <Transition name="slide-up">
+      <button v-if="docState === 'saved'" @click="docState = 'edited'">
+        수정
+      </button>
+      <button v-else-if="docState === 'edited'" @click="docState = 'editing'">
+        저장
+      </button>
+      <button v-else-if="docState === 'editing'" @click="docState = 'saved'">
+        취소
+      </button>
+    </Transition>
+  </div>
+</template>
+
+<style>
+  .btn-container {
+    display: inline-block;
+    height: 1em;
+  }
+
+  .slide-up-enter-active,
+  .slide-up-leave-active {
+    transition: all 0.25s ease-out;
+  }
+
+  .slide-up-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+</style>
+```
+
+<img src="/posts/articles/Vue/transition/7.gif" />
+
+CSS로 레이아웃 문제를 해결하기 위해 position: absolute 속성을 사용할 수 있지만, 이는 단순히 레이아웃 문제만 해결하는 것이 아닙니다. 사용자는 퇴장하는 요소의 애니메이션이 완료된 후에 새로운 요소가 등장하는 방식으로 애니메이션을 조정하고 싶을 수 있습니다. 그러나 이를 수동으로 조정하는 것은 매우 복잡할 수 있습니다.
+
+이럴 때 Vue의 `<Transition>` 컴포넌트는 mode라는 prop을 통해 동작을 제어할 수 있습니다. mode 속성에는 두 가지 주요 값이 있습니다:
+
+- in-out: 새로 등장하는 요소의 애니메이션이 완료되기 전에 퇴장하는 요소의 애니메이션이 적용됩니다.
+- out-in: 퇴장하는 요소의 애니메이션이 완료된 후에 새로 등장하는 요소의 애니메이션이 적용됩니다.
+
+```html
+<Transition mode="out-in"> ... </Transition>
+```
+
+<img src="/posts/articles/Vue/transition/8.gif" />
+
+위와 같이 mode를 설정하면 원하는 대로 요소가 애니메이션을 수행하게 되어, 레이아웃 깨짐 문제를 예방할 수 있습니다. 이로 인해 사용자 경험이 향상되고, 보다 매끄러운 애니메이션을 제공할 수 있습니다.
+
+---
+
+웹 개발에서 전환(Transition)은 사용자 경험을 더욱 매끄럽고 직관적으로 만드는 데 필수적인 요소라고 생각합니다. 사소한 애니메이션 하나가 사용자에게는 큰 차이로 다가옵니다.
+
+Vue.js에서는 `<Transition>` 컴포넌트를 통해 요소나 컴포넌트의 상태 변화에 자연스럽고 쉽게 애니메이션을 적용할 수 있기 때문에, 이 개념을 이해하면 분명 많은 도움이 될 것이라고 생각하며 이번 기회에 자세하게 공부하고 정리해봤습니다.

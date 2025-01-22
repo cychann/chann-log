@@ -1,0 +1,253 @@
+---
+title: Nuxt.js 렌더링 이해하기 - 성공적인 웹 개발의 시작
+description: Nuxt.js에서 지원하는 다양한 렌더링 방식인 CSR, SSR, SSG, ISR 방식과 Nuxt.js에서 렌더링 기법을 활용하는 방법
+thumbnail: "/posts/articles/Nuxt/Nuxt_rendering/thumbnail.png"
+date: 2024-06-18
+tags: CSR, SSR, SSR&ISG, Rendering, lifecycle
+---
+
+요즘 프론트엔드 개발에 Next.js나 Nuxt.js와 같은 **서버 사이드 렌더링(SSR)**을 제공하는 프레임워크들이 널리 사용되고 있습니다.
+
+이번 포스팅에서는 Nuxt.js에서 지원하는 다양한 렌더링 방식인 CSR, SSR, SSG, ISR 방식과 Nuxt.js에서 어떻게 렌더링 기법을 활용하는지에 대해 정리해봤습니다.
+
+# CSR(Client-Side Rendering)
+
+CSR은 말 그대로 클라이언트 측에서 렌더링이 이루어지는 방식입니다. 서버는 초기 페이지를 렌더링한 후 클라이언트에 전달하고, 이후 클라이언트가 서버에 요청할 때마다 필요한 리소스를 받아와서 해석하고 렌더링합니다.
+
+초기 렌더링 시에는 빈 HTML을 받고, 이후 라이브러리와 함께 작성된 JavaScript 코드를 다운로드하여 애플리케이션을 구동하는 모든 로직과 소스 코드를 준비합니다. **이 모든 과정은 클라이언트 측에서 발생**하며, 추가 데이터가 필요할 경우 서버에 요청하여 동적으로 HTML을 생성하고 최종 애플리케이션을 사용자에게 보여줍니다.
+
+흔히 React, Vue로 만드는 **SPA(Single Page Application)**이 CSR 방식으로 동작합니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_rendering/1.png" />
+CSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)
+
+**👍 장점**
+
+- 화면 깜빡임이 없음
+- 초기 로딩 이후 구동 속도가 빠름
+- TTV와 TTI 사이 간극이 없음
+- 서버 부하 분산
+
+**👎 단점**
+
+- 초기 구동 속도가 느림
+- SEO에 불리함
+
+# SSR(Server-Side-Rendering)
+
+SSR은 **렌더링이 서버**에서 이루어집니다. 요청할 때마다 서버는 페이지에 필요한 데이터들을 삽입하고, 렌더링을 마친 HTML과 JavaScript 코드를 클라이언트에 전달합니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_rendering/2.png" />
+SSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)
+
+이런 SSR의 특징 때문에 사용자가 빠르게 웹사이트를 확인할 순 있지만, 동적으로 데이터를 처리하는 JavaScript를 다운로드 받지 못하는 경우 반응이 없는 상황이 발생할 수 있습니다.
+
+**👍 장점**
+
+- 초기 구동 속도가 빠름
+- SEO에 유리
+
+**👎 단점**
+
+- 화면 깜빡임이 있음
+- TTV와 TTI 사이 간극이 있음
+- 서버 부하가 있음
+
+# SSG(Static-Site-Generation) & ISR(Incremental Static Regeneration)
+
+SSG는 SSR과 마찬가지로 서버가 렌더링을 담당하지만, **빌드 시에 렌더링이 발생**합니다.
+
+클라이언트가 요청하면, 빌드 과정에서 만들어진 HTML 파일들을 받아와 보여주기만 하면 됩니다. 이 빌드된 HTML은 이후 **CDN에 캐시**되어 빠르게 가져올 수 있게 됩니다.
+
+SSR는 매 요청마다 HTML을 생성하기 때문에 응답 속도가 느리고 서버에 더 많은 부담을 주게 됩니다. 반면 SSG는 빌드 시에 생성된 HTML을 재사용하여 SSR보다 높은 성능을 제공합니다. 따라서 SSG를 사용할 수 있다면 사용하는 것이 좋습니다.
+
+**👍 장점**
+
+- 페이지 로딩 시간(TTV)가 빠름
+- 자바스크립트 필요 없음
+- SEO 최적화가 좋음
+- 보안이 뛰어남
+- CDN에 캐시가 됨
+
+**👎 단점**
+
+- 데이터가 정적임
+- 사용자별 정보 제공의 어려움
+
+ISR은 SSG와 동일한 개념을 가지고 있지만, **주기적으로 렌더링이 발생한다는 점**에서 차이가 있습니다.
+
+---
+
+이렇게 각 렌더링 방식을 모두 살펴보았는데요, 기존의 React, Vue에서 사용하던 CSR 방식에서 SSR로 변환하려고 이유는 무엇일까요? 바로 **SEO** 때문입니다. 자체 CMS를 사용하는 경우는 문제가 없지만, 일반적인 서비스 사이트라면 사용자에게 검색이 되어야합니다.
+
+그러나 SSR은 화면 깜빡임과 TTV와 TTI 간의 간극으로 인한 단점이 있습니다. 이는 UX의 관점에서 매우 치명적인 단점이라고 할 수 있는 부분인데요, 어떻게 SSR을 활용할 수 있게 되는 걸까요?
+
+이를 해결하기 위해 나타난 기법이 바로 **Pre-Rendering**과 **Hydration**입니다. 이 두 개념은 단언코 SSR의 핵심을 이룹니다. Nuxt.js에서는 해당 개념을 “**Universal Rendering**”이라는 용어로 설명합니다.
+
+# Pre-Rendering
+
+아래 사진은 Next.js의 공식문서에서 가져온 사진이지만, Nuxt.js에서 적용되는 개념은 동일합니다.
+
+<img src="/posts/articles/Nuxt/Nuxt_rendering/3.png" />
+No Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering)
+
+<img src="/posts/articles/Nuxt/Nuxt_rendering/3.png" />
+Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering
+)
+
+Pre-Rendering이란 **서버 측에서 미리 HTML을 렌더링하는 과정**을 의미합니다.
+
+클라이언트가 특정 페이지를 요청할 때, Nuxt.js는 필요한 데이터를 기반으로 완전한 HTML 페이지를 생성하여 브라우저에 전송합니다. 이 과정은 사용자에게 의미 있는 정보를 즉시 보여주는 데 도움을 줍니다.
+
+# Hydration
+
+Hydration은 “수화시키다” 또는 “물로 가득 채우다”는 의미로, Nuxt.js의 관점에서 **물은 Vue.js**에 해당합니다. 사용자가 HTML 페이지를 보더라도, 해당 페이지는 초기에는 JavaScript 코드가 포함되어 있지 않아 클릭 등의 상호작용에 반응하지 않습니다.
+
+이후, 클라이언트에 필요한 Vue와 JavaScript 코드가 다운로드되면, **정적인 HTML이 Vue로 “수화”**되어 동적인 인터랙션이 가능해집니다. 이를 통해 사용자는 페이지 내에서 상호작용할 수 있게 됩니다.
+
+# Hybrid Rendering
+
+Nuxt.js에서는 “**Hybrid Rendering**”도 제공합니다.
+
+**Hybrid**는 혼합이라는 뜻으로, **특정 목적**을 달성하기 위해 **두 개 이상의 기능이나 요소**를 결합하는 것을 의미합니다.
+
+웹앱의 관점에서 본다면 **특정 목적**은 **성능 좋은 강력한 웹앱**을 개발하는 것이입니다. **두 개 이상의 기능이나 요소**는 **CSR, SSR, SSG, ISR과 같은 다양한 렌더링 방식**을 포함합니다. 즉, Nuxt.js에서는 각기 다른 렌더링 방식을 혼합하여 성능 좋은 강력한 웹앱을 만들 수 있습니다.
+
+예를 들어:
+
+- 메인 페이지는 ISR로 설정하여 캐시된 콘텐츠를 제공하며, 일정 시간(예: 1시간) 동안 유효
+- About 페이지는 자주 변경되지 않으므로 SSG로 설정하여 정적으로 사전 렌더링
+- 사용자 프로필 페이지는 SSR로 설정하여 요청 시 서버에서 동적으로 렌더링
+- Contact 페이지는 CSR로 설정하여 클라이언트 측에서 렌더링
+
+이와 같이 페이지별로 최적화된 렌더링 방식을 채택하여 웹앱의 성능을 높일 수 있습니다.
+
+Nuxt.js에서는 Route Rules 옵션을 활용하여 이러한 렌더링 방식을 적용할 수 있습니다.
+
+```ts
+export default defineNuxtConfig({
+  routeRules: {
+    "*": { prerender: true }, // 모든 페이지 사전 렌더링
+    "/": { isr: 3600 }, // 메인 페이지 ISR로 1시간 캐시
+    "/about": { isr: true }, // About 페이지 SSG로 작동
+    "/profile": { ssr: true }, // 사용자 프로필 페이지 SSR
+    "/contact": { ssr: false }, // Contact 페이지 CSR
+  },
+});
+```
+
+- ssr: true면 SSR로, ssr: false면 CSR로 작동합니다.
+- isr에 숫자를 입력하면 캐시 TTL을 설정할 수 있으며, true로 입력하면 SSG로 작동하게 됩니다.
+- 추가적으로 prerender 옵션도 제공하여 특정 페이지를 사전 렌더링할 수 있습니다.
+
+---
+
+# ❗ 웹앱을 개발할 때 중요한 포인트
+
+웹앱을 개발할 때 가장 중요한 포인트는 좋은 사용자 경험(UX)를 제공하는 것입니다. 이를 위해 위에서 잠깐 언급했던 **TTV(Time To View)**와 **TTI(Time To Interact)**의 개념을 이해하는 것이 중요합니다.
+
+**CSR**에서는
+
+1. 서버에서 인덱스 파일을 받아옵니다.
+2. 웹사이트에서 필요한 모든 로직이 담겨있는 Javascript를 요청합니다.
+3. 최종적으로 동적으로 HTML을 생성할 수 있는 웹어플리케이션 로직이 담긴 Javascript 파일을 받아옵니다. 이 시점부터 웹사이트가 사용자에게 보여지게 되고 **(TTV)**, 사용자가 클릭과 같은 반응을 할 수 있게 됩니다. **(TTI)**
+
+**SSR**에서는
+
+1. 서버에서 이미 잘 만들어진 인덱스 파일을 받아옵니다.
+2. 사용자가 웹사이트를 볼 수 있습니다.**(TTV)**
+3. Javascript 파일을 서버에서 받아옵니다. 이때부터 사용자의 클릭을 처리할 수 있는 인터렉션이 가능합니다. **(TTI)**
+
+SSR의 경우, **TTV는 빠를 수 있지만, TTI 사이에 공백이 발생**할 수 있습니다. 이 간격이 길어질 경우, 사용자 경험(UX)에 부정적인 영향을 미칠 수 있습니다.
+
+따라서 웹앱을 개발할 때, **TTV와 TTI 사이의 간격을 얼마나 줄일 수 있는지, 또는 그 공백을 사용자에게 명확하게 알려주는 것**이 프론트엔드 개발의 중요한 포인트입니다.
+
+# ❗ Nuxt.js로 개발 시 주의할 점
+
+Nuxt.js의 **Universal Rendering**과 **Hybrid Rendering**은 매우 강력하고 효율적인 기능입니다.
+
+하지만 이러한 렌더링 방식을 사용할 때는 몇 가지 주의할 점이 있습니다.
+
+## 1. Lifecycle Hooks
+
+Nuxt 3에서는 Vue 3의 다양한 생명주기 훅을 사용할 수 있습니다. 하지만 일반적인 **클라이언트 사이드 렌더링(CSR)** 환경과는 달리, **서버 사이드 렌더링(SSR) 환경**에서는 일부 생명주기 훅을 사용할 수 없다는 점에 유의해야 합니다.
+
+Nuxt.js의 공식 문서에서는 각 렌더링 환경에서 어떤 생명주기 훅을 사용할 수 있는지 자세히 설명하고 있으니, SSR 환경에서의 개발 시 참고하는 것이 중요합니다.
+
+https://nuxt.com/docs/api/advanced/hooks?source=post_page-----1c72e06d6932--------------------------------#nuxt-hooks-build-time
+
+## 2. Browser API 활용의 제한
+
+window나 document 같은 **Browser API**는 브라우저에서만 동작하는 기능입니다. 즉, **클라이언트 사이드에서만** 사용할 수 있습니다.
+
+CSR 환경에서는 이러한 API를 문제없이 사용해왔겠지만, **SSR** 환경에서는 주의가 필요합니다.
+
+```html
+<script setup>
+  console.log(window);
+</script>
+```
+
+<img src="/posts/articles/Nuxt/Nuxt_rendering/5.png" />
+
+위의 코드에서 볼 수 있듯이, CSR에서는 console.log가 정상적으로 실행되지만, SSR에서는 undefined로 찍힙니다. 즉, window 객체 안의 요소에 접근하려고 한다면 오류가 발생할 수 있습니다.
+
+따라서 onMounted와 같은 생명주기 훅 내에서 처리해야 합니다.
+
+```html
+<script setup>
+  onMounted(() => {
+    console.log(window.location);
+  });
+</script>
+```
+
+이는 위에서 언급했던 **Hydration** 과정 때문입니다. CSR에서는 최초 렌더링 시점에 이미 DOM 객체가 다 만들어져 있지만, SSR에서는 최초 렌더링이 서버 사이드에서 이루어지므로 아직 DOM 객체가 없고, 따라서 브라우저 API를 호출할 수 없습니다.
+
+Browser API를 사용하려면, 앞서 설명한 **클라이언트 사이드에서 사용할 수 있는 생명주기 훅을 활용**해야 합니다. SSR에서 개발할 때는 **JavaScript 코드가 실행되는 시점과 Browser API를 사용할 수 있는 시점이 다름을 인식**해야 하며, **클라이언트 사이드와 서버 사이드 코드를 분리**하는 것이 중요합니다.
+
+또한, 사용하는 라이브러리가 Browser API를 활용한다면 해당 라이브러리가 **클라이언트 사이드에서만 동작하도록 처리**해야 합니다. 그래서 렌더링 방식과 생명주기에 대한 이해가 매우 중요하다고 볼 수 있습니다.
+
+Nuxt.js 공식 문서에서도 Browser API에 의존하는 라이브러리는 클라이언트 사이드에서만 불러와야 한다고 명시하고 있습니다.
+
+"When importing a library that relies on browser APIs and has side effects, make sure the component importing it is only called client-side. Bundlers do not treeshake imports of modules containing side effects."
+
+실제로 제가 처음에 회사에 들어와서 진행했던 프로젝트에서 활용했던 Editor.js 라이브러리는 Browser API를 호출하기 때문에, CSR/SSR 개념을 바탕으로 Client-Side 에서만 작동하도록 처리하는게 필요했습니다.
+
+초반에 이 개념이 부족하여 오류를 트래킹 하는데에 많은 시간을 허비하기도 했습니다.
+
+이 경험을 바탕으로 Nuxt3에서의 렌더링 방식에 대한 개념을 확실하게 공부하게 되는 계기를 가졌습니다.
+
+## 3. HTTP 통신의 중복 호출
+
+앞서 언급한 내용들은 Next.js와 Nuxt.js에서 공통적으로 적용될 수 있는 부분입니다. 하지만 이 두 프레임워크는 **Data Fetching**에 있어서는 완전히 다른 방식을 채택하고 있습니다.
+
+Nuxt.js는 기본적으로 **ofetch** 라이브러리를 사용합니다. ofetch는 서버 환경에서는 node-fetch-native, 브라우저 환경에서는 브라우저의 기본 fetch를 선택해 사용하며, 이 라이브러리는 $fetch 메서드를 통해 활용됩니다.
+
+이때 Nuxt.js에서 가장 흔히 겪는 문제 중 하나는 **HTTP 요청의 중복 호출**입니다. Nuxt 3에서는 컴포넌트 내에서 $fetch를 직접 사용하면 서버와 클라이언트 양쪽에서 API 요청이 발생해, **두 번의 API 호출**이 일어납니다. 이로 인해 다음과 같은 문제가 발생할 수 있습니다:
+
+- **Hydration Mismatch**: 서버에서 생성된 HTML과 클라이언트에서 다시 렌더링된 HTML이 일치하지 않을 경우 발생하는 경고입니다. 특히 서버에서 가져온 데이터와 클라이언트에서 재요청한 데이터가 일치하지 않으면 이 경고가 발생할 가능성이 큽니다.
+- **불필요한 API 호출**: 서버가 동일한 API 요청을 두 번 받게 되어 성능이 저하될 수 있습니다. 이는 서버 리소스 낭비와 부하 증가로 이어질 수 있습니다.
+
+Nuxt.js는 이러한 문제를 해결하기 위해 `useFetch`와 `useAsyncData` 메서드를 제공합니다. 이 두 방법을 사용하면, 서버에서 가져온 데이터를 클라이언트로 전송하여 중복 호출을 방지할 수 있습니다.
+
+Nuxt.js 공식문서에서도 중복 호출 문제에 대한 내용을 언급하며, 해결 방법에 대해 다음과 같이 설명하고 있습니다:
+
+“Using $fetch in components without wrapping it with useAsyncData causes fetching the data twice: initially on the server, then again on the client-side during hydration, because $fetch does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.”
+
+따라서 효율적인 API 호출 관리와 **HTTP 요청의 중복 문제**를 방지하기 위해
+
+---
+
+# 글을 마치며
+
+지금까지 CSR, SSR, SSG, ISR과 같은 다양한 렌더링 방식과 더불어 Nuxt.js로 개발할 때 주의할 주요 포인트들을 정리했습니다.
+
+결국, **각 렌더링 방식의 특징을 이해하고, 상황에 맞는 방식을 선택하는 것이 중요**합니다.
+
+아래는 제가 개인적으로 정리한 렌더링 방식별 적합한 상황입니다. 렌더링 방식 선택에는 정답이 없으며, 상황에 따라 다양한 선택이 가능하다는 점을 항상 염두에 두어야 합니다.
+
+- **SSG**: 데이터가 거의 변경되지 않는 정적인 콘텐츠에 적합합니다.
+- **ISR**: 데이터가 변경되지만, 빈도가 높지 않고 업데이트 타이밍을 조정할 수 있을 때 적합합니다.
+- **CSR**: 사용자별 데이터를 처리하면서 SEO가 필요 없고, 서버에서의 pre-rendering이 불필요할 때 선택할 수 있습니다.
+- **SSR**: 사용자별로 매 요청마다 다른 데이터를 보여주고, 서버에서 즉시 렌더링해야 하며 SEO도 중요한 경우에 적합합니다.
