@@ -6,7 +6,7 @@ date: 2024-06-18
 tags: CSR, SSR, SSR&ISG, Rendering, lifecycle
 ---
 
-요즘 프론트엔드 개발에 Next.js나 Nuxt.js와 같은 **서버 사이드 렌더링(SSR)**을 제공하는 프레임워크들이 널리 사용되고 있습니다.
+요즘 프론트엔드 개발에 Next.js나 Nuxt.js와 같은 <strong>서버 사이드 렌더링(SSR)</strong>을 제공하는 프레임워크들이 널리 사용되고 있습니다.
 
 이번 포스팅에서는 Nuxt.js에서 지원하는 다양한 렌더링 방식인 CSR, SSR, SSG, ISR 방식과 Nuxt.js에서 어떻게 렌더링 기법을 활용하는지에 대해 정리해봤습니다.
 
@@ -16,7 +16,7 @@ CSR은 말 그대로 클라이언트 측에서 렌더링이 이루어지는 방�
 
 초기 렌더링 시에는 빈 HTML을 받고, 이후 라이브러리와 함께 작성된 JavaScript 코드를 다운로드하여 애플리케이션을 구동하는 모든 로직과 소스 코드를 준비합니다. **이 모든 과정은 클라이언트 측에서 발생**하며, 추가 데이터가 필요할 경우 서버에 요청하여 동적으로 HTML을 생성하고 최종 애플리케이션을 사용자에게 보여줍니다.
 
-흔히 React, Vue로 만드는 **SPA(Single Page Application)**이 CSR 방식으로 동작합니다.
+흔히 React, Vue로 만드는 <strong>SPA(Single Page Application)</strong>이 CSR 방식으로 동작합니다.
 
 <Image
   alt="CSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)"
@@ -152,7 +152,7 @@ export default defineNuxtConfig({
 
 # ❗ 웹앱을 개발할 때 중요한 포인트
 
-웹앱을 개발할 때 가장 중요한 포인트는 좋은 사용자 경험(UX)를 제공하는 것입니다. 이를 위해 위에서 잠깐 언급했던 **TTV(Time To View)**와 **TTI(Time To Interact)**의 개념을 이해하는 것이 중요합니다.
+웹앱을 개발할 때 가장 중요한 포인트는 좋은 사용자 경험(UX)를 제공하는 것입니다. 이를 위해 위에서 잠깐 언급했던 <strong>TTV(Time To View)</strong>와 <strong>TTI(Time To Interact)</strong>의 개념을 이해하는 것이 중요합니다.
 
 **CSR**에서는
 
@@ -216,7 +216,7 @@ Browser API를 사용하려면, 앞서 설명한 **클라이언트 사이드에�
 
 Nuxt.js 공식 문서에서도 Browser API에 의존하는 라이브러리는 클라이언트 사이드에서만 불러와야 한다고 명시하고 있습니다.
 
-"When importing a library that relies on browser APIs and has side effects, make sure the component importing it is only called client-side. Bundlers do not treeshake imports of modules containing side effects."
+> When importing a library that relies on browser APIs and has side effects, make sure the component importing it is only called client-side. Bundlers do not treeshake imports of modules containing side effects.
 
 실제로 제가 처음에 회사에 들어와서 진행했던 프로젝트에서 활용했던 Editor.js 라이브러리는 Browser API를 호출하기 때문에, CSR/SSR 개념을 바탕으로 Client-Side 에서만 작동하도록 처리하는게 필요했습니다.
 
@@ -239,7 +239,7 @@ Nuxt.js는 이러한 문제를 해결하기 위해 `useFetch`와 `useAsyncData` 
 
 Nuxt.js 공식문서에서도 중복 호출 문제에 대한 내용을 언급하며, 해결 방법에 대해 다음과 같이 설명하고 있습니다:
 
-“Using $fetch in components without wrapping it with useAsyncData causes fetching the data twice: initially on the server, then again on the client-side during hydration, because $fetch does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.”
+> Using $fetch in components without wrapping it with useAsyncData causes fetching the data twice: initially on the server, then again on the client-side during hydration, because $fetch does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.
 
 따라서 효율적인 API 호출 관리와 **HTTP 요청의 중복 문제**를 방지하기 위해
 

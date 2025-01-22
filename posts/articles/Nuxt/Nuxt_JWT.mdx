@@ -22,8 +22,8 @@ tags: JWT, useCookie
 
 그렇다면 이제 핵심은 `httpOnly`, `secure`, `samsite` 옵션을 설정해주는 것입니다. 이 옵션들은 useCookie의 옵션으로 제공됩니다.
 
-<Image src="/posts/articles/Nuxt/Nuxt_JWT/1.png" alt="httpOnly & secure/>
-<Image src="/posts/articles/Nuxt/Nuxt_JWT/2.png" alt="samesite"/>
+<Image src="/posts/articles/Nuxt/Nuxt_JWT/1.png" alt="httpOnly & secure" />
+<Image src="/posts/articles/Nuxt/Nuxt_JWT/2.png" alt="samesite" />
 
 위의 내용에 기반하여, 기존에 사용하던 token Store 관련 코드에서 useCookie에 다음과 같이 httpOnly, secure, samesite 값을 true로 설정해줬습니다.
 

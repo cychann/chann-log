@@ -34,7 +34,7 @@ Nuxt는 서버와 클라이언트 환경 모두에서 범용 코드를 실행할
 
 첫 번째는 **HTML을 렌더링하기 위한 서버 측 요청**이고, 두 번째는 클라이언트에서 **HTML이 Hydrate될 때 이루어지는 요청**입니다.
 
-이러한 상황은 **하이드레이션 불일치(Hydration Dismatch)** 문제를 초래할 수 있으며, 예기치 않은 동작이나 성능 저하로 이어질 수 있습니다.
+이러한 상황은 <strong>하이드레이션 불일치(Hydration Dismatch)</strong> 문제를 초래할 수 있으며, 예기치 않은 동작이나 성능 저하로 이어질 수 있습니다.
 
 간단한 GET API를 호출하는 예시로 결과를 살펴보겠습니다.
 
@@ -60,7 +60,7 @@ Nuxt는 서버와 클라이언트 환경 모두에서 범용 코드를 실행할
 
 Nuxt 공식 문서에서도 컴포넌트 데이터를 패칭할 때는 useFetch 또는useAsyncData + $fetch를 사용할 것을 권장하고 있습니다.
 
-"We recommend to use useFetch or useAsyncData + $fetch to prevent double data fetching when fetching the component data."
+> We recommend to use useFetch or useAsyncData + $fetch to prevent double data fetching when fetching the component data.
 
 ---
 
@@ -91,7 +91,7 @@ $fetch에 대한 더 자세한 내용은 [Nuxt 공식문서](https://nuxt.com/do
 
 # useAsyncData
 
-useAsyncData는 **서버 사이드 렌더링(SSR)**에 친화적인 방식으로 비동기 데이터를 처리할 수 있는 composable입니다.
+useAsyncData는 <strong>서버 사이드 렌더링(SSR)</strong>에 친화적인 방식으로 비동기 데이터를 처리할 수 있는 composable입니다.
 
 이 기능을 사용하면 **서버에서 데이터를 미리 가져와 클라이언트로 전달**하여, **불필요한 클라이언트 사이드 요청을 줄일 수 있습니다.**
 
@@ -339,9 +339,9 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 
 그러나 데이터가 깊은 반응성이 필요하지 않은 경우, deep 옵션을 false로 설정할 수 있습니다. 이렇게 하면 불필요한 중첩 속성 변화 추적을 방지하여 성능을 개선할 수 있으며, 특히 큰 데이터셋에서 유용합니다.
 
----
-
 useAsyncData에 대한 더 자세한 내용은 [Nuxt 공식문서](https://nuxt.com/docs/api/composables/use-async-data)에서 자세하게 확인할 수 있습니다.
+
+---
 
 # useFetch
 

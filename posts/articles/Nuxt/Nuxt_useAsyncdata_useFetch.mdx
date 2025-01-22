@@ -30,6 +30,8 @@ useAsyncData vs useFetch 뜨거운 논쟁
 
 ---
 
+# useAsyncData vs useFetch
+
 ```js
 useFetch(url)
 useAsyncData(‘’, () => $fetch(url))
@@ -163,6 +165,8 @@ const { data: useAsyncDataResult } = useAsyncData(
 
 ---
 
+# useAsyncData를 사용해야만 하는 경우
+
 추가로, useAsyncData가 콜백 함수로 데이터를 처리한다는 점에서 useFetch로는 불가능한 상황들이 몇 가지 있습니다.
 
 **1. 외부 Fetching 라이브러리를 사용한다면 useFetch는 사용할 수 없습니다.**
@@ -192,6 +196,8 @@ const { data: discounts, status } = await useAsyncData(
 ```
 
 ---
+
+# 마치며..
 
 이처럼 useFetch와 useAsyncData + $fetch는 유사한 동작을 수행하지만, 세부적으로 차이가 존재합니다.
 
