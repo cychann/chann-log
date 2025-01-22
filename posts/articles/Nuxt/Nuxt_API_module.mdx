@@ -72,8 +72,7 @@ const { data } = getAPITest();
 
 하지만 한 가지 문제가 있습니다. **Nuxt3에서의 데이터 패칭은 기본적으로 `$fetch`에 의존**하고 있습니다. 즉, $fetch를 단독으로 사용하거나, $fetch와 useAsyncData, 또는 $fetch와 useFetch를 조합하여 사용하게 됩니다. 결국 모든 API 호출은 $fetch에 의존하게 되므로, $fetch 메소드를 수정하거나 커스텀할 수 있어야 합니다.
 
-다행히 Nuxt3에서는 $fetch를 커스텀할 수 있는 기능을 제공하고 있습니다. 아래 링크에서 $fetch 커스텀에 대한 내용을 확인할 수 있습니다:
-https://nuxt.com/docs/guide/recipes/custom-usefetch
+다행히 Nuxt3에서는 $fetch를 커스텀할 수 있는 기능을 제공하고 있습니다. [Nuxt 공식문서](https://nuxt.com/docs/guide/recipes/custom-usefetch)에서 $fetch 커스텀에 대한 내용을 확인할 수 있습니다:
 
 $fetch는 전반적인 API 호출 로직에 관여하므로, 커스텀된 $fetch는 모듈화보다는 API 호출의 공통 로직을 처리하는 데 특히 유용합니다.
 

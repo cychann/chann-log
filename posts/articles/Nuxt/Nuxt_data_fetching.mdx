@@ -47,10 +47,14 @@ Nuxt는 서버와 클라이언트 환경 모두에서 범용 코드를 실행할
 </script>
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/1.png" />
-HTTP 중복 호출
+<Image
+  alt="HTTP 중복 호출"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/1.png"
+  caption="HTTP 중복 호출"
+/>
 
-위의 코드는 HTTP 요청이 서버와 클라이언트 모두에서 중복 호출됩니다. 콘솔에는 API 호출 결과가 두 번 출력되는 것을 확인할 수 있습니다.
+위의 코드는 HTTP 요청이 서버와 클라이언트 모두에서 중복 호출됩니다. 콘솔에는 API
+호출 결과가 두 번 출력되는 것을 확인할 수 있습니다.
 
 이를 방지하기 위해 등장한 것이 바로 `useAsyncData와` `useFetch` Composable입니다. 이 두 메소드는 서버에서 API 호출이 이루어질 경우, **데이터 payload를 클라이언트로 전달하여 중복 호출 문제를 해결**합니다.
 
@@ -83,8 +87,7 @@ const contactForm = () => {
 
 이와 같은 방식은 주로 POST, PUT, PATCH, DELETE와 같은 Method에 활용될 수 있습니다.
 
-$fetch에 대한 더 자세한 내용은 Nuxt 공식문서에서 자세하게 확인할 수 있습니다.
-https://nuxt.com/docs/api/utils/dollarfetch
+$fetch에 대한 더 자세한 내용은 [Nuxt 공식문서](https://nuxt.com/docs/api/utils/dollarfetch)에서 자세하게 확인할 수 있습니다.
 
 # useAsyncData
 
@@ -103,7 +106,7 @@ useAsyncData는 **서버 사이드 렌더링(SSR)**에 친화적인 방식으로
 </script>
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/2.png" />
+<Image src="/posts/articles/Nuxt/Nuxt_data_fetching/2.png" />
 
 useAsyncData의 리턴값에 대해 간단하게 요약하면 다음과 같습니다:
 
@@ -118,11 +121,15 @@ useAsyncData의 리턴값에 대해 간단하게 요약하면 다음과 같습�
 
 이는 **API 호출이 서버에서 이루어졌으며, 서버에서 데이터를 미리 받아 클라이언트로 전달**했기 때문입니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/3.png" />
-클라이언트 사이드에서 API 호출 발생하지 않음
+<Image
+  alt="클라이언트 사이드에서 API 호출 발생하지 않음"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/3.png"
+/>
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/4.png" />
-서버에서 API 호출 데이터가 출력(서버에서 데이터를 받음)
+<Image
+  alt="서버에서 API 호출 데이터가 출력(서버에서 데이터를 받음)"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/4.png"
+/>
 
 만약 서버에서 데이터를 가져오지 못한 경우(예: server: false 설정)에는 클라이언트 사이드에서 하이드레이션이 완료된 후 데이터를 불러오게 됩니다.
 
@@ -207,8 +214,7 @@ false로 설정하면, 클라이언트 단에서 API 호출이 발생합니다.
 
 - **lazy: false**
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/5.gif" />
-lazy: false
+<Image alt="lazy: false" src="/posts/articles/Nuxt/Nuxt_data_fetching/5.gif" />
 
 lazy: false는 데이터가 모두 로드되기 전까지 라우트 로딩을 차단하는 방식입니다. 즉, 페이지에 필요한 모든 데이터를 가져온 후에야 화면을 렌더링합니다. 이 과정에서 사용자는 데이터를 모두 받을 때까지 빈 화면을 보게 됩니다.
 
@@ -216,8 +222,7 @@ lazy: false는 데이터가 모두 로드되기 전까지 라우트 로딩을 �
 
 - **lazy: true**
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/6.gif" />
-lazy: true
+<Image alt="lazy: true" src="/posts/articles/Nuxt/Nuxt_data_fetching/6.gif" />
 
 잠깐의 loading…메시지가 나오는 것이 보입니다.
 
@@ -227,9 +232,7 @@ lazy: true는 **라우트가 로드된 후에도 데이터를 비동기적으로
 
 따라서 로딩 상태를 적절히 구현할 수 있다면, lazy: true를 사용하는 방식이 더 나은 사용자 경험을 제공할 수 있습니다.
 
-추가로, useLazyAsyncData를 사용하면 useAsyncData와 함께 lazy: true와 동일한 동작을 구현할 수 있습니다.
-
-https://nuxt.com/docs/api/composables/use-lazy-async-data
+추가로, [useLazyAsyncData](https://nuxt.com/docs/api/composables/use-lazy-async-data)를 사용하면 useAsyncData와 함께 lazy: true와 동일한 동작을 구현할 수 있습니다.
 
 **3. immediate: false로 설정하면 요청이 즉시 실행되지 않도록 설정(기본값: true)**
 
@@ -260,8 +263,10 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 );
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/7.png" />
-데이터를 가져오기 전 기본값으로 설정한 default의 값으로 출력되는 결과
+<Image
+  alt="데이터를 가져오기 전 기본값으로 설정한 default의 값으로 출력되는 결과"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/7.png"
+/>
 
 **5. transform: handler 함수의 결과를 변환하는 데 사용할 수 있는 옵션**
 
@@ -284,9 +289,10 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 );
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/8.png" />
-결과로 받은 title을 대문자로 변환하고, state라는 신규 인자를 추가하여 데이터를 반환하는
-결과
+<Image
+  alt="결과로 받은 title을 대문자로 변환하고, state라는 신규 인자를 추가하여 데이터를 반환하는 결과"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/8.png"
+/>
 
 **6. getCachedData: 캐시된 데이터를 반환하는 함수를 제공. null 또는 undefined를 반환하면 페치가 트리거**
 
@@ -306,8 +312,10 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 );
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_data_fetching/9.png" />
-pick 배열에 지정한 id, title 값만 필터링
+<Image
+  alt="pick 배열에 지정한 id, title 값만 필터링"
+  src="/posts/articles/Nuxt/Nuxt_data_fetching/9.png"
+/>
 
 **8. watch: 자동 갱신을 위해 반응형 소스를 감시**
 
@@ -333,9 +341,7 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 
 ---
 
-useAsyncData에 대한 더 자세한 내용은 Nuxt 공식문서에서 자세하게 확인할 수 있습니다.
-
-https://nuxt.com/docs/api/composables/use-async-data
+useAsyncData에 대한 더 자세한 내용은 [Nuxt 공식문서](https://nuxt.com/docs/api/composables/use-async-data)에서 자세하게 확인할 수 있습니다.
 
 # useFetch
 
@@ -372,9 +378,7 @@ const { data, pending, error, refresh, clear } = await useFetch(
 );
 ```
 
-useFetch에 대한 더 자세한 내용은 Nuxt 공식문서에서 자세하게 확인할 수 있습니다.
-
-https://nuxt.com/docs/api/composables/use-fetch
+useFetch에 대한 더 자세한 내용은 [Nuxt 공식문서](https://nuxt.com/docs/api/composables/use-fetch)에서 자세하게 확인할 수 있습니다.
 
 ---
 

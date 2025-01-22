@@ -14,7 +14,7 @@ Transition의 사전적 정의는 “전이, 이행, 변천, 과도기”입니�
 
 이 과정은 단순히 화면 전환뿐만 아니라 **모든 UI 상태 변화에 적용**될 수 있습니다. 예를 들어, 버튼이 눌렸을 때 색상이 변화하거나, 요소가 점차적으로 나타나고 사라지는 등 다양한 액션에서 **Transition은 더욱 자연스럽고 안정적인 사용자 경험을 제공**합니다.
 
-<img src="/posts/articles/Vue/transition/thumbnail.jpeg" />
+<Image src="/posts/articles/Vue/transition/thumbnail.jpeg" />
 
 개발자가 이 변화의 흐름을 효과적으로 제어하려면 **초기 및 종료 상태에 대한 정의**가 필요합니다. 이를 통해 각 상태 전환을 세밀하게 조작할 수 있으며, 결과적으로 부드럽고 직관적인 UI 전환 효과를 구현할 수 있습니다.
 
@@ -22,11 +22,10 @@ Transition의 사전적 정의는 “전이, 이행, 변천, 과도기”입니�
 
 왼쪽은 기존 사이트에서 Transition 속성이 적용된 모습이고, 오른쪽은 개발자 도구를 통해 Transition 속성을 제거한 경우입니다.
 
-<div>
-  <img src="/posts/articles/Vue/transition/1.gif" />
-  <img src="/posts/articles/Vue/transition/2.gif" />
+<div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+  <Image alt="Transition 적용" src="/posts/articles/Vue/transition/1.gif" />
+  <Image alt="Transition 미적용" src="/posts/articles/Vue/transition/2.gif" />
 </div>
-Transition 적용 / Transition 미적용
 
 사소해 보일 수 있지만, Transition이 적용된 UI가 훨씬 부드럽고 깔끔하게 느껴지는 것을 확인할 수 있습니다. 이처럼 Transition은 사용자 경험에 있어서 중요한 역할을 합니다.
 
@@ -121,7 +120,7 @@ Vue는 **상태 변화에 대응하여 요소(Element)나 컴포넌트(Component
 </style>
 ```
 
-<img src="/posts/articles/Vue/transition/3.gif" />
+<Image src="/posts/articles/Vue/transition/3.gif" />
 
 이렇게 `<Transition>`을 사용하면, 애니메이션을 위한 복잡한 클래스 관리 없이 자연스럽고 간편하게 요소의 상태 변화를 처리할 수 있습니다.
 
@@ -138,8 +137,10 @@ Vue는 **상태 변화에 대응하여 요소(Element)나 컴포넌트(Component
 
 이 과정에서 다음과 같은 6개의 CSS 클래스를 자동으로 적용하여 애니메이션 효과를 생성합니다:
 
-<img src="/posts/articles/Vue/transition/4.png" />
-https://ko.vuejs.org/guide/built-ins/transition#javascript-hooks
+<Image
+  alt="https://ko.vuejs.org/guide/built-ins/transition#javascript-hooks"
+  src="/posts/articles/Vue/transition/4.png"
+/>
 
 - `v-enter-from`: 요소가 나타나기 시작할 때 적용됩니다. 이 클래스는 요소가 삽입되기 전의 상태를 정의합니다.
 - `v-enter-active`: 요소가 나타나는 transition이 진행되는 동안 적용됩니다. 이 클래스에서는 transition의 duration, delay, easing curve를 정의할 수 있습니다.
@@ -172,7 +173,7 @@ transition은 **name prop**을 통해서도 별도의 이름을 지정할 수 �
 
 ---
 
-> 주의❗<Transition> 컴포넌트는 단일 요소나 컴포넌트만 지원하며, 포함된 콘텐츠가 컴포넌트인 경우 반드시 단일 루트 엘리먼트가 필요합니다. 예를 들어, 다음 코드에서는 애니메이션이 적용되지 않습니다.
+> 주의❗`<Transition>` 컴포넌트는 단일 요소나 컴포넌트만 지원하며, 포함된 콘텐츠가 컴포넌트인 경우 반드시 단일 루트 엘리먼트가 필요합니다. 예를 들어, 다음 코드에서는 애니메이션이 적용되지 않습니다.
 
 ```html
 <Transition>
@@ -185,7 +186,7 @@ transition은 **name prop**을 통해서도 별도의 이름을 지정할 수 �
 
 현재 코드에서는 `<Transition>` 컴포넌트가 v-if로 트리거할 대상이 루트 요소인 `<div>`가 아니라, 자식 요소에 적용되어 있어서 애니메이션이 정상적으로 적용되지 않는 문제가 발생합니다.
 
-<img src="/posts/articles/Vue/transition/5.gif" />
+<Image src="/posts/articles/Vue/transition/5.gif" />
 
 ## Nested Transitions
 
@@ -262,7 +263,7 @@ transition은 **name prop**을 통해서도 별도의 이름을 지정할 수 �
 
 하지만 위 코드를 실행하면 한 가지 문제가 발생합니다. 아래 결과를 같이 살펴봅시다.
 
-<img src="/posts/articles/Vue/transition/6.gif" />
+<Image src="/posts/articles/Vue/transition/6.gif" />
 
 **진출(leave) 시**에는 자식 요소가 먼저 사라진 후 부모 요소가 사라지므로 의도한 대로 동작합니다.
 하지만 **진입(enter) 시**에는 자식 요소가 자연스럽게 등장하지 않고 갑자기 나타나는 문제가 발생합니다.
@@ -342,7 +343,7 @@ transition을 많이 적용해봤다면, 진입 시 element와 진출 시의 ele
 </style>
 ```
 
-<img src="/posts/articles/Vue/transition/7.gif" />
+<Image src="/posts/articles/Vue/transition/7.gif" />
 
 CSS로 레이아웃 문제를 해결하기 위해 position: absolute 속성을 사용할 수 있지만, 이는 단순히 레이아웃 문제만 해결하는 것이 아닙니다. 사용자는 퇴장하는 요소의 애니메이션이 완료된 후에 새로운 요소가 등장하는 방식으로 애니메이션을 조정하고 싶을 수 있습니다. 그러나 이를 수동으로 조정하는 것은 매우 복잡할 수 있습니다.
 
@@ -355,7 +356,7 @@ CSS로 레이아웃 문제를 해결하기 위해 position: absolute 속성을 �
 <Transition mode="out-in"> ... </Transition>
 ```
 
-<img src="/posts/articles/Vue/transition/8.gif" />
+<Image src="/posts/articles/Vue/transition/8.gif" />
 
 위와 같이 mode를 설정하면 원하는 대로 요소가 애니메이션을 수행하게 되어, 레이아웃 깨짐 문제를 예방할 수 있습니다. 이로 인해 사용자 경험이 향상되고, 보다 매끄러운 애니메이션을 제공할 수 있습니다.
 

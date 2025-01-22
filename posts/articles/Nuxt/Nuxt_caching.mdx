@@ -45,8 +45,10 @@ Nuxt 3는 정적 파일(예: JavaScript 파일, CSS 파일, 이미지 등)의 �
 
 예를 들어 이미지 파일에 대한 'Cache-Control' 헤더를 다음과 같이 설정합니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/1.png" />
-이미지 파일 Cache-Control
+<Image
+  alt="이미지 파일 Cache-Control"
+  src="/posts/articles/Nuxt/Nuxt_caching/1.png"
+/>
 
 위의 사진에서 'Cache-Control' 헤더는 Nuxt3에서 자동으로 설정해 준 부분입니다. 각 헤더의 의미는 다음과 같습니다.
 
@@ -67,8 +69,10 @@ Nuxt 3는 정적 파일(예: JavaScript 파일, CSS 파일, 이미지 등)의 �
 - 캐시에 있는 Etag와 서버에 있는 Etag가 같으면 -> **304 Not Modified 응답 (캐시 재사용)**
 - 캐시에 있는 Etag와 서버에 있는 Etag가 다르면 -> **200 OK 응답 (네트워크 다운로드)**
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/2.png" />
-출처 : https://web.dev/articles/http-cache
+<Image
+  alt="출처 : https://web.dev/articles/http-cache"
+  src="/posts/articles/Nuxt/Nuxt_caching/2.png"
+/>
 
 위 사진의 예시에서는 Etag 값이 일치했으므로 서버는 파일을 캐시해야 하는 기간에 관한 지침(Cache-Control: max-age=120)과 함께 304 Not Modified 응답을 반환했습니다.
 
@@ -144,12 +148,14 @@ interface NitroRouteRules
 
 위에서 적용한 옵션을 다시 빌드 후 실행해 보면, 아래와 같이 직접 지정한 max-age가 설정된 것을 확인할 수 있습니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/3.png" />
+<Image src="/posts/articles/Nuxt/Nuxt_caching/3.png" />
 
 Nuxt 3는 빌드 시마다 JavaScript와 CSS 파일의 이름에 해시값을 자동으로 추가합니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/4.png" />
-빌드할 때마다 파일 이름에 해시값 자동 생성
+<Image
+  alt="빌드할 때마다 파일 이름에 해시값 자동 생성"
+  src="/posts/articles/Nuxt/Nuxt_caching/4.png"
+/>
 
 이로 인해 파일이 변경될 때마다 새로운 URL이 생성되므로, 브라우저는 새로 배포되지 않는 한 캐시 된 파일을 계속 사용할 수 있습니다. 이는 정적 파일의 캐시 관리를 더욱 효율적으로 만들어 줍니다.
 
@@ -202,8 +208,10 @@ const { data } = await useFetch(getURL, {
 
 getCachedData 옵션을 적용하지 않았을 때의 화면은 다음과 같습니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/5.gif" />
-getCachedData 미적용
+<Image
+  alt="getCachedData 미적용"
+  src="/posts/articles/Nuxt/Nuxt_caching/5.gif"
+/>
 
 **문제 상황**: 현재, 사용자가 Index 페이지를 방문할 때마다 API를 호출하여 새로운 농담을 생성하고 있습니다. 이로 인해 매번 페이지를 새로 로드할 때마다 새로운 농담을 받아오게 됩니다.
 
@@ -270,7 +278,6 @@ if (isExpired) {
 
 캐싱을 적용한 화면은 다음과 같습니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_caching/6.gif" />
-getCachedData 적용
+<Image alt="getCachedData 적용" src="/posts/articles/Nuxt/Nuxt_caching/6.gif" />
 
 위의 예제는 간단하지만, 실제 개발 시에는 다양한 상황이 존재하므로, 데이터의 특성과 사용 패턴에 맞게 적절한 만료 시간을 설정하여 성능을 최적화할 수 있어야 합니다.

@@ -18,8 +18,10 @@ CSR은 말 그대로 클라이언트 측에서 렌더링이 이루어지는 방�
 
 흔히 React, Vue로 만드는 **SPA(Single Page Application)**이 CSR 방식으로 동작합니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_rendering/1.png" />
-CSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)
+<Image
+  alt="CSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)"
+  src="/posts/articles/Nuxt/Nuxt_rendering/1.png"
+/>
 
 **👍 장점**
 
@@ -37,8 +39,10 @@ CSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)
 
 SSR은 **렌더링이 서버**에서 이루어집니다. 요청할 때마다 서버는 페이지에 필요한 데이터들을 삽입하고, 렌더링을 마친 HTML과 JavaScript 코드를 클라이언트에 전달합니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_rendering/2.png" />
-SSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)
+<Image
+  alt="SSR (사진 출처: https://nuxt.com/docs/guide/concepts/rendering)"
+  src="/posts/articles/Nuxt/Nuxt_rendering/2.png"
+/>
 
 이런 SSR의 특징 때문에 사용자가 빠르게 웹사이트를 확인할 순 있지만, 동적으로 데이터를 처리하는 JavaScript를 다운로드 받지 못하는 경우 반응이 없는 상황이 발생할 수 있습니다.
 
@@ -88,12 +92,16 @@ ISR은 SSG와 동일한 개념을 가지고 있지만, **주기적으로 렌더�
 
 아래 사진은 Next.js의 공식문서에서 가져온 사진이지만, Nuxt.js에서 적용되는 개념은 동일합니다.
 
-<img src="/posts/articles/Nuxt/Nuxt_rendering/3.png" />
-No Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering)
+<Image
+  alt="No Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering)"
+  src="/posts/articles/Nuxt/Nuxt_rendering/3.png"
+/>
 
-<img src="/posts/articles/Nuxt/Nuxt_rendering/3.png" />
-Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering
-)
+<Image
+  alt="Pre-rendering (사진출처: https://nextjs.org/learn-pages-router/basics/data-fetching/pre-rendering
+)"
+  src="/posts/articles/Nuxt/Nuxt_rendering/3.png"
+/>
 
 Pre-Rendering이란 **서버 측에서 미리 HTML을 렌더링하는 과정**을 의미합니다.
 
@@ -172,9 +180,7 @@ Nuxt.js의 **Universal Rendering**과 **Hybrid Rendering**은 매우 강력하�
 
 Nuxt 3에서는 Vue 3의 다양한 생명주기 훅을 사용할 수 있습니다. 하지만 일반적인 **클라이언트 사이드 렌더링(CSR)** 환경과는 달리, **서버 사이드 렌더링(SSR) 환경**에서는 일부 생명주기 훅을 사용할 수 없다는 점에 유의해야 합니다.
 
-Nuxt.js의 공식 문서에서는 각 렌더링 환경에서 어떤 생명주기 훅을 사용할 수 있는지 자세히 설명하고 있으니, SSR 환경에서의 개발 시 참고하는 것이 중요합니다.
-
-https://nuxt.com/docs/api/advanced/hooks?source=post_page-----1c72e06d6932--------------------------------#nuxt-hooks-build-time
+[Nuxt의 공식 문서](https://nuxt.com/docs/api/advanced/hooks?source=post_page-----1c72e06d6932--------------------------------#nuxt-hooks-build-time)에서는 각 렌더링 환경에서 어떤 생명주기 훅을 사용할 수 있는지 자세히 설명하고 있으니, SSR 환경에서의 개발 시 참고하는 것이 중요합니다.
 
 ## 2. Browser API 활용의 제한
 
@@ -188,7 +194,7 @@ CSR 환경에서는 이러한 API를 문제없이 사용해왔겠지만, **SSR**
 </script>
 ```
 
-<img src="/posts/articles/Nuxt/Nuxt_rendering/5.png" />
+<Image src="/posts/articles/Nuxt/Nuxt_rendering/5.png" />
 
 위의 코드에서 볼 수 있듯이, CSR에서는 console.log가 정상적으로 실행되지만, SSR에서는 undefined로 찍힙니다. 즉, window 객체 안의 요소에 접근하려고 한다면 오류가 발생할 수 있습니다.
 
