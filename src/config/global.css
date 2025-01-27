@@ -35,6 +35,14 @@ body {
 
   /* Border Colors */
   --border: #e5e7eb;
+
+  /* Button Background Colors */
+  --button-active: #eaecf1;
+  --button-hover: #f8fafc;
+
+  /* Search Bar Colors */
+  --search-active: #e2e8f0;
+  --search-hover: #cbd5e1;
 }
 
 .dark {
@@ -48,6 +56,12 @@ body {
   --text-inverse: #1f2937;
 
   --border: #2c3340;
+
+  --button-active: #334155;
+  --button-hover: #1e293b;
+
+  --search-active: #334155;
+  --search-hover: #475569;
 }
 
 .react-calendar-heatmap .color-scale-1 {

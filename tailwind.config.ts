@@ -32,6 +32,14 @@ export default {
         border: {
           DEFAULT: "var(--border)",
         },
+        button: {
+          active: "var(--button-active)",
+          hover: "var(--button-hover)",
+        },
+        search: {
+          active: "var(--search-active)",
+          hover: "var(--search-hover)",
+        },
 
         card: {
           DEFAULT: "hsl(var(--card))",

@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
 import NavLink from "@/components/layout/NavLink";
-import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
 import { ThemeToggle } from "../common/ui/ThemeToggle";
+import GithubLogo from "../common/ui/GithubLogo";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
@@ -27,7 +26,7 @@ export default function DefaultHeader() {
         <div className="flex items-center gap-2">
           <KBarButton />
           <ThemeToggle />
-          <IconButton icon={<FaGithub size={24} />} />
+          <GithubLogo />
         </div>
       </nav>
     </header>

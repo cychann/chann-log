@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
 import NavLink from "./NavLink";
 import { ThemeToggle } from "../common/ui/ThemeToggle";
+import GithubLogo from "../common/ui/GithubLogo";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
@@ -84,7 +83,7 @@ export default function PostDetailHeader() {
           <div className="flex items-center gap-2 shrink-0">
             <KBarButton />
             <ThemeToggle />
-            <IconButton icon={<FaGithub size={24} />} />
+            <GithubLogo />
           </div>
         </div>
       </nav>
