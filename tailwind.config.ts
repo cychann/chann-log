@@ -22,7 +22,7 @@ export default {
           DEFAULT: "var(--background)",
           secondary: "var(--background-secondary)",
         },
-        foreground: "hsl(var(--foreground))",
+        foreground: "var(--foreground)",
         text: {
           primary: "var(--text-primary)",
           secondary: "var(--text-secondary)",
