@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
 import { useEffect, useState } from "react";
-import IconButton from "@/components/common/IconButton";
+import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
 import NavLink from "./NavLink";
 

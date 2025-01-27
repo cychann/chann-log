@@ -9,7 +9,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--primary)",
+        primary: {
+          200: "var(--primary-200)",
+          400: "var(--primary-400)",
+          600: "var(--primary-600)",
+          800: "var(--primary-800)",
+          DEFAULT: "var(--primary-600)",
+        },
       },
       fontFamily: {
         pretendard: ["Pretendard"],
@@ -64,5 +70,5 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 } satisfies Config;

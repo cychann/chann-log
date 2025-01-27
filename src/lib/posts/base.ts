@@ -1,9 +1,8 @@
 import fs from "fs";
-import matter from "gray-matter";
 import path from "path";
 import { sync } from "glob";
 import { Post } from "@/types/post";
-import readingTime from "reading-time";
+import { parseMdx } from "./utils";
 
 const BASE_PATH = "/posts";
 
@@ -16,28 +15,6 @@ export class PostService {
     this.basePath = path.join(process.cwd(), BASE_PATH, type);
   }
 
-  protected async parsePost(postPath: string): Promise<Post> {
-    const file = fs.readFileSync(postPath, "utf8");
-    const { data, content } = matter(file);
-
-    const dateString = new Date(data.date).toLocaleDateString();
-    const readingMinutes = Math.ceil(readingTime(content).minutes);
-    const category = path.dirname(postPath).split(path.sep).slice(-1)[0];
-    const postUrl = `/${this.type}/${category}/${path.basename(
-      postPath,
-      ".mdx"
-    )}`;
-
-    return {
-      ...data,
-      date: dateString,
-      content,
-      url: postUrl,
-      readingMinutes,
-      category,
-    } as Post;
-  }
-
   protected getPostPaths(category?: string) {
     const folder = category || "**";
     return sync(`${this.basePath}/${folder}/**/*.mdx`);
@@ -45,7 +22,13 @@ export class PostService {
 
   public async getList(category?: string): Promise<Post[]> {
     const postPaths = this.getPostPaths(category);
-    return Promise.all(postPaths.map((postPath) => this.parsePost(postPath)));
+    const posts = await Promise.all(
+      postPaths.map((postPath) => parseMdx(postPath, this.type))
+    );
+
+    return posts.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
   }
 
   public getCategoryList(): string[] {
@@ -55,7 +38,7 @@ export class PostService {
 
   public async getDetail(category: string, slug: string): Promise<Post> {
     const filePath = `${this.basePath}/${category}/${slug}.mdx`;
-    return this.parsePost(filePath);
+    return parseMdx(filePath, this.type);
   }
 
   public filterByCategory(posts: Post[], category?: string): Post[] {
