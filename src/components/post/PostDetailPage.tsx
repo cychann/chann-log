@@ -4,6 +4,7 @@ import React from "react";
 import PostHeader from "./PostHeader";
 import TOCSidebar from "./TOCSidebar";
 import PostContent from "./PostContent";
+import Giscus from "./Giscus";
 
 type PostDetailPageProps = {
   post: Post;
@@ -24,6 +25,7 @@ export default function PostDetailPage({ post }: PostDetailPageProps) {
         <PostContent content={post.content} />
         <TOCSidebar toc={toc} />
       </article>
+      <Giscus />
     </section>
   );
 }
