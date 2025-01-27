@@ -1,7 +1,7 @@
 import { Post } from "@/types/post";
 import React from "react";
-import Tags from "@/components/common/Tags";
-import PostDateTimeInfo from "@/components/common/PostDateTimeInfo";
+import Tags from "@/components/common/display/Tags";
+import PostDateTimeInfo from "@/components/common/display/PostDateTimeInfo";
 import Link from "next/link";
 
 type LogCardProps = {

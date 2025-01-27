@@ -1,6 +1,6 @@
 import React from "react";
 import CategoryList from "../filters/CategoryList";
-import ArticleList from "../post/ArticleList";
+import ArticleList from "./ArticleList";
 import { Post } from "@/types/post";
 import { filterArticles, getArticleCategoryCounts } from "@/lib/posts/article";
 

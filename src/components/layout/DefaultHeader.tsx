@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import NavLink from "@/components/layout/NavLink";
-import IconButton from "@/components/common/IconButton";
+import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
 
 const NAV_LIST = [
