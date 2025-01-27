@@ -13,7 +13,7 @@ const NAV_LIST = [
 
 export default function DefaultHeader() {
   return (
-    <header className="w-full py-4 border-b-[1px] shadow-sm">
+    <header className="w-full sticky top-0 bg-background z-50 p-4 border-b-[1px] shadow-sm">
       <nav className="flex justify-between items-center max-w-6xl mx-auto">
         <div className="flex items-center gap-4">
           <Link href="/">

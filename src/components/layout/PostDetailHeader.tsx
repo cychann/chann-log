@@ -47,7 +47,7 @@ export default function PostDetailHeader() {
   }, []);
 
   return (
-    <div className="w-full sticky top-0 bg-white z-50 border-b-[1px] shadow-sm">
+    <header className="w-full sticky top-0 bg-background z-10 border-b-[1px] shadow-sm">
       <nav className="max-w-6xl mx-auto py-4 px-4">
         <div className="flex items-center w-full">
           <Link href="/" className="shrink-0">
@@ -96,6 +96,6 @@ export default function PostDetailHeader() {
           transform: "translateY(1px)",
         }}
       />
-    </div>
+    </header>
   );
 }

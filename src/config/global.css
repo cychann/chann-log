@@ -14,6 +14,7 @@ body {
 
 :root {
   /* 기존 색상들 */
+  --primary-100: #c2caef;
   --primary-200: #9ba8e7;
   --primary-400: #7485de;
   --primary-600: #4662d5;
