@@ -3,6 +3,7 @@ import "@/config/global.css";
 
 import Header from "@/components/layout/Header";
 import KBarContainer from "@/components/KBar/KBarContainer";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "최유찬 개발 블로그",
@@ -15,13 +16,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="scroll-smooth overflow-y-scroll">
+    <html
+      lang="ko"
+      className="scroll-smooth overflow-y-scroll"
+      suppressHydrationWarning
+    >
       <body className="w-full">
-        {/* @ts-expect-error Async Server Component */}
-        <KBarContainer>
-          <Header />
-          <main className="max-w-6xl mx-auto">{children}</main>
-        </KBarContainer>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* @ts-expect-error Async Server Component */}
+          <KBarContainer>
+            <Header />
+            <main className="max-w-6xl mx-auto">{children}</main>
+          </KBarContainer>
+        </ThemeProvider>
       </body>
     </html>
   );

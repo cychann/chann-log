@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
-import { MdDarkMode } from "react-icons/md";
-import { MdLightMode } from "react-icons/md";
 import NavLink from "@/components/layout/NavLink";
 import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
+import { ThemeToggle } from "../common/ui/ThemeToggle";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
@@ -27,7 +26,7 @@ export default function DefaultHeader() {
         </div>
         <div className="flex items-center gap-2">
           <KBarButton />
-          <IconButton icon={<MdDarkMode size={24} />} />
+          <ThemeToggle />
           <IconButton icon={<FaGithub size={24} />} />
         </div>
       </nav>

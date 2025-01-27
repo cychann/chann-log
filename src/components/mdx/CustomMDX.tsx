@@ -13,7 +13,7 @@ type CustomMDXProps = {
 
 export default function CustomMDX({ source }: CustomMDXProps) {
   return (
-    <div className="prose">
+    <div className="prose dark:prose-invert">
       {/* @ts-expect-error Async Server Component */}
       <MDXRemote
         source={source}
