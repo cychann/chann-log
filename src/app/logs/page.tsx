@@ -11,9 +11,9 @@ export default function logPage() {
   return (
     <section className="mx-auto mt-12 w-full max-w-[960px] px-4">
       <h1 className="text-4xl font-extrabold mb-2">Log</h1>
-      <p className="text-gray-800 mb-6">
-        개발하며 공부하거나 경험한 내용들을 <br />
-        소소하게 기록하는 공간입니다😊
+      <p className="text-text-primary mb-6">
+        작은 배움과 경험들을 <br />
+        간단히 기록하는 공간입니다. 😊
       </p>
       <div className="space-y-4">
         {categoryList.map((category, index) => (
@@ -36,9 +36,11 @@ export default function logPage() {
                 )}
                 <h3 className="font-bold text-xl">{category}</h3>
               </div>
-              <p className="text-gray-700">{LOG_DATA[category]?.desc}</p>
+              <p className="text-text-secondary">{LOG_DATA[category]?.desc}</p>
             </div>
-            <p className="text-gray-500 text-sm">{postCounts[index]}개의 글</p>
+            <p className="text-text-tertiary text-sm">
+              {postCounts[index]}개의 글
+            </p>
           </Link>
         ))}
       </div>
