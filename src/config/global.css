@@ -13,5 +13,36 @@ body {
 }
 
 :root {
-  --primary: #4662d5;
+  --primary-200: #9ba8e7;
+  --primary-400: #7485de;
+  --primary-600: #4662d5;
+  --primary-800: #2d45b6;
+}
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: var(--primary-200);
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: var(--primary-400);
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: var(--primary-600);
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: var(--primary-800);
+}
+
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: #333;
+  color: white;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+  border-radius: 4px;
 }

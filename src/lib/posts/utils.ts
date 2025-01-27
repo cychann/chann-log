@@ -8,25 +8,53 @@ import readingTime from "reading-time";
 const BASE_PATH = path.join(process.cwd(), "/posts");
 
 export const getPostsByDate = async (): Promise<
-  Array<{ date: string; count: number }>
+  Array<{
+    date: string;
+    count: number;
+    posts: Array<{
+      title: string;
+      url: string;
+      category: string;
+      type: string;
+    }>;
+  }>
 > => {
   const allPaths = sync(`${BASE_PATH}/**/**/*.mdx`);
   const posts = await Promise.all(
     allPaths.map(async (postPath) => {
-      const file = fs.readFileSync(postPath, "utf8");
-      const { data } = matter(file);
-      return new Date(data.date).toISOString().split("T")[0];
+      const type = postPath.split("/posts/")[1].split("/")[0];
+      const post = await parseMdx(postPath, type);
+      return {
+        date: post.date,
+        title: post.title,
+        url: post.url,
+        category: post.category,
+        type,
+      };
     })
   );
 
-  const groupedByDate = posts.reduce((acc, date) => {
-    acc[date] = (acc[date] || 0) + 1;
+  const groupedByDate = posts.reduce((acc, post) => {
+    if (!acc[post.date]) {
+      acc[post.date] = {
+        date: post.date,
+        count: 0,
+        posts: [],
+      };
+    }
+    acc[post.date].count += 1;
+    acc[post.date].posts.push({
+      title: post.title,
+      url: post.url,
+      category: post.category,
+      type: post.type,
+    });
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<string, { date: string; count: number; posts: Array<{ title: string; url: string; category: string; type: string }> }>);
 
-  return Object.entries(groupedByDate)
-    .map(([date, count]) => ({ date, count }))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  return Object.values(groupedByDate).sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
 };
 
 export const parseMdx = async (
@@ -46,5 +74,6 @@ export const parseMdx = async (
     url: postUrl,
     readingMinutes: Math.ceil(readingTime(content).minutes),
     category,
+    type,
   } as Post;
 };

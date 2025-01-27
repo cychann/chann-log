@@ -864,12 +864,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-calendar-heatmap@npm:^1":
+  version: 1.9.0
+  resolution: "@types/react-calendar-heatmap@npm:1.9.0"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 35eba62bf4092876f3e019867a620b17462519c9cd20f215bb366cf81524164ed9b948108978e27c01e14bcad7695a85856d490aa9a666519da31bef195a5ad5
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:^19":
   version: 19.0.2
   resolution: "@types/react-dom@npm:19.0.2"
   peerDependencies:
     "@types/react": ^19.0.0
   checksum: 3d0c7b78dbe8df64ea769f30af990a5950173a8321c745fe11094d765423f7964c3519dca6e7cd36b4be6521c8efc690bdd3b79b327b229dd1e9d5a8bad677dd
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:*":
+  version: 19.0.7
+  resolution: "@types/react@npm:19.0.7"
+  dependencies:
+    csstype: "npm:^3.0.2"
+  checksum: 818e546fa03a2a65ac2652fc472891ac96684211e8967bc25e1da6a8a09e2301ad972b1b038d128f8b4cbbd7691f6f57fee274db568169e9b6b01556abbb5bee
   languageName: node
   linkType: hard
 
@@ -1436,16 +1454,19 @@ __metadata:
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
+    "@types/react-calendar-heatmap": "npm:^1"
     "@types/react-dom": "npm:^19"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.1.2"
     glob: "npm:^11.0.0"
     gray-matter: "npm:^4.0.3"
     kbar: "npm:^0.1.0-beta.45"
+    lucide-react: "npm:^0.474.0"
     next: "npm:15.1.2"
     next-mdx-remote: "npm:^5.0.0"
     postcss: "npm:^8"
     react: "npm:^19.0.0"
+    react-calendar-heatmap: "npm:^1.9.0"
     react-dom: "npm:^19.0.0"
     react-icons: "npm:^5.4.0"
     reading-time: "npm:^1.5.0"
@@ -1455,6 +1476,7 @@ __metadata:
     remark-gfm: "npm:^4.0.0"
     shiki: "npm:^1.26.1"
     tailwindcss: "npm:^3.4.1"
+    tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:5.0.2"
   languageName: unknown
   linkType: soft
@@ -3607,6 +3629,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.474.0":
+  version: 0.474.0
+  resolution: "lucide-react@npm:0.474.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 60c88c251b2ed4d1074d24a7041122dc280c48cf68a1a25b23e35a296f49955e0edc22744f278929bc7e48dcd4248bed27d6a8227d5a42fc49fceb134194b310
+  languageName: node
+  linkType: hard
+
 "make-fetch-happen@npm:^14.0.3":
   version: 14.0.3
   resolution: "make-fetch-happen@npm:14.0.3"
@@ -3877,6 +3908,13 @@ __metadata:
   dependencies:
     "@types/mdast": "npm:^4.0.0"
   checksum: 2d3c1af29bf3fe9c20f552ee9685af308002488f3b04b12fa66652c9718f66f41a32f8362aa2d770c3ff464c034860b41715902ada2306bb0a055146cef064d7
+  languageName: node
+  linkType: hard
+
+"memoize-one@npm:^5.0.0":
+  version: 5.2.1
+  resolution: "memoize-one@npm:5.2.1"
+  checksum: fd22dbe9a978a2b4f30d6a491fc02fb90792432ad0dab840dc96c1734d2bd7c9cdeb6a26130ec60507eb43230559523615873168bcbe8fafab221c30b11d54c1
   languageName: node
   linkType: hard
 
@@ -4999,7 +5037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -5028,6 +5066,18 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 900a93d3cdae3acd7d16f642c29a642aea32c2026446151f0778c62ac089d4b8e6c986811076e1ae180a694cedf077d453a11b58ff0a865629a4f82ab558e102
+  languageName: node
+  linkType: hard
+
+"react-calendar-heatmap@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "react-calendar-heatmap@npm:1.9.0"
+  dependencies:
+    memoize-one: "npm:^5.0.0"
+    prop-types: "npm:^15.6.2"
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: e48a4144573d5dc7995bf150d8d0fe2d973ef365a2a44bd90b5362570e7c56ee0bd90bf10f502c1c5aa539d4dec7e641e504fb43f6082887cfea799aadd26590
   languageName: node
   linkType: hard
 
@@ -5983,6 +6033,15 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 6c4032340701a9950865f7ae8ef38578d8d7053f5e10518076e6554a9381fa91bd9c6850193695c141f32b21f979c985db07265a758867bac95de05f7d8aeb39
+  languageName: node
+  linkType: hard
+
+"tailwindcss-animate@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "tailwindcss-animate@npm:1.0.7"
+  peerDependencies:
+    tailwindcss: "*"
+  checksum: ec7dbd1631076b97d66a1fbaaa06e0725fccfa63119221e8d87a997b02dcede98ad88bb1ef6665b968f5d260fcefb10592e0299ca70208d365b37761edf5e19a
   languageName: node
   linkType: hard
 

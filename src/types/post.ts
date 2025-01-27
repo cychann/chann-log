@@ -31,6 +31,7 @@ export type Post = {
   tags?: string;
   url: string;
   readingMinutes: number;
+  type?: string;
 };
 
 export interface HeadingItem {
