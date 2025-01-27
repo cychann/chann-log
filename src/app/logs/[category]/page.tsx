@@ -1,4 +1,4 @@
-import LogList from "@/components/logs/LogList";
+import LogList from "@/components/log/LogList";
 import { LOG_DATA } from "@/config/const";
 import { getLogCount, getLogList } from "@/lib/posts/log";
 import Image from "next/image";

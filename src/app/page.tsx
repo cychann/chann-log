@@ -1,7 +1,7 @@
 import BlogHeatmapWrapper from "@/components/common/heatmap/BlogHeatmapWrapper";
 import Profile from "@/components/common/profile/Profile";
-import RecentArticle from "@/components/articles/RecentArticle";
-import RecentLog from "@/components/logs/RecentLog";
+import RecentArticle from "@/components/article/RecentArticle";
+import RecentLog from "@/components/log/RecentLog";
 
 export default function Home() {
   return (
