@@ -7,8 +7,11 @@ export default function Home() {
   return (
     <div className="mx-auto mt-12 w-full max-w-4xl px-4 flex flex-col gap-12">
       <Profile />
+      {/* @ts-expect-error Async Server Component */}
       <BlogHeatmapWrapper />
+      {/* @ts-expect-error Async Server Component */}
       <RecentArticle />
+      {/* @ts-expect-error Async Server Component */}
       <RecentLog />
     </div>
   );
