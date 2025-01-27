@@ -16,8 +16,7 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
   };
 
   const scrollToComments = () => {
-    const commentsSection = document.getElementById("comments");
-    commentsSection?.scrollIntoView({ behavior: "smooth" });
+    document.querySelector(".giscus")?.scrollIntoView();
   };
 
   const copyCurrentLink = async () => {
