@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { MdDarkMode } from "react-icons/md";
 import { useEffect, useState } from "react";
-import IconButton from "@/components/common/ui/IconButton";
 import KBarButton from "../KBar/KBarButton";
 import NavLink from "./NavLink";
+import { ThemeToggle } from "../common/ui/ThemeToggle";
+import GithubLogo from "../common/ui/GithubLogo";
 
 const NAV_LIST = [
   { name: "Articles", href: "/articles" },
@@ -48,7 +47,7 @@ export default function PostDetailHeader() {
   }, []);
 
   return (
-    <div className="w-full sticky top-0 bg-white z-50 border-b-[1px] shadow-sm">
+    <header className="w-full sticky top-0 bg-background z-10 border-b-[1px] shadow-sm">
       <nav className="max-w-6xl mx-auto py-4 px-4">
         <div className="flex items-center w-full">
           <Link href="/" className="shrink-0">
@@ -83,8 +82,8 @@ export default function PostDetailHeader() {
 
           <div className="flex items-center gap-2 shrink-0">
             <KBarButton />
-            <IconButton icon={<MdDarkMode size={24} />} />
-            <IconButton icon={<FaGithub size={24} />} />
+            <ThemeToggle />
+            <GithubLogo />
           </div>
         </div>
       </nav>
@@ -97,6 +96,6 @@ export default function PostDetailHeader() {
           transform: "translateY(1px)",
         }}
       />
-    </div>
+    </header>
   );
 }

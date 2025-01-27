@@ -1,5 +1,5 @@
 import React from "react";
-import ArticlesPageContainer from "@/components/articles/ArticlesPageContainer";
+import ArticlesPageContainer from "@/components/pages/article/ArticleContent";
 import { getArticleCategoryList, getArticleList } from "@/lib/posts/article";
 
 interface Props {

@@ -38,14 +38,14 @@ export default function BlogHeatmap({ dateData }: Props) {
   };
 
   return (
-    <section className="bg-gray-50 rounded-lg p-6 shadow-sm">
+    <section className="bg-background-secondary rounded-lg p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
-        <div className="font-bold text-lg text-gray-800">
+        <div className="font-bold text-lg text-text-primary">
           {dateDateLen} activities
         </div>
         <div className="relative group">
           <CircleHelp className="w-5 h-5 text-primary hover:text-primary/80 transition-colors" />
-          <div className="absolute hidden group-hover:block right-0 top-full mt-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-md shadow-lg whitespace-nowrap z-10">
+          <div className="absolute hidden group-hover:block right-0 top-full mt-2 px-3 py-2 text-text-primary bg-background text-sm rounded-md shadow-lg whitespace-nowrap z-10">
             Content Statistics
           </div>
         </div>

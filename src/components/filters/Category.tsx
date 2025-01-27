@@ -15,8 +15,8 @@ export default function Category({
   return (
     <Link href={`/articles/${category}`}>
       <li
-        className={` flex items-center gap-1 cursor-pointer px-4 py-2 rounded hover:bg-slate-100 transition-all duration-200  ${
-          selected ? "bg-black text-white" : "text-black"
+        className={` flex items-center gap-1 cursor-pointer px-4 py-2 rounded hover:bg-button-active transition-all duration-200  ${
+          selected ? "bg-foreground text-background" : "text-foreground"
         }`}
       >
         <p>{category}</p>

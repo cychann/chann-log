@@ -15,7 +15,7 @@ export default function PostDateTimeInfo({
     justify === "center" ? "justify-center" : "justify-between";
   return (
     <div
-      className={`w-full flex items-center text-sm text-gray-500 mt-2 ${justifyClass} gap-2`}
+      className={`w-full flex items-center text-sm text-text-tertiary mt-2 ${justifyClass} gap-2`}
     >
       <div className="flex items-center">
         <CiCalendarDate className="mr-1" size={16} />

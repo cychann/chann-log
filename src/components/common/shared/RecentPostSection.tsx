@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
 
 interface ListSectionProps {
   title: string;
@@ -18,25 +19,15 @@ export default function RecentPostSection({
     <section className={`${className}`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h4 className="text-2xl font-bold text-gray-900">{title}</h4>
+          <h4 className="text-2xl font-bold text-text-primary">{title}</h4>
           <Link
             href={link}
-            className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
+            className="text-text-secondary hover:text-text-primary transition-colors duration-200 flex items-center gap-1 group"
           >
-            더보기
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <span className="leading-none group-hover:animate-floating">
+              더보기
+            </span>
+            <ChevronRight className="w-4 h-4 group-hover:animate-floating" />
           </Link>
         </div>
         {children}
