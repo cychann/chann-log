@@ -22,8 +22,12 @@ export class PostService {
 
   public async getList(category?: string): Promise<Post[]> {
     const postPaths = this.getPostPaths(category);
-    return Promise.all(
+    const posts = await Promise.all(
       postPaths.map((postPath) => parseMdx(postPath, this.type))
+    );
+
+    return posts.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }
 
