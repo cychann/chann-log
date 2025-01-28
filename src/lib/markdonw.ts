@@ -1,6 +1,6 @@
 import { HeadingItem } from "@/types/post";
 
-export const parseToc = (content: string): HeadingItem[] => {
+export const parseToc = async (content: string): Promise<HeadingItem[]> => {
   const regex = /^(#|##) (.*$)/gim;
   const headingList = content.match(regex);
   return (

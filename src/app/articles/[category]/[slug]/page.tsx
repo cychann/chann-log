@@ -1,5 +1,6 @@
+import PostDetailSkeleton from "@/components/loading/post/PostDetailSkeleton";
 import PostDetailPage from "@/components/post/PostDetailPage";
-import { getArticleDetail } from "@/lib/posts/article";
+import { Suspense } from "react";
 
 interface Props {
   params: {
@@ -8,10 +9,13 @@ interface Props {
   };
 }
 
-export default async function articleDetailpage({
+export default function articleDetailpage({
   params: { category, slug },
 }: Props) {
-  const post = await getArticleDetail(category, decodeURIComponent(slug));
-
-  return <PostDetailPage post={post} />;
+  return (
+    <Suspense fallback={<PostDetailSkeleton />}>
+      {/* @ts-expect-error Async Server Component */}
+      <PostDetailPage category={category} slug={decodeURIComponent(slug)} />
+    </Suspense>
+  );
 }

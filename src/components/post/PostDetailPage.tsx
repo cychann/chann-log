@@ -1,17 +1,23 @@
 import { parseToc } from "@/lib/markdonw";
-import { Post } from "@/types/post";
 import React from "react";
 import PostHeader from "./PostHeader";
 import TOCSidebar from "./TOCSidebar";
 import PostContent from "./PostContent";
 import Giscus from "./Giscus";
+import { getArticleDetail } from "@/lib/posts/article";
 
 type PostDetailPageProps = {
-  post: Post;
+  category: string;
+  slug: string;
 };
 
-export default function PostDetailPage({ post }: PostDetailPageProps) {
-  const toc = parseToc(post.content);
+export default async function PostDetailPage({
+  category,
+  slug,
+}: PostDetailPageProps) {
+  const post = await getArticleDetail(category, decodeURIComponent(slug));
+
+  const toc = await parseToc(post.content);
 
   return (
     <section className="mx-auto w-full max-w-[750px] my-5">
