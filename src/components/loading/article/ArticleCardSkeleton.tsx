@@ -32,13 +32,3 @@ export function ArticleCardSkeleton() {
     </div>
   );
 }
-
-export function ArticleLoadingSkeleton() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {[...Array(4)].map((_, i) => (
-        <ArticleCardSkeleton key={i} />
-      ))}
-    </div>
-  );
-}

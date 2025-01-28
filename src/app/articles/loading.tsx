@@ -1,4 +1,4 @@
-import { ArticleLoadingSkeleton } from "@/components/loading/ArticleCardSkeleton";
+import { ArticleLoadingSkeleton } from "@/components/loading/article/ArticleLoadingSkeleton";
 import ListPageHeader from "@/components/pages/ListPageHeader";
 
 export default function Loading() {

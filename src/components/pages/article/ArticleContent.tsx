@@ -7,7 +7,7 @@ import {
   getArticleCategoryList,
   getArticleList,
 } from "@/lib/posts/article";
-import { ArticleLoadingSkeleton } from "@/components/loading/ArticleCardSkeleton";
+import { ArticleLoadingSkeleton } from "@/components/loading/article/ArticleLoadingSkeleton";
 
 type ArticleContentProps = {
   category: string;

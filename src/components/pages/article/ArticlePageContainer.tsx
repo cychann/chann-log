@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import ListPageHeader from "../ListPageHeader";
 import ArticleContent from "./ArticleContent";
-import { ArticleLoadingSkeleton } from "@/components/loading/ArticleCardSkeleton";
+import { ArticleLoadingSkeleton } from "@/components/loading/article/ArticleLoadingSkeleton";
 
 type ArticlePageContainerProps = {
   category: string;
