@@ -7,7 +7,6 @@ import {
   getArticleCategoryList,
   getArticleList,
 } from "@/lib/posts/article";
-import { ArticleLoadingSkeleton } from "@/components/loading/article/ArticleLoadingSkeleton";
 
 type ArticleContentProps = {
   category: string;
@@ -29,13 +28,12 @@ export default async function ArticleContent({
   );
   return (
     <>
-      <ArticleLoadingSkeleton />
-      {/* <CategoryList
+      <CategoryList
         categories={categoryList}
         selectedCategory={category}
         categoryPostCounts={categoryPostCounts}
       />
-      <ArticleList posts={filteredPosts} /> */}
+      <ArticleList posts={filteredPosts} />
     </>
   );
 }
