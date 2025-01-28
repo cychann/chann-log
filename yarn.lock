@@ -493,6 +493,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/eslint-plugin-next@npm:^15.1.6":
+  version: 15.1.6
+  resolution: "@next/eslint-plugin-next@npm:15.1.6"
+  dependencies:
+    fast-glob: "npm:3.3.1"
+  checksum: 753babd13e197304eb7a224c08a9a286aee10e316dcf86c49fe655fe9ea16659969bdbe4502429723cdf318e47fba4188ca101a5fc0d91dcad13404e773013a9
+  languageName: node
+  linkType: hard
+
 "@next/swc-darwin-arm64@npm:15.1.2":
   version: 15.1.2
   resolution: "@next/swc-darwin-arm64@npm:15.1.2"
@@ -1957,6 +1966,7 @@ __metadata:
   resolution: "chann-blog@workspace:."
   dependencies:
     "@eslint/eslintrc": "npm:^3"
+    "@next/eslint-plugin-next": "npm:^15.1.6"
     "@radix-ui/react-dropdown-menu": "npm:^2.1.5"
     "@radix-ui/react-slot": "npm:^1.1.1"
     "@radix-ui/react-switch": "npm:^1.1.2"
@@ -1971,6 +1981,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.1.2"
+    eslint-plugin-react-hooks: "npm:^5.1.0"
     glob: "npm:^11.0.0"
     gray-matter: "npm:^4.0.3"
     kbar: "npm:^0.1.0-beta.45"
@@ -2738,7 +2749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:^5.0.0":
+"eslint-plugin-react-hooks@npm:^5.0.0, eslint-plugin-react-hooks@npm:^5.1.0":
   version: 5.1.0
   resolution: "eslint-plugin-react-hooks@npm:5.1.0"
   peerDependencies:

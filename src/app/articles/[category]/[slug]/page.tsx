@@ -8,8 +8,9 @@ interface Props {
   };
 }
 
-export default async function articleDetailpage({ params }: Props) {
-  const { category, slug } = await params;
+export default async function articleDetailpage({
+  params: { category, slug },
+}: Props) {
   const post = await getArticleDetail(category, decodeURIComponent(slug));
 
   return <PostDetailPage post={post} />;
