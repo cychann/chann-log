@@ -1,8 +1,7 @@
-import { LogLoadingSkeleton } from "@/components/loading/log/LogLoadingSkeleton";
 import ListPageHeader from "@/components/pages/ListPageHeader";
 import LogContent from "@/components/pages/log/LogContent";
 
-import React, { Suspense } from "react";
+import React from "react";
 
 export default function logPage() {
   return (
@@ -10,10 +9,8 @@ export default function logPage() {
       title="Log"
       description="작은 배움과 경험들을 간단히 기록하는 공간입니다. 😊"
     >
-      <Suspense fallback={<LogLoadingSkeleton />}>
-        {/* @ts-expect-error Async Server Component */}
-        <LogContent />
-      </Suspense>
+      {/* @ts-expect-error Async Server Component */}
+      <LogContent />
     </ListPageHeader>
   );
 }

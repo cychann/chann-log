@@ -16,7 +16,6 @@ export default async function PostDetailPage({
   slug,
 }: PostDetailPageProps) {
   const post = await getArticleDetail(category, decodeURIComponent(slug));
-
   const toc = await parseToc(post.content);
 
   return (
