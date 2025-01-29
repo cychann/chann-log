@@ -1,16 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getLogCount } from "@/lib/posts/log";
+import { getLogCategoryList, getLogCount } from "@/lib/posts/log";
 import { LOG_DATA } from "@/config/const";
 
-type LogContentProps = {
-  categoryList: string[];
-};
-
-export default function LogContent({ categoryList }: LogContentProps) {
-  const postCounts = categoryList.map((category) => getLogCount(category));
-
+export default async function LogContent() {
+  const categoryList = await getLogCategoryList();
+  const postCounts = await Promise.all(
+    categoryList.map((category) => getLogCount(category))
+  );
   return (
     <div className="space-y-4">
       {categoryList.map((category, index) => (

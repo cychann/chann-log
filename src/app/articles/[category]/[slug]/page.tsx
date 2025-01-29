@@ -1,5 +1,4 @@
 import PostDetailPage from "@/components/post/PostDetailPage";
-import { getArticleDetail } from "@/lib/posts/article";
 
 interface Props {
   params: {
@@ -8,9 +7,11 @@ interface Props {
   };
 }
 
-export default async function articleDetailpage({ params }: Props) {
-  const { category, slug } = await params;
-  const post = await getArticleDetail(category, decodeURIComponent(slug));
-
-  return <PostDetailPage post={post} />;
+export default function articleDetailpage({
+  params: { category, slug },
+}: Props) {
+  return (
+    /* @ts-expect-error Async Server Component */
+    <PostDetailPage category={category} slug={decodeURIComponent(slug)} />
+  );
 }

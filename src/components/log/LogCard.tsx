@@ -13,12 +13,14 @@ export default function LogCard({ post }: LogCardProps) {
   return (
     <Link href={url} className="cursor-pointer">
       <div
-        className="flex flex-col h-full rounded-lg border border-border bg-background-secondary 
-  hover:shadow-xl dark:hover:shadow-none dark:hover:border-primary-400 
-  transition-all duration-200"
+        className="flex flex-col p-4 h-full rounded-lg border border-border bg-background-secondary 
+          hover:shadow-xl dark:hover:shadow-none dark:hover:border-primary-400 
+          transition-all duration-200"
       >
-        <h3 className="font-bold text-lg">{title}</h3>
-        <div className="mt-2">
+        <div className="flex-1">
+          <h3 className="font-bold text-lg">{title}</h3>
+        </div>
+        <div className="mt-auto pt-4 flex flex-col gap-3">
           <Tags tags={tags?.split(",") || []} />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>

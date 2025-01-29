@@ -1,20 +1,25 @@
 import React from "react";
 import CategoryList from "../../filters/CategoryList";
 import ArticleList from "../../article/ArticleList";
-import { Post } from "@/types/post";
-import { filterArticles, getArticleCategoryCounts } from "@/lib/posts/article";
+import {
+  filterArticles,
+  getArticleCategoryCounts,
+  getArticleCategoryList,
+  getArticleList,
+} from "@/lib/posts/article";
 
 type ArticleContentProps = {
   category: string;
-  postList: Post[];
-  categoryList: string[];
 };
 
-export default function ArticleContent({
+export default async function ArticleContent({
   category,
-  postList,
-  categoryList,
 }: ArticleContentProps) {
+  const [postList, categoryList] = await Promise.all([
+    getArticleList(),
+    getArticleCategoryList(),
+  ]);
+
   const categoryPostCounts = getArticleCategoryCounts(postList, categoryList);
 
   const filteredPosts = filterArticles(

@@ -99,7 +99,7 @@ export default {
               color: "#eb5757",
               backgroundColor: "rgba(135,131,120,0.15)",
               fontFamily:
-                'SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace',
+                '"SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace',
               borderRadius: 3,
               padding: "0.2em 0.4em",
               overflowWrap: "break-word",

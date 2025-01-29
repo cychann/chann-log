@@ -31,7 +31,7 @@ export class PostService {
     );
   }
 
-  public getCategoryList(): string[] {
+  public async getCategoryList(): Promise<string[]> {
     const categoryPaths = sync(`${this.basePath}/*`);
     return categoryPaths.map((p) => p.split(path.sep).slice(-1)?.[0]);
   }

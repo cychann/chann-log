@@ -6,8 +6,8 @@ class ArticleService extends PostService {
     super("articles");
   }
 
-  public getCategoryList(): string[] {
-    const categories = super.getCategoryList();
+  public async getCategoryList(): Promise<string[]> {
+    const categories = await super.getCategoryList();
     return ["All", ...categories];
   }
 
