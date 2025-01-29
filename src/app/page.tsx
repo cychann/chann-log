@@ -3,7 +3,6 @@ import Profile from "@/components/common/profile/Profile";
 import RecentArticle from "@/components/article/RecentArticle";
 import RecentLog from "@/components/log/RecentLog";
 import { Suspense } from "react";
-import { ProfileSkeleton } from "@/components/loading/main/ProfileSkeleton";
 import { HeatmapSkeleton } from "@/components/loading/main/HeatmapSkeleton";
 import { RecentArticleSkeleton } from "@/components/loading/main/RecentArticleSkeleton";
 import { RecentLogSkeleton } from "@/components/loading/main/RecentLogSkeleton";
