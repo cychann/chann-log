@@ -12,6 +12,10 @@ export default function articleDetailpage({
 }: Props) {
   return (
     /* @ts-expect-error Async Server Component */
-    <PostDetailPage category={category} slug={decodeURIComponent(slug)} />
+    <PostDetailPage
+      category={category}
+      slug={decodeURIComponent(slug)}
+      type="articles"
+    />
   );
 }

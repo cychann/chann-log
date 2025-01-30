@@ -10,6 +10,10 @@ interface Props {
 export default function logDetailpage({ params: { category, slug } }: Props) {
   return (
     /* @ts-expect-error Async Server Component */
-    <PostDetailPage category={category} slug={decodeURIComponent(slug)} />
+    <PostDetailPage
+      category={category}
+      slug={decodeURIComponent(slug)}
+      type="logs"
+    />
   );
 }

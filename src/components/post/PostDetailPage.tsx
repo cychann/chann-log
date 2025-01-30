@@ -5,17 +5,26 @@ import TOCSidebar from "./TOCSidebar";
 import PostContent from "./PostContent";
 import Giscus from "./Giscus";
 import { getArticleDetail } from "@/lib/posts/article";
+import { getLogDetail } from "@/lib/posts/log";
 
 type PostDetailPageProps = {
   category: string;
   slug: string;
+  type: "articles" | "logs";
 };
+
+const postDetailStrategies = {
+  articles: getArticleDetail,
+  logs: getLogDetail,
+} as const;
 
 export default async function PostDetailPage({
   category,
   slug,
+  type,
 }: PostDetailPageProps) {
-  const post = await getArticleDetail(category, decodeURIComponent(slug));
+  const getDetail = postDetailStrategies[type];
+  const post = await getDetail(category, decodeURIComponent(slug));
   const toc = await parseToc(post.content);
 
   return (
