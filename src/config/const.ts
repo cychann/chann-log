@@ -45,3 +45,11 @@ export const LOG_DATA: LogData = {
     desc: "알고리즘 문제 풀이와 핵심 개념",
   },
 };
+
+export const NAV_LIST = [
+  { name: "Home", href: "/" },
+  { name: "Article", href: "/articles" },
+  { name: "Log", href: "/logs" },
+];
+
+export const HEADER_HEIGHT = 73;

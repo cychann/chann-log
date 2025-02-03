@@ -29,15 +29,17 @@ export function SearchResult({ item, active }: SearchResultProps) {
       }`}
       onClick={handleClick}
     >
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium dark:text-white">{item.name}</span>
+      <div className="flex flex-col gap-1 min-w-0 flex-1">
+        <span className="text-sm font-medium dark:text-white truncate">
+          {item.name}
+        </span>
         {item.subtitle && (
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
             {item.subtitle}
           </span>
         )}
       </div>
-      <div className="flex items-center gap-2 ml-4">
+      <div className="flex items-center gap-2 ml-4 flex-shrink-0">
         {item.metadata?.category && (
           <span
             className={`text-xs rounded-md px-2 py-0.5 ${

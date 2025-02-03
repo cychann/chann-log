@@ -17,7 +17,7 @@ export default function RecentPostSection({
 }: ListSectionProps) {
   return (
     <section className={`${className}`}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h4 className="text-2xl font-bold text-text-primary">{title}</h4>
           <Link

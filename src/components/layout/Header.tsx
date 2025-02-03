@@ -1,16 +1,33 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import PostDetailHeader from "./PostDetailHeader";
-import DefaultHeader from "./DefaultHeader";
+import PostDetailHeader from "./Header/PostDetailHeader";
+import DefaultHeader from "./Header/DefaultHeader";
+
+const POST_DETAIL_PATTERN = /\/(articles|logs)\/[^/]+\/[^/]+$/;
+
+type HeaderType = {
+  pattern: RegExp;
+  Component: React.ComponentType;
+};
+
+const HEADER_CONFIGS: HeaderType[] = [
+  {
+    pattern: POST_DETAIL_PATTERN,
+    Component: PostDetailHeader,
+  },
+  {
+    pattern: /.*/,
+    Component: DefaultHeader,
+  },
+];
 
 export default function Header() {
   const pathname = usePathname();
-  const isPostDetail = /\/(articles|logs)\/[^/]+\/[^/]+$/.test(pathname);
 
-  if (isPostDetail) {
-    return <PostDetailHeader />;
-  }
+  const { Component } =
+    HEADER_CONFIGS.find(({ pattern }) => pattern.test(pathname)) ??
+    HEADER_CONFIGS[HEADER_CONFIGS.length - 1];
 
-  return <DefaultHeader />;
+  return <Component />;
 }

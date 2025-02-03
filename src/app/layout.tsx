@@ -4,6 +4,7 @@ import "@/config/global.css";
 import Header from "@/components/layout/Header";
 import KBarContainer from "@/components/KBar/KBarContainer";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "최유찬 개발 블로그",
@@ -32,6 +33,7 @@ export default async function RootLayout({
           <KBarContainer>
             <Header />
             <main className="max-w-6xl mx-auto">{children}</main>
+            <Footer />
           </KBarContainer>
         </ThemeProvider>
       </body>
