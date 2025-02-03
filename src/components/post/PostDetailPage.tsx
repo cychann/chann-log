@@ -6,6 +6,7 @@ import PostContent from "./PostContent";
 import Giscus from "./Giscus";
 import { getArticleDetail } from "@/lib/posts/article";
 import { getLogDetail } from "@/lib/posts/log";
+import TOCTopbar from "./TOCTopbar";
 
 type PostDetailPageProps = {
   category: string;
@@ -28,7 +29,7 @@ export default async function PostDetailPage({
   const toc = await parseToc(post.content);
 
   return (
-    <section className="mx-auto w-full max-w-[750px] my-5">
+    <section className="mx-auto w-full max-w-[750px] my-5 px-4">
       <PostHeader
         title={post.title}
         date={post.date}
@@ -36,6 +37,7 @@ export default async function PostDetailPage({
         readingMinutes={post.readingMinutes}
       />
       <article className="relative">
+        <TOCTopbar toc={toc} />
         <PostContent content={post.content} />
         <TOCSidebar toc={toc} />
       </article>
