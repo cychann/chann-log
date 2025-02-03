@@ -8,10 +8,8 @@ import {
   KBarAnimator,
   KBarSearch,
   useMatches,
-  NO_GROUP,
   KBarResults,
 } from "kbar";
-import { useRouter } from "next/navigation";
 import { SearchResult } from "./SearchResult";
 
 interface KBarProviderProps {

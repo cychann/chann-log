@@ -28,5 +28,5 @@ export default function Giscus() {
     ref.current.appendChild(scriptElem);
   }, []);
 
-  return <section ref={ref} />;
+  return <section ref={ref} className="mt-20 border-t py-10" />;
 }

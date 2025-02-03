@@ -12,7 +12,7 @@ export default function CategoryList({
   categoryPostCounts,
 }: CategoryListProps) {
   return (
-    <ul className="flex items-center gap-2 mb-8">
+    <ul className="flex flex-wrap items-center gap-2 mb-8">
       {categories.map((category) => (
         <Category
           key={category}
