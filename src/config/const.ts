@@ -47,6 +47,7 @@ export const LOG_DATA: LogData = {
 };
 
 export const NAV_LIST = [
+  { name: "Home", href: "/" },
   { name: "Article", href: "/articles" },
   { name: "Log", href: "/logs" },
 ];
