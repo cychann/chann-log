@@ -7,8 +7,9 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "최유찬 개발 블로그",
-  description: "개발 지식과 경험 내용을 기록합니다",
+  title: "Yoochan's Dev Blog",
+  description:
+    "프론트엔드 개발자 최유찬의 기술 블로그입니다. 개발과 관련한 기술적 인사이트를 공유합니다.",
 };
 
 export default async function RootLayout({
