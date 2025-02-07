@@ -1,11 +1,12 @@
-import { Post } from "@/types/post";
 import React from "react";
 import ArticleCard from "./ArticleCard";
-type Props = {
-  posts: Post[];
+import { ArticlePreview } from "@/types/post";
+
+type ArticleListProps = {
+  posts: ArticlePreview[];
 };
 
-export default function ArticleList({ posts }: Props) {
+export default function ArticleList({ posts }: ArticleListProps) {
   return (
     <section>
       <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">

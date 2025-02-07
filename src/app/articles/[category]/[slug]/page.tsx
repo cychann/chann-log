@@ -1,6 +1,7 @@
 import PostDetailPage from "@/components/post/PostDetailPage";
 import { parseToc } from "@/lib/markdonw";
 import { getArticleDetail } from "@/lib/posts/article";
+import { ArticlePost } from "@/types/post";
 import { Metadata } from "next";
 
 type ArticleDetailPageProps = {
@@ -34,8 +35,5 @@ export default async function articleDetailpage({
   const post = await getArticleDetail(category, decodeURIComponent(slug));
   const toc = await parseToc(post.content);
 
-  return (
-    /* @ts-expect-error Async Server Component */
-    <PostDetailPage post={post} toc={toc} />
-  );
+  return <PostDetailPage<ArticlePost> post={post} toc={toc} />;
 }

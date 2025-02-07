@@ -5,21 +5,17 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import { CircleHelp } from "lucide-react";
 import Link from "next/link";
+import { PostHeatMap } from "@/types/post";
 
-interface Props {
+type BlogHeatmapProps = {
   dateData: Array<{
     date: string;
     count: number;
-    posts?: Array<{
-      title: string;
-      url: string;
-      category: string;
-      type: string;
-    }>;
+    posts?: PostHeatMap[];
   }>;
-}
+};
 
-export default function BlogHeatmap({ dateData }: Props) {
+export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const dateDateLen = dateData.length;
   const endDate = new Date();

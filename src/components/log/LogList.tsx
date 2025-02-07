@@ -1,9 +1,9 @@
-import { Post } from "@/types/post";
 import React from "react";
 import LogCard from "./LogCard";
+import { LogPreview } from "@/types/post";
 
 type LogListProps = {
-  postList: Post[];
+  postList: LogPreview[];
 };
 
 export default function LogList({ postList }: LogListProps) {

@@ -2,12 +2,12 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
-interface ListSectionProps {
+type ListSectionProps = {
   title: string;
   link: string;
   children: ReactNode;
   className?: string;
-}
+};
 
 export default function RecentPostSection({
   title,

@@ -12,13 +12,13 @@ import {
 import { Dot, LucideIcon, Moon, Sun, Monitor } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface ThemeItemProps {
+type ThemeItemProps = {
   title: "light" | "dark" | "system";
   label: string;
   Icon: LucideIcon;
   currentTheme: string | undefined;
   onSelect: (theme: string) => void;
-}
+};
 
 const ThemeItem = ({
   title,

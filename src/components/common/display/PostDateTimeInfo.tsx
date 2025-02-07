@@ -1,10 +1,10 @@
 import { CiCalendarDate, CiClock2 } from "react-icons/ci";
 
-interface PostDateTimeInfoProps {
+type PostDateTimeInfoProps = {
   date: string;
   readingMinutes: number;
   justify?: "between" | "center";
-}
+};
 
 export default function PostDateTimeInfo({
   date,

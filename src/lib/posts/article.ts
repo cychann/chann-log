@@ -30,12 +30,12 @@ export const getArticleCount = async (category?: string): Promise<number> => {
   return posts.length;
 };
 
-export const filterArticles = (posts: ArticlePost[], category?: string) => {
+export const filterArticles = (posts: ArticlePreview[], category?: string) => {
   return filterByCategory(posts, category);
 };
 
 export const getArticleCategoryCounts = (
-  posts: ArticlePost[],
+  posts: ArticlePreview[],
   categories: string[]
 ) => {
   return getCategoryCounts(posts, categories);

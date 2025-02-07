@@ -4,10 +4,10 @@ import { ExtendedAction } from "@/types/Kbar";
 import { useKBar } from "kbar";
 import { useRouter } from "next/navigation";
 
-interface SearchResultProps {
+type SearchResultProps = {
   item: ExtendedAction;
   active: boolean;
-}
+};
 
 export function SearchResult({ item, active }: SearchResultProps) {
   const router = useRouter();

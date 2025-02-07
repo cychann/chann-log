@@ -1,14 +1,14 @@
 import PostDateTimeInfo from "@/components/common/display/PostDateTimeInfo";
 import Tags from "@/components/common/display/Tags";
-import { Post } from "@/types/post";
+import { ArticlePreview } from "@/types/post";
 import Image from "next/image";
 import Link from "next/link";
 
-type Props = {
-  post: Post;
+type ArticleCardProps = {
+  post: ArticlePreview;
 };
 
-export default function ArticleCard({ post }: Props) {
+export default function ArticleCard({ post }: ArticleCardProps) {
   const { url, thumbnail, title, description, date, tags, readingMinutes } =
     post;
 
@@ -37,7 +37,7 @@ transition-all duration-200"
             <p className="text-text-secondary">{description}</p>
           </div>
           <div className="mt-auto pt-4 flex flex-col gap-3">
-            <Tags tags={post.tags?.split(",") || []} />
+            <Tags tags={tags?.split(",") || []} />
             <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
           </div>
         </div>
