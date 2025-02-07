@@ -63,3 +63,8 @@ export type PostMapping = {
   articles: ArticlePost;
   logs: LogPost;
 };
+
+export type PreviewMapping = {
+  articles: ArticlePreview;
+  logs: LogPreview;
+};

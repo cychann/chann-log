@@ -1,7 +1,10 @@
 import { ExtendedAction } from "@/types/Kbar";
-import { Post } from "@/types/post";
+import { PreviewMapping } from "@/types/post";
 
-export function createKbarAction(post: Post, section: string): ExtendedAction {
+export function createKbarAction<T extends keyof PreviewMapping>(
+  post: PreviewMapping[T],
+  section: string
+): ExtendedAction {
   return {
     id: post.url,
     name: post.title,

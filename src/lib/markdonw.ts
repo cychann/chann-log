@@ -1,4 +1,4 @@
-import { HeadingItem } from "@/types/post";
+import { HeadingItem } from "@/types/TOC";
 
 export const parseToc = async (content: string): Promise<HeadingItem[]> => {
   const regex = /^(#|##) (.*$)/gim;
