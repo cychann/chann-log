@@ -9,8 +9,10 @@ export default function PostDetailHeader() {
   const navigationWithTitle = (
     <div className="relative h-8 overflow-hidden">
       <div
-        className={`absolute w-full transition-transform duration-300 ease-in-out ${
-          isScrolled ? "-translate-y-full" : "translate-y-0"
+        className={`transition-all duration-300 ease-in-out ${
+          isScrolled
+            ? "opacity-0 transform -translate-y-full"
+            : "opacity-100 transform translate-y-0"
         }`}
       >
         <div className="flex gap-4">
@@ -20,12 +22,13 @@ export default function PostDetailHeader() {
         </div>
       </div>
 
+      {/* Post Title */}
       <div
-        className={`absolute w-full transition-transform duration-300 ease-in-out ${
-          isScrolled ? "translate-y-0" : "translate-y-full"
+        className={`transform transition-all duration-300 ease-in-out ${
+          isScrolled ? "opacity-100 -translate-y-7" : "opacity-0 translate-y-2"
         }`}
       >
-        <p className="text-lg font-medium whitespace-nowrap overflow-hidden text-ellipsis text-primary">
+        <p className="text-lg font-semibold whitespace-nowrap overflow-hidden text-ellipsis text-primary">
           {postTitle}
         </p>
       </div>
