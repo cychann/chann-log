@@ -1,33 +1,49 @@
-import { Post } from "@/types/post";
-import { PostService } from "./base";
+import { ArticlePost, ArticlePreview } from "@/types/post";
+import {
+  filterByCategory,
+  getCategoryCounts,
+  getCategoryList,
+  getPostDetail,
+  getPostList,
+} from "@/lib/posts/utils";
+import { ARTICLES_PATH } from "./path";
 
-class ArticleService extends PostService {
-  constructor() {
-    super("articles");
-  }
+export const getArticleList = (
+  category?: string
+): Promise<ArticlePreview[]> => {
+  return getPostList(ARTICLES_PATH, "articles", category);
+};
 
-  public async getCategoryList(): Promise<string[]> {
-    const categories = await super.getCategoryList();
-    return ["All", ...categories];
-  }
+export const getArticleDetail = (
+  category: string,
+  slug: string
+): Promise<ArticlePost> => {
+  return getPostDetail(ARTICLES_PATH, "articles", category, slug);
+};
 
-  public async getLatestArticles(limit: number): Promise<Post[]> {
-    const posts = await this.getList();
-    return posts.slice(0, limit);
-  }
-}
+export const getArticleCategoryList = () => {
+  return getCategoryList(ARTICLES_PATH, true);
+};
 
-export const articleService = new ArticleService();
-export const getArticleList = (category?: string) =>
-  articleService.getList(category);
-export const getLatestArticles = (limit: number) =>
-  articleService.getLatestArticles(limit);
-export const getArticleDetail = (category: string, slug: string) =>
-  articleService.getDetail(category, slug);
-export const getArticleCategoryList = () => articleService.getCategoryList();
-export const getArticleCount = (category?: string) =>
-  articleService.getCount(category);
-export const filterArticles = (posts: Post[], category?: string) =>
-  articleService.filterByCategory(posts, category);
-export const getArticleCategoryCounts = (posts: Post[], categories: string[]) =>
-  articleService.getCategoryCounts(posts, categories);
+export const getArticleCount = async (category?: string): Promise<number> => {
+  const posts = await getArticleList(category);
+  return posts.length;
+};
+
+export const filterArticles = (posts: ArticlePost[], category?: string) => {
+  return filterByCategory(posts, category);
+};
+
+export const getArticleCategoryCounts = (
+  posts: ArticlePost[],
+  categories: string[]
+) => {
+  return getCategoryCounts(posts, categories);
+};
+
+export const getLatestArticles = async (
+  limit: number
+): Promise<ArticlePreview[]> => {
+  const posts = await getArticleList();
+  return posts.slice(0, limit);
+};

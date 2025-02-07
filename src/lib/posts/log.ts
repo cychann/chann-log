@@ -1,26 +1,45 @@
-import { Post } from "@/types/post";
-import { PostService } from "./base";
+import { LogPost, LogPreview } from "@/types/post";
+import {
+  getPostList,
+  getPostDetail,
+  getCategoryList,
+  filterByCategory,
+  getCategoryCounts,
+} from "@/lib/posts/utils";
+import { LOGS_PATH } from "./path";
 
-class LogService extends PostService {
-  constructor() {
-    super("logs");
-  }
+export const getLogList = (category?: string): Promise<LogPreview[]> => {
+  return getPostList(LOGS_PATH, "logs", category);
+};
 
-  public async getLatestLogs(limit: number): Promise<Post[]> {
-    const posts = await this.getList();
-    return posts.slice(0, limit);
-  }
-}
+export const getLogDetail = (
+  category: string,
+  slug: string
+): Promise<LogPost> => {
+  return getPostDetail(LOGS_PATH, "logs", category, slug);
+};
 
-export const logService = new LogService();
+export const getLogCategoryList = () => {
+  return getCategoryList(LOGS_PATH);
+};
 
-export const getLogList = (category?: string) => logService.getList(category);
-export const getLatestLogs = (limit: number) => logService.getLatestLogs(limit);
-export const getLogDetail = (category: string, slug: string) =>
-  logService.getDetail(category, slug);
-export const getLogCategoryList = () => logService.getCategoryList();
-export const getLogCount = (category?: string) => logService.getCount(category);
-export const filterLogs = (posts: Post[], category?: string) =>
-  logService.filterByCategory(posts, category);
-export const getLogCategoryCounts = (posts: Post[], categories: string[]) =>
-  logService.getCategoryCounts(posts, categories);
+export const getLogCount = async (category?: string): Promise<number> => {
+  const posts = await getLogList(category);
+  return posts.length;
+};
+
+export const filterLogs = (posts: LogPost[], category?: string) => {
+  return filterByCategory(posts, category);
+};
+
+export const getLogCategoryCounts = (
+  posts: LogPost[],
+  categories: string[]
+) => {
+  return getCategoryCounts(posts, categories);
+};
+
+export const getLatestLogs = async (limit: number): Promise<LogPreview[]> => {
+  const posts = await getLogList();
+  return posts.slice(0, limit);
+};
