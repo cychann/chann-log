@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { NAV_LIST } from "@/config/const";
 import NavLink from "./NavLink";
 import HeaderLogo from "./HeaderLogo";
@@ -8,10 +8,10 @@ import HeaderActions from "./HeaderActions";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
-interface BaseHeaderProps {
-  navigationSlot?: React.ReactNode;
-  children?: React.ReactNode;
-}
+type BaseHeaderProps = {
+  navigationSlot?: ReactNode;
+  children?: ReactNode;
+};
 
 export default function BaseHeader({
   navigationSlot,

@@ -12,10 +12,10 @@ import {
 } from "kbar";
 import { SearchResult } from "./SearchResult";
 
-interface KBarProviderProps {
+type KBarProviderProps = {
   children: React.ReactNode;
   actions: ExtendedAction[];
-}
+};
 
 export function KBarWrapper({ children, actions }: KBarProviderProps) {
   return (

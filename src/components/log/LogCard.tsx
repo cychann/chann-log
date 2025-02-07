@@ -1,11 +1,11 @@
-import { Post } from "@/types/post";
+import { LogPreview } from "@/types/post";
 import React from "react";
 import Tags from "@/components/common/display/Tags";
 import PostDateTimeInfo from "@/components/common/display/PostDateTimeInfo";
 import Link from "next/link";
 
 type LogCardProps = {
-  post: Post;
+  post: LogPreview;
 };
 
 export default function LogCard({ post }: LogCardProps) {

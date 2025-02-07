@@ -1,7 +1,7 @@
 "use client";
 
 import { useHeadingsObserver } from "@/hooks/useHeadingsObserver";
-import { HeadingItem } from "@/types/post";
+import { HeadingItem } from "@/types/TOC";
 import { ChevronUp, MessageSquare, Share2 } from "lucide-react";
 import Link from "next/link";
 

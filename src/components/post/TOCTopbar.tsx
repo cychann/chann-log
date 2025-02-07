@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { HeadingItem } from "@/types/post";
+import { HeadingItem } from "@/types/TOC";
 import { ArrowRight } from "lucide-react";
 
 type TOCTopbarProps = {

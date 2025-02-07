@@ -1,13 +1,13 @@
 import React from "react";
 import PostDateTimeInfo from "@/components/common/display/PostDateTimeInfo";
-import { PostHeaderInfo } from "@/types/post";
+import { PostHeader } from "@/types/post";
 
 export default function PostHeader({
   title,
   date,
   category,
   readingMinutes,
-}: PostHeaderInfo) {
+}: PostHeader) {
   return (
     <section className="flex flex-col items-center gap-2 mt-14 pb-4 border-b ">
       <h1 id="post-title" className="font-extrabold text-3xl">

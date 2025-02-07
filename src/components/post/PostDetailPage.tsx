@@ -1,21 +1,20 @@
-import { parseToc } from "@/lib/markdonw";
 import React from "react";
 import PostHeader from "./PostHeader";
 import TOCSidebar from "./TOCSidebar";
 import PostContent from "./PostContent";
 import Giscus from "./Giscus";
 import TOCTopbar from "./TOCTopbar";
-import { HeadingItem, Post } from "@/types/post";
+import { HeadingItem } from "@/types/TOC";
+import { ArticlePost, LogPost } from "@/types/post";
 
-type PostDetailPageProps = {
-  post: Post;
+type PostDetailPageProps<T extends ArticlePost | LogPost> = {
+  post: T;
   toc: HeadingItem[];
 };
-
-export default async function PostDetailPage({
+export default function PostDetailPage<T extends ArticlePost | LogPost>({
   post,
   toc,
-}: PostDetailPageProps) {
+}: PostDetailPageProps<T>) {
   return (
     <section className="mx-auto w-full max-w-[750px] my-5 px-4">
       <PostHeader
