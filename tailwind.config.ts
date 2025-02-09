@@ -133,9 +133,18 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-4px)" },
         },
+        fadeIn: {
+          from: {
+            opacity: "0",
+          },
+          to: {
+            opacity: "1",
+          },
+        },
       },
       animation: {
         floating: "floating 1s ease-in-out infinite",
+        fadeIn: "fadeIn 0.5s ease-out forwards",
       },
     },
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CalendarHeatmap, {
   ReactCalendarHeatmapValue,
 } from "react-calendar-heatmap";
@@ -19,6 +19,7 @@ type BlogHeatmapProps = {
 
 export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const dateDateLen = dateData.length;
   const endDate = new Date();
   const startDate = new Date(
@@ -30,21 +31,35 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
   const handleDateClick = (
     value: ReactCalendarHeatmapValue<string> | undefined
   ) => {
-    if (!value || !value.count) {
+    setIsVisible(false);
+
+    setTimeout(() => {
       setSelectedDate(null);
-      return;
-    }
-    setSelectedDate(value.date);
+
+      if (!value || !value.count) {
+        setSelectedDate(null);
+      } else {
+        setSelectedDate(value.date);
+        setIsVisible(true);
+      }
+    }, 300);
   };
+
+  useEffect(() => {
+    if (selectedDate) {
+      setIsVisible(true);
+    }
+  }, [selectedDate]);
+
   return (
-    <section className="bg-background-secondary rounded-lg p-6 shadow-sm border border-border">
-      <div className="flex justify-between items-center mb-6">
-        <div className="font-bold text-lg text-text-primary">
+    <section className="rounded-lg border border-border bg-background-secondary p-6 shadow-sm">
+      <div className="mb-6 flex items-center justify-between">
+        <div className="text-lg font-bold text-text-primary">
           {dateDateLen} activities
         </div>
         <div className="relative group">
-          <CircleHelp className="w-5 h-5 text-primary hover:text-primary/80 transition-colors" />
-          <div className="absolute hidden group-hover:block right-0 top-full mt-2 px-3 py-2 text-text-primary bg-background text-sm rounded-md shadow-lg whitespace-nowrap z-10">
+          <CircleHelp className="h-5 w-5 text-primary transition-colors hover:text-primary/80" />
+          <div className="absolute right-0 top-full z-10 mt-2 hidden rounded-md bg-background px-3 py-2 text-sm text-text-primary shadow-lg whitespace-nowrap group-hover:block">
             Content Statistics
           </div>
         </div>
@@ -62,35 +77,44 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
           return `color-scale-${value.count}`;
         }}
       />
-      <div className="flex items-center justify-end gap-3 mt-6">
+
+      <div className="mt-6 flex items-center justify-end gap-3">
         <span className="text-sm text-gray-500">Less</span>
         <div className="flex gap-1">
-          <div className="w-3 h-3 bg-gray-100 rounded-sm"></div>
-          <div className="w-3 h-3 rounded-sm bg-primary-200"></div>
-          <div className="w-3 h-3 rounded-sm bg-primary-400"></div>
-          <div className="w-3 h-3 rounded-sm bg-primary-600"></div>
-          <div className="w-3 h-3 rounded-sm bg-primary-800"></div>
+          <div className="h-3 w-3 rounded-sm dark:bg-[#2d2d2d] bg-[#f0f0f0]"></div>
+          <div className="h-3 w-3 rounded-sm dark:bg-primary-800 bg-primary-200"></div>
+          <div className="h-3 w-3 rounded-sm dark:bg-primary-600 bg-primary-400"></div>
+          <div className="h-3 w-3 rounded-sm dark:bg-primary-400 bg-primary-600"></div>
+          <div className="h-3 w-3 rounded-sm dark:bg-primary-200 bg-primary-800"></div>
         </div>
         <span className="text-sm text-gray-500">More</span>
       </div>
 
-      {selectedDate && (
-        <div className="mt-6 p-4 bg-white rounded-lg shadow-sm border border-gray-100 animate-in slide-in-from-top fade-in duration-300">
-          <h3 className="font-medium text-gray-800 mb-4">{selectedDate}</h3>
-          <ul className="space-y-3">
-            {dateData
-              .find((data) => data.date === selectedDate)
-              ?.posts?.map((post, idx) => (
-                <li key={idx}>
+      <div
+        className={`mt-6 space-y-4 transition-opacity duration-300 ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {selectedDate && (
+          <>
+            <h3 className="font-medium">{selectedDate}</h3>
+            <div className="space-y-3">
+              {dateData
+                .find((data) => data.date === selectedDate)
+                ?.posts?.map((post, idx) => (
                   <Link
                     href={post.url}
-                    className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-all"
+                    key={idx}
+                    className="rounded-lg border border-border bg-background p-4 shadow-sm group flex items-center justify-between opacity-0 animate-fadeIn"
+                    style={{
+                      animationDelay: `${idx * 150}ms`,
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">
                         ({post.type})
                       </span>
-                      <h4 className="text-sm text-gray-700 group-hover:text-primary transition-colors">
+                      <h4 className="text-sm text-inverse transition-colors group-hover:text-primary">
                         {post.title}
                       </h4>
                     </div>
@@ -98,11 +122,11 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
                       {post.category}
                     </div>
                   </Link>
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
+                ))}
+            </div>
+          </>
+        )}
+      </div>
     </section>
   );
 }
