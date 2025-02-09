@@ -1,3 +1,5 @@
+"use client";
+
 import { NAV_LIST } from "@/config/const";
 import { usePostScroll } from "@/hooks/usePostScroll";
 import NavLink from "./NavLink";
