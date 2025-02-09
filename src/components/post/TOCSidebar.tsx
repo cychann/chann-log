@@ -2,7 +2,7 @@
 
 import { useHeadingsObserver } from "@/hooks/useHeadingsObserver";
 import { HeadingItem } from "@/types/TOC";
-import { ChevronUp, MessageSquare, Share2 } from "lucide-react";
+import { ArrowUpToLine, MessageSquare, Share2 } from "lucide-react";
 import Link from "next/link";
 
 type TOCSidebarProps = {
@@ -76,28 +76,24 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
         <div className="flex items-center justify-between rounded-lg border bg-background px-6 py-3 shadow-sm backdrop-blur-sm">
           <button
             onClick={scrollToTop}
-            className="group flex items-center gap-2 text-sm text-text-tertiary transition-colors hover:text-primary"
+            className="group p-2 text-text-tertiary transition-colors hover:text-primary"
             aria-label="Scroll to top"
           >
-            <ChevronUp className="h-4 w-4" />
-            <span>Top</span>
+            <ArrowUpToLine className="h-5 w-5" />
           </button>
           <button
             onClick={scrollToComments}
-            className="group flex items-center gap-2 text-sm text-text-tertiary transition-colors hover:text-primary"
+            className="group p-2 text-text-tertiary transition-colors hover:text-primary"
             aria-label="Scroll to comments"
           >
-            <MessageSquare className="h-4 w-4" />
-            <span>Comments</span>
+            <MessageSquare className="h-5 w-5" />
           </button>
           <button
             onClick={copyCurrentLink}
-            className="group flex items-center gap-2 text-sm text-text-tertiary transition-colors hover:text-primary"
+            className="group p-2 text-text-tertiary transition-colors hover:text-primary"
             aria-label="Copy page link"
           >
-            <Share2 className="h-4 w-4" />
-
-            <span>Share</span>
+            <Share2 className="h-5 w-5" />
           </button>
         </div>
       </div>
