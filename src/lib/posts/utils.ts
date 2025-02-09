@@ -1,6 +1,6 @@
 import { sync } from "glob";
 import path from "path";
-import { BasePost, PostType, PostMapping } from "@/types/post";
+import { BasePost, PostType, PostMapping, PostHeatMap } from "@/types/post";
 import { parseMdx } from "./mdx";
 import { POSTS_PATH } from "./path";
 
@@ -72,12 +72,7 @@ export const getPostsByDate = async (): Promise<
   Array<{
     date: string;
     count: number;
-    posts: Array<{
-      title: string;
-      url: string;
-      category: string;
-      type: string;
-    }>;
+    posts: PostHeatMap[];
   }>
 > => {
   const allPaths = sync(`${POSTS_PATH}/**/**/*.mdx`);
@@ -111,7 +106,7 @@ export const getPostsByDate = async (): Promise<
       type: post.type,
     });
     return acc;
-  }, {} as Record<string, { date: string; count: number; posts: Array<{ title: string; url: string; category: string; type: string }> }>);
+  }, {} as Record<string, { date: string; count: number; posts: PostHeatMap[] }>);
 
   return Object.values(groupedByDate).sort((a, b) =>
     a.date.localeCompare(b.date)

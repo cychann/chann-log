@@ -5,15 +5,17 @@ import { LogPost } from "@/types/post";
 import { Metadata } from "next";
 
 type LogDetailPageProps = {
-  params: {
+  params: Promise<{
     category: string;
     slug: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({
-  params: { category, slug },
+  params,
 }: LogDetailPageProps): Promise<Metadata> {
+  const { category, slug } = await params;
+
   const post = await getLogDetail(category, decodeURIComponent(slug));
 
   return {
@@ -26,9 +28,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function logDetailpage({
-  params: { category, slug },
-}: LogDetailPageProps) {
+export default async function logDetailpage({ params }: LogDetailPageProps) {
+  const { category, slug } = await params;
+
   const post = await getLogDetail(category, decodeURIComponent(slug));
   const toc = await parseToc(post.content);
 

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 export const useHeadingsObserver = (query: string) => {
-  const observer = useRef<IntersectionObserver>();
+  const observer = useRef<IntersectionObserver | null>(null);
   const [activeIdList, setActiveIdList] = useState<string[]>([]);
-  const [tempId, setTempId] = useState("");
+  const [tempId, setTempId] = useState<string>("");
 
   useEffect(() => {
     const scrollMarginOption = { rootMargin: "-32px 0px -80px 0px" };

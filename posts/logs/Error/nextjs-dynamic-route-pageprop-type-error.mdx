@@ -1,0 +1,93 @@
+---
+title: Next.js 동적 라우트에서 PageProps 타입 에러 해결하기
+description: Next.js App Router에서 동적 라우트 구현 시 발생하는 PageProps 타입 에러를 분석하고 해결하는 방법
+date: 2025-02-07
+tags: Next.js, Type
+---
+
+## 문제 상황
+
+Next.js 빌드 하는 과정에서 아래와 같은 오류가 발생했다.
+
+에러가 발생한 파일은 아래 코드이다.
+
+```tsx
+// app/articles/[category]/[slug]/page.tsx
+
+import PostDetailPage from "@/components/post/PostDetailPage";
+import { parseToc } from "@/lib/markdonw";
+import { getArticleDetail } from "@/lib/posts/article";
+import { ArticlePost } from "@/types/post";
+import { Metadata } from "next";
+
+type ArticleDetailPageProps = {
+  params: {
+    category: string;
+    slug: string;
+  };
+};
+
+export default async function articleDetailpage({
+  params: { category, slug },
+}: ArticleDetailPageProps) {
+  const post = await getArticleDetail(category, decodeURIComponent(slug));
+  const toc = await parseToc(post.content);
+
+  return <PostDetailPage<ArticlePost> post={post} toc={toc} />;
+}
+```
+
+```bash
+src/app/articles/[category]/page.tsx
+Type error: Type 'ArticleCategoryPageProps' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ category: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+```
+
+## 원인 분석
+
+읽어보면, 페이지 컴포넌트의 props 타입이 Next.js가 기대하는 `PageProps` 타입과 일치하지 않다는 것이다.
+
+`params` 객체가 **Promise** 타입이어야 하는데, 일반 객체로 설정되어 있어서 발생하는 문제이다.
+
+> 왜 이런 문제가 발생할까?
+
+Next.js의 App Router에서 페이지 컴포넌트는 기본적으로 **비동기(async) 컴포넌트**이다. 따라서 페이지 컴포넌트에 전달하는 params로 **Promise** 타입이어야 하는 것이다.
+
+## 해결 방법
+
+`params` 타입을 Promise로 감싸서 정의해주면 해결된다.
+
+```tsx
+type ArticleDetailPageProps = {
+  params: Promise<{
+    category: string;
+    slug: string;
+  }>;
+};
+```
+
+이렇게 수정을 했다면 기존 코드에서 한 가지 더 수정해야 할 부분이 있다.
+
+바로 props를 받는 파라미터 부분인데,
+
+```tsx
+export default async function articleDetailpage({
+  params: { category, slug },
+}: ArticleDetailPageProps);
+```
+
+Promise로 반환하는 타입이기 때문에 이렇게 구조 분해 할당의 방식으로 받는 것이 아니라, 아래와 같이 await로 params를 받도록 처리해줘야 한다.
+
+```tsx
+export default async function articleDetailpage({
+  params,
+}: ArticleDetailPageProps) {
+  const { category, slug } = await params;
+  // ....
+}
+```
+
+## Reference
+
+- https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes

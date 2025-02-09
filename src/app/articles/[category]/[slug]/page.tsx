@@ -5,15 +5,17 @@ import { ArticlePost } from "@/types/post";
 import { Metadata } from "next";
 
 type ArticleDetailPageProps = {
-  params: {
+  params: Promise<{
     category: string;
     slug: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({
-  params: { category, slug },
+  params,
 }: ArticleDetailPageProps): Promise<Metadata> {
+  const { category, slug } = await params;
+
   const post = await getArticleDetail(category, decodeURIComponent(slug));
 
   const imageURL = `/${post.thumbnail}`;
@@ -30,8 +32,10 @@ export async function generateMetadata({
 }
 
 export default async function articleDetailpage({
-  params: { category, slug },
+  params,
 }: ArticleDetailPageProps) {
+  const { category, slug } = await params;
+
   const post = await getArticleDetail(category, decodeURIComponent(slug));
   const toc = await parseToc(post.content);
 

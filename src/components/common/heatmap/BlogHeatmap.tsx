@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import CalendarHeatmap from "react-calendar-heatmap";
+import CalendarHeatmap, {
+  ReactCalendarHeatmapValue,
+} from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import { CircleHelp } from "lucide-react";
 import Link from "next/link";
@@ -25,14 +27,15 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
     endDate.getDate()
   );
 
-  const handleDateClick = (value: any) => {
+  const handleDateClick = (
+    value: ReactCalendarHeatmapValue<string> | undefined
+  ) => {
     if (!value || !value.count) {
       setSelectedDate(null);
       return;
     }
     setSelectedDate(value.date);
   };
-
   return (
     <section className="bg-background-secondary rounded-lg p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
