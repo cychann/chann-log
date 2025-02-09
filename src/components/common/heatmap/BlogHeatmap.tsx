@@ -37,7 +37,7 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
     setSelectedDate(value.date);
   };
   return (
-    <section className="bg-background-secondary rounded-lg p-6 shadow-sm">
+    <section className="bg-background-secondary rounded-lg p-6 shadow-sm border border-border">
       <div className="flex justify-between items-center mb-6">
         <div className="font-bold text-lg text-text-primary">
           {dateDateLen} activities
