@@ -78,6 +78,26 @@ body {
   fill: var(--primary-800);
 }
 
+.dark .react-calendar-heatmap .color-scale-1 {
+  fill: var(--primary-800);
+}
+.dark .react-calendar-heatmap .color-scale-2 {
+  fill: var(--primary-600);
+}
+.dark .react-calendar-heatmap .color-scale-3 {
+  fill: var(--primary-400);
+}
+.dark .react-calendar-heatmap .color-scale-4 {
+  fill: var(--primary-200);
+}
+
+.react-calendar-heatmap .color-empty {
+  fill: #f0f0f0;
+}
+.dark .react-calendar-heatmap .color-empty {
+  fill: #2d2d2d;
+}
+
 [data-tooltip]:hover::after {
   content: attr(data-tooltip);
   position: absolute;
