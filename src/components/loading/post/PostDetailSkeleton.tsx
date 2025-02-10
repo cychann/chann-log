@@ -5,7 +5,7 @@ import { TOCSidebarSkeleton } from "./TOCSidebarSkeleton";
 
 export default function PostDetailSkeleton() {
   return (
-    <section className="mx-auto w-full max-w-[750px] my-5">
+    <section className="mx-auto w-full max-w-[750px] my-5 min-h-screen">
       <PostHeaderSkeleton />
       <article className="relative">
         <PostContentSkeleton />
