@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "@/config/global.css";
 
-import Header from "@/components/layout/Header";
 import KBarContainer from "@/components/KBar/KBarContainer";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import Footer from "@/components/layout/Footer";
+import { PostProvider } from "@/context/PostContext";
+import Header from "@/components/layout/Header";
 
 export const metadata: Metadata = {
   title: "Yoochan's Dev Blog",
@@ -30,12 +31,14 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* @ts-expect-error Async Server Component */}
-          <KBarContainer>
-            <Header />
-            <main className="max-w-6xl mx-auto">{children}</main>
-            <Footer />
-          </KBarContainer>
+          <PostProvider>
+            {/* @ts-expect-error Async Server Component */}
+            <KBarContainer>
+              <Header />
+              <main className="max-w-6xl mx-auto">{children}</main>
+              <Footer />
+            </KBarContainer>
+          </PostProvider>
         </ThemeProvider>
       </body>
     </html>
