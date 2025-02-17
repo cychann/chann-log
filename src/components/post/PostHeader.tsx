@@ -10,9 +10,7 @@ export default function PostHeader({
 }: PostHeader) {
   return (
     <section className="flex flex-col items-center gap-2 mt-14 pb-4 border-b ">
-      <h1 id="post-title" className="font-extrabold text-3xl">
-        {title}
-      </h1>
+      <h1 className="font-extrabold text-3xl">{title}</h1>
       <h4 className="text-primary font-bold text-lg">{category}</h4>
       <PostDateTimeInfo
         date={date}

@@ -2,38 +2,61 @@ import { useEffect, useRef, useState } from "react";
 
 export const useHeadingsObserver = (query: string) => {
   const observer = useRef<IntersectionObserver | null>(null);
-  const [activeIdList, setActiveIdList] = useState<string[]>([]);
-  const [tempId, setTempId] = useState<string>("");
+  const [activeId, setActiveId] = useState<string>("");
+  const headingsRef = useRef<{ id: string; element: Element }[]>([]);
 
   useEffect(() => {
-    const scrollMarginOption = { rootMargin: "-32px 0px -80px 0px" };
+    const elements = Array.from(document.querySelectorAll(query));
+    headingsRef.current = elements.map((elem) => ({
+      id: elem.id ? `#${elem.id}` : "",
+      element: elem,
+    }));
 
     const handleObserver: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        const targetId = `#${entry.target.id}`;
+      const visibleHeadings = headingsRef.current
+        .map((heading) => {
+          const rect = heading.element.getBoundingClientRect();
+          return {
+            id: heading.id,
+            distance: Math.abs(rect.top + 32),
+          };
+        })
+        .filter((heading) => {
+          if (!heading.id) return false;
+          const element = document.querySelector(heading.id);
+          const rect = element?.getBoundingClientRect();
+          return rect && rect.top <= 32;
+        })
+        .sort((a, b) => a.distance - b.distance);
 
-        if (entry.isIntersecting) {
-          setActiveIdList((prev) => [...prev, targetId]);
-          setTempId(() => "");
-        } else {
-          setActiveIdList((prev) => {
-            if (prev.length === 1) setTempId(targetId);
-            return prev.filter((elem) => elem !== targetId);
-          });
+      if (visibleHeadings.length > 0) {
+        setActiveId(visibleHeadings[0].id);
+      } else {
+        const firstHeading = headingsRef.current[0];
+        if (
+          firstHeading &&
+          firstHeading.element.getBoundingClientRect().top > 32
+        ) {
+          setActiveId(firstHeading.id);
         }
-      });
+      }
     };
 
-    observer.current = new IntersectionObserver(
-      handleObserver,
-      scrollMarginOption
-    );
+    observer.current = new IntersectionObserver(handleObserver, {
+      rootMargin: "-32px 0px 0px 0px",
+      threshold: [0, 1],
+    });
 
-    const elements = document.querySelectorAll(query);
     elements.forEach((elem) => observer.current?.observe(elem));
 
-    return () => observer.current?.disconnect();
+    const handleScroll = () => observer.current?.takeRecords();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.current?.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [query]);
 
-  return [...activeIdList, tempId];
+  return [activeId];
 };

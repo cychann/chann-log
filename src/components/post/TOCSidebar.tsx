@@ -10,7 +10,7 @@ type TOCSidebarProps = {
 };
 
 export default function TOCSidebar({ toc }: TOCSidebarProps) {
-  const activeIdList = useHeadingsObserver("h1, h2");
+  const [activeId] = useHeadingsObserver("h1, h2");
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -38,7 +38,7 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
           <h2 className="mb-3 font-bold text-text-primary">On this page</h2>
           <ul className="space-y-1 text-sm">
             {toc.map((item) => {
-              const isActive = activeIdList.includes(item.link);
+              const isActive = activeId === item.link;
               return (
                 <li
                   key={item.link}
