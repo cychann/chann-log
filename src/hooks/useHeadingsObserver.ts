@@ -12,7 +12,7 @@ export const useHeadingsObserver = (query: string) => {
       element: elem,
     }));
 
-    const handleObserver: IntersectionObserverCallback = (entries) => {
+    const handleObserver: IntersectionObserverCallback = () => {
       const visibleHeadings = headingsRef.current
         .map((heading) => {
           const rect = heading.element.getBoundingClientRect();
