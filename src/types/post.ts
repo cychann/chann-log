@@ -6,6 +6,7 @@ export type BasePost = {
   readingMinutes: number;
   category: string;
   url: string;
+  slug: string;
   type: PostType;
 };
 
@@ -40,6 +41,7 @@ export type ArticlePreview = Pick<
   | "type"
   | "url"
   | "category"
+  | "slug"
 >;
 
 export type LogPost = BasePost & {
@@ -57,6 +59,7 @@ export type LogPreview = Pick<
   | "type"
   | "url"
   | "category"
+  | "slug"
 >;
 
 export type PostMapping = {

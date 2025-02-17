@@ -1,6 +1,6 @@
 import PostDetailPage from "@/components/post/PostDetailPage";
 import { parseToc } from "@/lib/markdonw";
-import { getArticleDetail } from "@/lib/posts/article";
+import { getArticleDetail, getArticleList } from "@/lib/posts/article";
 import { ArticlePost } from "@/types/post";
 import { Metadata } from "next";
 
@@ -29,6 +29,15 @@ export async function generateMetadata({
       images: [imageURL],
     },
   };
+}
+
+export async function generateStaticParams() {
+  const articles = await getArticleList();
+
+  return articles.map((article) => ({
+    category: article.category,
+    slug: encodeURIComponent(article.slug),
+  }));
 }
 
 export default async function articleDetailpage({
