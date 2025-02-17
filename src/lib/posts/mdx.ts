@@ -11,6 +11,7 @@ export const parseMdx = async <T extends PostType>(
   const file = fs.readFileSync(postPath, "utf8");
   const { data, content } = matter(file);
   const category = path.dirname(postPath).split(path.sep).slice(-1)[0];
+  const slug = path.basename(postPath, ".mdx");
   const postUrl = `/${type}/${category}/${path.basename(postPath, ".mdx")}`;
 
   return {
@@ -18,6 +19,7 @@ export const parseMdx = async <T extends PostType>(
     date: new Date(data.date).toISOString().split("T")[0],
     content,
     url: postUrl,
+    slug,
     readingMinutes: Math.ceil(readingTime(content).minutes),
     category,
     type,

@@ -1,6 +1,6 @@
 import PostDetailPage from "@/components/post/PostDetailPage";
 import { parseToc } from "@/lib/markdonw";
-import { getLogDetail } from "@/lib/posts/log";
+import { getLogDetail, getLogList } from "@/lib/posts/log";
 import { LogPost } from "@/types/post";
 import { Metadata } from "next";
 
@@ -26,6 +26,15 @@ export async function generateMetadata({
       description: post.description,
     },
   };
+}
+
+export async function generateStaticParams() {
+  const logs = await getLogList();
+
+  return logs.map((log) => ({
+    category: log.category,
+    slug: encodeURIComponent(log.slug),
+  }));
 }
 
 export default async function logDetailpage({ params }: LogDetailPageProps) {
