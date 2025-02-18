@@ -8,7 +8,6 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import KBarButton from "../KBar/KBarButton";
-import { ThemeToggle } from "../common/ui/ThemeToggle";
 import GithubLogo from "../common/ui/GithubLogo";
 
 type BaseHeaderProps = {
