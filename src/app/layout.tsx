@@ -35,7 +35,7 @@ export default async function RootLayout({
             {/* @ts-expect-error Async Server Component */}
             <KBarContainer>
               <Header />
-              <main className="max-w-6xl mx-auto">{children}</main>
+              <main className="max-w-[1200px] mx-auto">{children}</main>
               <Footer />
             </KBarContainer>
           </PostProvider>

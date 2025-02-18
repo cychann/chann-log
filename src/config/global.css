@@ -31,14 +31,16 @@ body {
   /* Text Colors */
   --text-primary: #1f2937;
   --text-secondary: #4b5563;
-  --text-tertiary: #6b7280;
+  --text-tertiary: #6b7684;
   --text-inverse: #ffffff;
   --text-description: #4e5968;
 
   /* Border Colors */
-  --border: #e5e7eb;
+  --border: #e5e8eb;
 
   /* Button Background Colors */
+  --button-bg: #f2f4f6;
+  --button-text: #4e5968;
   --button-active: #eaecf1;
   --button-hover: #f8fafc;
 

@@ -22,6 +22,7 @@ export default {
         background: {
           DEFAULT: "var(--background)",
           secondary: "var(--background-secondary)",
+          button: "var(--button-bg)",
         },
         foreground: "var(--foreground)",
         text: {
@@ -30,6 +31,7 @@ export default {
           tertiary: "var(--text-tertiary)",
           inverse: "var(--text-inverse)",
           description: "var(--text-description)",
+          button: "var(--button-text)",
         },
         border: {
           DEFAULT: "var(--border)",

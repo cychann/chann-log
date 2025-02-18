@@ -27,13 +27,22 @@ export default async function ArticleContent({
     category === "All" ? "" : category
   );
   return (
-    <>
-      <CategoryList
-        categories={categoryList}
-        selectedCategory={category}
-        categoryPostCounts={categoryPostCounts}
-      />
-      <ArticleList posts={filteredPosts} />
-    </>
+    <section className="w-full max-w-7xl mx-auto px-4 mt-20">
+      <div className="flex gap-8">
+        <div className="w-2/3 px-6">
+          <span className="block mb-4 text-[20px] text-text-tertiary font-semibold">
+            전체 게시글
+          </span>
+          <ArticleList posts={filteredPosts} />
+        </div>
+        <div className="w-1/3">
+          <CategoryList
+            categories={categoryList}
+            selectedCategory={category}
+            categoryPostCounts={categoryPostCounts}
+          />
+        </div>
+      </div>
+    </section>
   );
 }

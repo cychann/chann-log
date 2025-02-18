@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
@@ -15,9 +16,10 @@ export default function Category({
   return (
     <Link href={`/articles/${category}`}>
       <li
-        className={` flex items-center gap-1 cursor-pointer px-4 py-2 rounded hover:bg-button-active transition-all duration-200  ${
-          selected ? "bg-foreground text-background" : "text-foreground"
-        }`}
+        className={cn(
+          "flex items-center gap-1 cursor-pointer px-4 py-2 rounded-lg text-[13px] bg-background-button text-text-button font-semibold hover:bg-button-active transition-all duration-200",
+          selected && "bg-primary text-white [&>*]:text-white"
+        )}
       >
         <p>{category}</p>
         <div>({postCount})</div>

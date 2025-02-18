@@ -14,7 +14,7 @@ export default function Tags({ tags, maxDisplay = 3 }: TagsProps) {
       {displayTags.map((tag) => (
         <li
           key={tag}
-          className="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-600 dark:bg-primary-900/50 dark:text-primary-200"
+          className="rounded-full bg-background-button text-text-button font-semibold px-3 py-1 text-xs"
         >
           {tag}
         </li>
