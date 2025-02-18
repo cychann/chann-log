@@ -1,5 +1,4 @@
 import React from "react";
-import ListPageHeader from "../ListPageHeader";
 import ArticleContent from "./ArticleContent";
 
 type ArticlePageContainerProps = {

@@ -26,12 +26,14 @@ export default async function ArticleContent({
     postList,
     category === "All" ? "" : category
   );
+
+  const pageTitle = category === "All" ? "전체 게시글" : `${category} 게시글`;
   return (
     <section className="w-full max-w-7xl mx-auto px-4 mt-20">
       <div className="flex gap-8">
         <div className="w-2/3 px-6">
           <span className="block mb-4 text-[20px] text-text-tertiary font-semibold">
-            전체 게시글
+            {pageTitle}
           </span>
           <ArticleList posts={filteredPosts} />
         </div>
