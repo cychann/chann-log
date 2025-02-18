@@ -1,4 +1,5 @@
-import { CiCalendarDate, CiClock2 } from "react-icons/ci";
+import { formatKoreanDate } from "@/lib/formatKoreanDate";
+import { Clock } from "lucide-react";
 
 type PostDateTimeInfoProps = {
   date: string;
@@ -15,15 +16,15 @@ export default function PostDateTimeInfo({
     justify === "center" ? "justify-center" : "justify-between";
   return (
     <div
-      className={`w-full flex items-center text-sm text-text-tertiary mt-2 ${justifyClass} gap-2`}
+      className={`w-full flex items-center text-sm text-text-tertiary mt-2 gap-2`}
     >
       <div className="flex items-center">
-        <CiCalendarDate className="mr-1" size={16} />
-        <p className="leading-tight">{date}</p>
+        <p className="leading-tight">{formatKoreanDate(date)}</p>
       </div>
-      <div className="flex items-center">
-        <CiClock2 className="mr-1" size={16} />
-        <p className="leading-tight">{readingMinutes} min</p>
+      <span>·</span>
+      <div className="flex items-center gap-1">
+        <Clock size={16} />
+        <p className="leading-tight">{readingMinutes} min read</p>
       </div>
     </div>
   );

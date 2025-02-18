@@ -14,13 +14,13 @@ export default function Tags({ tags, maxDisplay = 3 }: TagsProps) {
       {displayTags.map((tag) => (
         <li
           key={tag}
-          className="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-800 dark:bg-primary-800 dark:text-white"
+          className="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-600 dark:bg-primary-900/50 dark:text-primary-200"
         >
           {tag}
         </li>
       ))}
       {remainingCount > 0 && (
-        <li className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <li className="rounded-full bg-gray-50 px-3 py-1 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
           +{remainingCount}
         </li>
       )}
