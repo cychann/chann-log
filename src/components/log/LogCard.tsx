@@ -17,7 +17,7 @@ export default function LogCard({ post }: LogCardProps) {
           {title}
         </span>
         <div className="mt-auto pt-4 flex flex-col gap-[15px]">
-          <Tags tags={tags?.split(",") || []} />
+          <Tags tags={tags?.split(",") || []} limit />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
       </div>

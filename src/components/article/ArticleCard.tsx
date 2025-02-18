@@ -21,7 +21,7 @@ export default function ArticleCard({ post }: ArticleCardProps) {
         </span>
         <span className="text-[15px] text-text-description">{description}</span>
         <div className="mt-auto pt-4 flex flex-col gap-[15px]">
-          <Tags tags={tags?.split(",") || []} />
+          <Tags tags={tags?.split(",") || []} limit />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
       </div>

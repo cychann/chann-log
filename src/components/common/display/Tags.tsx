@@ -2,12 +2,12 @@ import React from "react";
 
 type TagsProps = {
   tags: string[];
-  maxDisplay?: number;
+  limit?: boolean;
 };
 
-export default function Tags({ tags, maxDisplay = 3 }: TagsProps) {
-  const displayTags = tags.slice(0, maxDisplay);
-  const remainingCount = Math.max(0, tags.length - maxDisplay);
+export default function Tags({ tags, limit = false }: TagsProps) {
+  const displayTags = limit ? tags.slice(0, 5) : tags;
+  const remainingCount = limit ? Math.max(0, tags.length - 5) : 0;
 
   return (
     <ul className="flex items-center gap-2 flex-wrap">
