@@ -24,7 +24,7 @@ export default async function RootLayout({
       className="scroll-smooth overflow-y-scroll"
       suppressHydrationWarning
     >
-      <body className="w-full">
+      <body className="w-full flex flex-col min-h-screen">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -35,7 +35,9 @@ export default async function RootLayout({
             {/* @ts-expect-error Async Server Component */}
             <KBarContainer>
               <Header />
-              <main className="max-w-[1200px] mx-auto">{children}</main>
+              <main className="max-w-[1200px] w-full mx-auto flex-1">
+                {children}
+              </main>
               <Footer />
             </KBarContainer>
           </PostProvider>

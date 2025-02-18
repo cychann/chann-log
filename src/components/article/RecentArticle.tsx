@@ -8,7 +8,7 @@ export default async function RecentArticle() {
 
   return (
     <RecentPostSection title="최신 아티클" link="/articles">
-      <ul className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <ul className="flex flex-col">
         {latestPosts.map((post) => (
           <li key={post.title}>
             <ArticleCard post={post} />

@@ -3,9 +3,13 @@
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
-export default function GithubLogo() {
+type GithubLogoProps = {
+  size?: number;
+};
+
+export default function GithubLogo({ size }: GithubLogoProps) {
+  const logoSize = size || 24;
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -18,12 +22,7 @@ export default function GithubLogo() {
   }
 
   return (
-    <Link
-      href="https://github.com/cychann"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="rounded-md hover:bg-accent transition-colors"
-    >
+    <div className="rounded-md hover:bg-accent transition-colors ">
       <Image
         src={
           resolvedTheme === "dark"
@@ -31,10 +30,10 @@ export default function GithubLogo() {
             : "/github-mark.svg"
         }
         alt="Github Logo"
-        width={24}
-        height={24}
+        width={logoSize}
+        height={logoSize}
         className="transition-opacity"
       />
-    </Link>
+    </div>
   );
 }
