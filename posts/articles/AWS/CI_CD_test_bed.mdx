@@ -187,7 +187,7 @@ front-dev 버전의 해당 인스턴스를 배포 대상으로 설정해줍니�
 
 배포 그룹 설정 뒤에 추가적으로 두 가지 작업을 진행해야 합니다.
 
-## 1. AppSpec File (EC2/온프레미스 컴퓨팅 플랫폼을 사용하는 경우) 작성
+## AppSpec File (EC2/온프레미스 컴퓨팅 플랫폼을 사용하는 경우) 작성
 
 AppSpec file은 appspec.yml이라는 YAML 형식의 파일이어야 하며, 애플리케이션 소스 코드의 루트에 위치 시켜야합니다다. 저는 아래와 같이 appspect.yml 파일을 프로젝트 최상단 경로에 작성했습니다.
 
@@ -227,7 +227,7 @@ HOME=/home/ubuntu
 pm2 start "yarn preview"
 ```
 
-## 2. EC2에 CodeDeploy Agent 설치
+## EC2에 CodeDeploy Agent 설치
 
 아래 명령어들을 차례대로 실행시키면 CodeDeploy Agent를 설치할 수 있습니다.
 
@@ -253,7 +253,7 @@ sudo service codedeploy-agent start
 
 # CodePipeline 생성
 
-## 1. 소스 스테이지 추가
+## 소스 스테이지 추가
 
 <Image src="/posts/articles/AWS/CI_CD_test_bed/12.png" />
 
@@ -263,7 +263,7 @@ sudo service codedeploy-agent start
 <Image src="/posts/articles/AWS/CI_CD_test_bed/13.png" />
 트리거에 master 브랜치를 명시해줍니다.
 
-## 2. 빌드 스테이지 추가
+## 빌드 스테이지 추가
 
 <Image src="/posts/articles/AWS/CI_CD_test_bed/14.png" />
 
@@ -271,7 +271,7 @@ sudo service codedeploy-agent start
 
 그리고 아까 언급했던 환경변수를 여기서 설정해줄 수 있습니다.
 
-## 3. 배포 스테이지 추가
+## 배포 스테이지 추가
 
 <Image
   alt="기존에 생성했던 CodeDeploy 애플케이션의 배포 그룹을 지정"

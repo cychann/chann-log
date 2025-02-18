@@ -257,7 +257,7 @@ export default class Delimiter implements BlockTool {
 
 위 코드에서, 제가 생각했을 때 커스텀 Block Tool을 제작하기 위한 중요한 메서드와 속성을 정리해 봤습니다.
 
-## 1. constructor(data, api) - 초기화 작업
+## constructor(data, api) - 초기화 작업
 
 **constructor는** 커스텀 블록의 초기화를 담당하는 메서드로, 필수적으로 구현해야 합니다. 여기서 주로 두 가지 요소인 data와 api를 받아옵니다.
 
@@ -325,20 +325,20 @@ save(): BlockToolData {
   }
 ```
 
-## 2. render() - 블록을 화면에 표시
+## render() - 블록을 화면에 표시
 
 render() 메서드는 블록이 에디터에 어떻게 렌더링 될지를 결정하는 중요한 메서드입니다.
 코드에서는 \_element라는 HTML 요소를 반환해, 에디터가 이 블록을 화면에 그리도록 합니다.
 
 블록의 UI를 정의하고 화면에 표시하기 때문에, 커스텀 블록을 사용자가 어떻게 볼지를 결정하는 중요한 역할을 합니다. 따라서, 블록을 추가하거나 저장된 블록을 불러올 때 이 메서드가 호출됩니다.
 
-## 3. save() - 블록 데이터 내보내기
+## save() - 블록 데이터 내보내기
 
 위에서 언급한 대로, 해당 블록 데이터를 내보낼 때 사용하는 필수 메서드입니다.
 
 원래는 형식으로 데이터를 정의하여 블록의 상태를 JSON 형태로 저장할 수 있습니다.
 
-## 4. toolbox() - 블록을 툴바에 표시
+## toolbox() - 블록을 툴바에 표시
 
 이 메서드는 에디터의 툴박스에 표시될 블록의 아이콘과 이름을 정의합니다.
 
@@ -348,7 +348,7 @@ render() 메서드는 블록이 에디터에 어떻게 렌더링 될지를 결�
 
 <Image src="/posts/articles/Web/EditorJS/1.png" />
 
-## 5. pasteConfig()
+## pasteConfig()
 
 붙여 넣기 기능과 관련된 설정을 정의하는 메서드입니다.
 
@@ -508,11 +508,11 @@ export default class Strikethrough implements InlineTool {
 
 커스텀 Inline Tool을 제작할 때 Strikethrough 코드에서 특히 중요한 메서드와 속성들을 정리하면 다음과 같습니다.
 
-## 1. constructor(api) - 초기화 작업
+## constructor(api) - 초기화 작업
 
 마찬가지로 constructor는 Inline Tool의 초기화를 담당하며, api 객체를 통해 Editor.js의 Core API에 접근할 수 있습니다. Inline Tool은 기존의 Block Data를 처리하는 역할만 수행하기 때문에, Block Tool과 달리 data가 필요하지 않습니다.
 
-## 2. render() - 툴바 버튼 렌더링
+## render() - 툴바 버튼 렌더링
 
 툴바에 표시될 버튼을 렌더링 합니다.
 
@@ -520,7 +520,7 @@ export default class Strikethrough implements InlineTool {
 
 이를 통해 사용자가 툴바에서 이 Tool을 직관적으로 사용할 수 있게 됩니다.
 
-## 3. surround(range) - 선택한 텍스트 감싸기/제거하기
+## surround(range) - 선택한 텍스트 감싸기/제거하기
 
 사용자가 특정 텍스트를 선택하고 Tool 버튼을 눌렀을 때 호출됩니다.
 
@@ -528,13 +528,13 @@ export default class Strikethrough implements InlineTool {
 
 제 코드에서는 Strikethrough는 선택된 텍스트에 `<s>` 태그를 적용하거나, 이미 적용된 `<s>` 태그를 제거하도록 처리했습니다.
 
-## 4. checkState() - 현재 상태 확인
+## checkState() - 현재 상태 확인
 
 커서 위치나 선택된 텍스트가 현재 Tool의 스타일이 적용되어 있는지를 확인하여, 툴바 버튼의 활성화 상태를 변경합니다. 이 메서드를 통해 사용자에게 현재 선택된 텍스트에 스타일이 적용되었는지 시각적으로 알려줄 수 있습니다.
 
 제 코드에서는, 이를 활용하여 툴바 버튼의 활성화 상태를 toggle 하는 작업을 추가했습니다.
 
-## 5. renderActions() - 추가 작업 요소 렌더링
+## renderActions() - 추가 작업 요소 렌더링
 
 사용자가 Tool을 선택했을 때, 추가적인 작업을 할 수 있는 UI 요소(예: URL 입력 상자)를 인라인 툴바에 렌더링 합니다.
 
@@ -572,7 +572,7 @@ Editor.js에서 **Block Tool**과 **Inline Tool**을 구현할 수 있으면 거
 
 다만, 개발하다 보면 여러 상황이 생기는 법.... 제가 실제로 에디터를 개발하면서 마주쳤던 문제들과 이를 해결하기 위해 사용했던 유용한 솔루션들을 공유해보려 합니다.
 
-## 1. menubar 에디터로부터 분리하기
+## menubar 에디터로부터 분리하기
 
 Editor.js를 사용하면 기본적으로 커서 왼쪽에 **+ 아이콘**을 통해 블록을 삽입할 수 있습니다.
 
@@ -667,7 +667,7 @@ const addBlock = (type: string, data: object) => {
 
 특히 **getCurrentBlockIndex, getBlockByIndex, insert, delete** 이 4가지 메서드는 프로젝트 내에서 정말 많이 활용했던 유용한 메서드입니다😊
 
-## 2. 에디터 전역 상태 관리
+## 에디터 전역 상태 관리
 
 개인적으로 전역 상태 관리 라이브러리를 사용할 수 있는 환경이라면, 에디터 인스턴스를 전역으로 관리하는 것을 추천합니다.
 
@@ -747,7 +747,7 @@ export default EditorContent;
   src="/posts/articles/Web/EditorJS/7.png"
 />
 
-## 3. SSR에서 Editor.js 적용하기
+## SSR에서 Editor.js 적용하기
 
 **Editor.js는 DOM을 기반으로 동작**하기 때문에 서버 사이드 렌더링(SSR) 환경에서 주의가 필요합니다.
 
@@ -785,7 +785,7 @@ Editor.js로 개발하며 겪었던 시행착오를 바탕으로 정리한 내�
 
 Nuxt.js를 중심으로 설명하고 있지만 Next.js에서도 동일한 개념을 적용할 수 있으니 유용할 것입니다.
 
-## 4. inlineToolbar 설정
+## inlineToolbar 설정
 
 Editor.js를 사용할 때, Block Tool을 정의하면서 각 블록마다 **inlineToolbar 구성을 다르게 설정**할 수 있습니다.
 
