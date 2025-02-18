@@ -4,12 +4,14 @@ type CategoryListProps = {
   categories: string[];
   selectedCategory: string;
   categoryPostCounts: Record<string, number>;
+  basePath: "articles" | "logs";
 };
 
 export default function CategoryList({
   categories,
   selectedCategory,
   categoryPostCounts,
+  basePath,
 }: CategoryListProps) {
   return (
     <div className="w-full h-full px-6 border-l border-border">
@@ -21,6 +23,7 @@ export default function CategoryList({
             category={category}
             selected={selectedCategory === category}
             postCount={categoryPostCounts[category]}
+            basePath={basePath}
           />
         ))}
       </ul>

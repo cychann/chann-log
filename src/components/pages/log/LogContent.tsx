@@ -1,43 +1,51 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { getLogCategoryList, getLogCount } from "@/lib/posts/log";
-import { LOG_DATA } from "@/config/const";
 
-export default async function LogContent() {
-  const categoryList = await getLogCategoryList();
-  const postCounts = await Promise.all(
-    categoryList.map((category) => getLogCount(category))
+import {
+  filterLogs,
+  getLogCategoryCounts,
+  getLogCategoryList,
+  getLogList,
+} from "@/lib/posts/log";
+import LogList from "@/components/log/LogList";
+import CategoryList from "@/components/filters/CategoryList";
+
+type LogContentProps = {
+  category: string;
+};
+
+export default async function LogContent({ category }: LogContentProps) {
+  const [postList, categoryList] = await Promise.all([
+    getLogList(),
+    getLogCategoryList(),
+  ]);
+
+  const categoryPostCounts = getLogCategoryCounts(postList, categoryList);
+
+  const filteredPosts = filterLogs(
+    postList,
+    category === "All" ? "" : category
   );
+
+  const pageTitle = category === "All" ? "전체 로그" : `${category} 로그`;
+
   return (
-    <div className="space-y-4">
-      {categoryList.map((category, index) => (
-        <Link
-          href={`/logs/${category}`}
-          key={category}
-          className="flex justify-between items-center border-b py-4"
-        >
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1">
-              {LOG_DATA[category]?.icon.startsWith("/") ? (
-                <Image
-                  src={LOG_DATA[category]?.icon}
-                  alt={`${category} icon`}
-                  width={20}
-                  height={20}
-                />
-              ) : (
-                <p>{LOG_DATA[category]?.icon}</p>
-              )}
-              <h3 className="font-bold text-xl">{category}</h3>
-            </div>
-            <p className="text-text-secondary">{LOG_DATA[category]?.desc}</p>
-          </div>
-          <p className="text-text-tertiary text-sm">
-            {postCounts[index]}개의 글
-          </p>
-        </Link>
-      ))}
-    </div>
+    <section className="w-full px-4 mt-20">
+      <div className="flex gap-8">
+        <div className="w-2/3 px-6">
+          <span className="block mb-4 text-[20px] text-text-tertiary font-semibold">
+            {pageTitle}
+          </span>
+          <LogList posts={filteredPosts} />
+        </div>
+        <div className="w-1/3">
+          <CategoryList
+            categories={categoryList}
+            selectedCategory={category}
+            categoryPostCounts={categoryPostCounts}
+            basePath="logs"
+          />
+        </div>
+      </div>
+    </section>
   );
 }

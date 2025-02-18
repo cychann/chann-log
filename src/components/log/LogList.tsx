@@ -3,15 +3,17 @@ import LogCard from "./LogCard";
 import { LogPreview } from "@/types/post";
 
 type LogListProps = {
-  postList: LogPreview[];
+  posts: LogPreview[];
 };
 
-export default function LogList({ postList }: LogListProps) {
+export default function LogList({ posts }: LogListProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {postList.map((post) => (
-        <LogCard key={post.title} post={post} />
-      ))}
-    </div>
+    <section className="w-full max-w-[700px]">
+      <ul className="flex flex-col">
+        {posts.map((post) => (
+          <LogCard key={post.title} post={post} />
+        ))}
+      </ul>
+    </section>
   );
 }

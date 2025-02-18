@@ -12,7 +12,7 @@ export default function logPage() {
   return (
     <>
       {/* @ts-expect-error Async Server Component */}
-      <LogContent />
+      <LogContent category="All" />
     </>
   );
 }

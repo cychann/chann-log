@@ -11,7 +11,7 @@ type Props = {
 
 export default function NavLink({ href, name, onClick }: Props) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.startsWith(href);
 
   return (
     <Link href={href} key={name} onClick={onClick}>
