@@ -31,13 +31,13 @@ export default async function LogContent({ category }: LogContentProps) {
   return (
     <section className="w-full px-4 mt-20">
       <div className="flex gap-8">
-        <div className="w-2/3 px-6">
+        <div className="w-full md:[900px]:w-2/3 px-6">
           <span className="block mb-4 text-[20px] text-text-tertiary font-semibold">
             {pageTitle}
           </span>
           <LogList posts={filteredPosts} />
         </div>
-        <div className="w-1/3">
+        <div className="hidden md:[900px]:block w-1/3">
           <CategoryList
             categories={categoryList}
             selectedCategory={category}

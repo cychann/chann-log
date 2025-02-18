@@ -14,24 +14,30 @@ export default function ArticleCard({ post }: ArticleCardProps) {
     post;
 
   return (
-    <Link href={url} className="flex justify-between py-6 group">
-      <div className="flex flex-col max-w-[calc(100%-144px)]">
-        <span className="text-[20px] font-bold mb-[6px] overflow-hidden text-ellipsis group-hover:text-primary-600 transition-colors">
+    <Link
+      href={url}
+      className="flex flex-col sm:flex-row justify-between py-6 group"
+    >
+      <div className="flex flex-col sm:max-w-[calc(100%-144px)]">
+        <span className="text-[18px] sm:text-[20px] font-bold mb-[6px] overflow-hidden text-ellipsis group-hover:text-primary-600 transition-colors">
           {title}
         </span>
-        <span className="text-[15px] text-text-description">{description}</span>
+        <span className="text-[14px] sm:text-[15px] text-text-description">
+          {description}
+        </span>
         <div className="mt-auto pt-4 flex flex-col gap-[15px]">
           <Tags tags={tags?.split(",") || []} limit />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
       </div>
-      <div className="relative w-32 h-24 rounded-md overflow-hidden self-start">
+      <div className="relative w-full h-48 sm:w-32 sm:h-24 rounded-md overflow-hidden mt-4 sm:mt-0 sm:self-start order-first sm:order-last">
         <Image
           src={thumbnail}
           alt={`thumbnail for ${title}`}
           className="object-cover rounded-md transition-transform duration-300 group-hover:scale-125"
-          sizes="130px"
+          sizes="(max-width: 640px) 100vw, 130px"
           fill
+          priority
         />
       </div>
     </Link>

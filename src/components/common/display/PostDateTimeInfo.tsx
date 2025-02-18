@@ -11,7 +11,7 @@ export default function PostDateTimeInfo({
   readingMinutes,
 }: PostDateTimeInfoProps) {
   return (
-    <div className="flex items-center text-sm text-text-tertiary gap-2">
+    <div className="flex items-center text-[13px] text-text-tertiary gap-2">
       <div className="flex items-center">
         <p className="leading-tight">{formatKoreanDate(date)}</p>
       </div>

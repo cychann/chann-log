@@ -8,7 +8,7 @@ type ArticleListProps = {
 
 export default function ArticleList({ posts }: ArticleListProps) {
   return (
-    <section className="w-full max-w-[700px]">
+    <section className="w-full">
       <ul className="flex flex-col">
         {posts.map((post) => (
           <ArticleCard key={post.title} post={post} />

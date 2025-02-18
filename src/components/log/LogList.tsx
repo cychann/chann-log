@@ -8,7 +8,7 @@ type LogListProps = {
 
 export default function LogList({ posts }: LogListProps) {
   return (
-    <section className="w-full max-w-[700px]">
+    <section className="w-full">
       <ul className="flex flex-col">
         {posts.map((post) => (
           <LogCard key={post.title} post={post} />

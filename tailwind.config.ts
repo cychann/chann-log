@@ -149,6 +149,9 @@ export default {
         floating: "floating 1s ease-in-out infinite",
         fadeIn: "fadeIn 0.5s ease-out forwards",
       },
+      screens: {
+        "[900px]": "900px",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
