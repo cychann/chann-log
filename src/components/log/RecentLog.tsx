@@ -7,7 +7,7 @@ export default async function RecentLog() {
 
   return (
     <RecentPostSection title="최신 로그" link="/logs">
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ul className="flex flex-col">
         {latestLogs.map((post) => (
           <li key={post.title}>
             <LogCard post={post} />

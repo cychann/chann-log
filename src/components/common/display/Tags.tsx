@@ -2,25 +2,25 @@ import React from "react";
 
 type TagsProps = {
   tags: string[];
-  maxDisplay?: number;
+  limit?: boolean;
 };
 
-export default function Tags({ tags, maxDisplay = 3 }: TagsProps) {
-  const displayTags = tags.slice(0, maxDisplay);
-  const remainingCount = Math.max(0, tags.length - maxDisplay);
+export default function Tags({ tags, limit = false }: TagsProps) {
+  const displayTags = limit ? tags.slice(0, 5) : tags;
+  const remainingCount = limit ? Math.max(0, tags.length - 5) : 0;
 
   return (
     <ul className="flex items-center gap-2 flex-wrap">
       {displayTags.map((tag) => (
         <li
           key={tag}
-          className="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-800 dark:bg-primary-800 dark:text-white"
+          className="rounded-full bg-background-button text-text-button font-semibold px-3 py-1 text-xs"
         >
           {tag}
         </li>
       ))}
       {remainingCount > 0 && (
-        <li className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <li className="rounded-full bg-gray-50 px-3 py-1 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
           +{remainingCount}
         </li>
       )}

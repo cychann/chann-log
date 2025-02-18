@@ -8,7 +8,6 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import KBarButton from "../KBar/KBarButton";
-import { ThemeToggle } from "../common/ui/ThemeToggle";
 import GithubLogo from "../common/ui/GithubLogo";
 
 type BaseHeaderProps = {
@@ -61,7 +60,7 @@ export default function Header({ navigationSlot, children }: BaseHeaderProps) {
             <div className="ml-auto">
               <div className="flex items-center gap-2 shrink-0">
                 <KBarButton />
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
                 <GithubLogo />
               </div>
             </div>

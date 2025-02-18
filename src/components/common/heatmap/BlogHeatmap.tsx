@@ -52,15 +52,15 @@ export default function BlogHeatmap({ dateData }: BlogHeatmapProps) {
   }, [selectedDate]);
 
   return (
-    <section className="rounded-lg border border-border bg-background-secondary p-6 shadow-sm">
+    <section className="rounded-lg border border-border p-6">
       <div className="mb-6 flex items-center justify-between">
-        <div className="text-lg font-bold text-text-primary">
-          {dateDateLen} activities
+        <div className="text-lg font-semibold text-text-primary">
+          {dateDateLen} posts
         </div>
         <div className="relative group">
           <CircleHelp className="h-5 w-5 text-primary transition-colors hover:text-primary/80" />
           <div className="absolute right-0 top-full z-10 mt-2 hidden rounded-md bg-background px-3 py-2 text-sm text-text-primary shadow-lg whitespace-nowrap group-hover:block">
-            Content Statistics
+            Posts Content Statistics
           </div>
         </div>
       </div>

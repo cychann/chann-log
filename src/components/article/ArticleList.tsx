@@ -1,6 +1,6 @@
 import React from "react";
-import ArticleCard from "./ArticleCard";
 import { ArticlePreview } from "@/types/post";
+import ArticleCard from "./ArticleCard";
 
 type ArticleListProps = {
   posts: ArticlePreview[];
@@ -8,8 +8,8 @@ type ArticleListProps = {
 
 export default function ArticleList({ posts }: ArticleListProps) {
   return (
-    <section>
-      <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+    <section className="w-full">
+      <ul className="flex flex-col">
         {posts.map((post) => (
           <ArticleCard key={post.title} post={post} />
         ))}

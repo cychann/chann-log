@@ -1,5 +1,5 @@
 import React from "react";
-import ArticlePageContainer from "@/components/pages/article/ArticlePageContainer";
+import ArticleContent from "@/components/pages/article/ArticleContent";
 
 type ArticleCategoryPageProps = {
   params: Promise<{
@@ -20,5 +20,10 @@ export default async function articleCategoryPage({
 }: ArticleCategoryPageProps) {
   const { category } = await params;
 
-  return <ArticlePageContainer category={category} />;
+  return (
+    <>
+      {/* @ts-expect-error Async Server Component */}
+      <ArticleContent category={category} />
+    </>
+  );
 }

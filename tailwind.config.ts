@@ -22,6 +22,7 @@ export default {
         background: {
           DEFAULT: "var(--background)",
           secondary: "var(--background-secondary)",
+          button: "var(--button-bg)",
         },
         foreground: "var(--foreground)",
         text: {
@@ -29,6 +30,8 @@ export default {
           secondary: "var(--text-secondary)",
           tertiary: "var(--text-tertiary)",
           inverse: "var(--text-inverse)",
+          description: "var(--text-description)",
+          button: "var(--button-text)",
         },
         border: {
           DEFAULT: "var(--border)",
@@ -145,6 +148,9 @@ export default {
       animation: {
         floating: "floating 1s ease-in-out infinite",
         fadeIn: "fadeIn 0.5s ease-out forwards",
+      },
+      screens: {
+        "[900px]": "900px",
       },
     },
   },

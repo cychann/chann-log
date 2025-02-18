@@ -20,7 +20,7 @@ export const getLogDetail = (
 };
 
 export const getLogCategoryList = () => {
-  return getCategoryList(LOGS_PATH);
+  return getCategoryList(LOGS_PATH, true);
 };
 
 export const getLogCount = async (category?: string): Promise<number> => {
@@ -28,12 +28,12 @@ export const getLogCount = async (category?: string): Promise<number> => {
   return posts.length;
 };
 
-export const filterLogs = (posts: LogPost[], category?: string) => {
+export const filterLogs = (posts: LogPreview[], category?: string) => {
   return filterByCategory(posts, category);
 };
 
 export const getLogCategoryCounts = (
-  posts: LogPost[],
+  posts: LogPreview[],
   categories: string[]
 ) => {
   return getCategoryCounts(posts, categories);

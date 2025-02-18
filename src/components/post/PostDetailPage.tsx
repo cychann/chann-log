@@ -25,7 +25,7 @@ export default function PostDetailPage<T extends ArticlePost | LogPost>({
       />
       <article className="relative">
         <TOCTopbar toc={toc} />
-        <PostContent content={post.content} />
+        <PostContent content={post.content} tags={post.tags || ""} />
         <TOCSidebar toc={toc} />
       </article>
       <Giscus />

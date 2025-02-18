@@ -1,6 +1,6 @@
 import React from "react";
-import ArticlePageContainer from "@/components/pages/article/ArticlePageContainer";
 import { Metadata } from "next";
+import ArticleContent from "@/components/pages/article/ArticleContent";
 
 export const metadata: Metadata = {
   title: "Articles | Yoochan's Dev Blog",
@@ -9,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function ArticlePage() {
-  return <ArticlePageContainer category="All" />;
+  return (
+    <>
+      {/* @ts-expect-error Async Server Component */}
+      <ArticleContent category="All" />
+    </>
+  );
 }

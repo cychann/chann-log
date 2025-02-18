@@ -1,8 +1,9 @@
-import PostDateTimeInfo from "@/components/common/display/PostDateTimeInfo";
-import Tags from "@/components/common/display/Tags";
 import { ArticlePreview } from "@/types/post";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import Tags from "../common/display/Tags";
+import PostDateTimeInfo from "../common/display/PostDateTimeInfo";
 
 type ArticleCardProps = {
   post: ArticlePreview;
@@ -13,34 +14,31 @@ export default function ArticleCard({ post }: ArticleCardProps) {
     post;
 
   return (
-    <Link href={url}>
-      <div
-        className="flex flex-col h-full rounded-lg border border-border bg-background-secondary 
-shadow-md hover:shadow-xl dark:hover:shadow-none dark:hover:border-primary-400 
-transition-all duration-200"
-      >
-        <div className="relative aspect-video w-full rounded-t-md ">
-          <Image
-            src={thumbnail}
-            alt={`thumbnail for ${title}`}
-            sizes="(max-width: 1000px) 50vw, 450px"
-            fill
-            priority
-            className="rounded-t-md object-cover"
-          />
+    <Link
+      href={url}
+      className="flex flex-col sm:flex-row justify-between py-6 group"
+    >
+      <div className="flex flex-col sm:max-w-[calc(100%-144px)]">
+        <span className="text-[18px] sm:text-[20px] font-bold mb-[6px] overflow-hidden text-ellipsis group-hover:text-primary-600 transition-colors">
+          {title}
+        </span>
+        <span className="text-[14px] sm:text-[15px] text-text-description">
+          {description}
+        </span>
+        <div className="mt-auto pt-4 flex flex-col gap-[15px]">
+          <Tags tags={tags?.split(",") || []} limit />
+          <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
-        <div className="flex flex-col flex-1 p-4">
-          <div className="flex-1">
-            <h2 className="font-bold text-xl text-text-primary mb-2">
-              {title}
-            </h2>
-            <p className="text-text-secondary">{description}</p>
-          </div>
-          <div className="mt-auto pt-4 flex flex-col gap-3">
-            <Tags tags={tags?.split(",") || []} />
-            <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
-          </div>
-        </div>
+      </div>
+      <div className="relative w-full h-48 sm:w-32 sm:h-24 rounded-md overflow-hidden mt-4 sm:mt-0 sm:self-start order-first sm:order-last">
+        <Image
+          src={thumbnail}
+          alt={`thumbnail for ${title}`}
+          className="object-cover rounded-md transition-transform duration-300 group-hover:scale-125"
+          sizes="(max-width: 640px) 100vw, 130px"
+          fill
+          priority
+        />
       </div>
     </Link>
   );

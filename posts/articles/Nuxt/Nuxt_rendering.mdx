@@ -176,13 +176,13 @@ Nuxt.js의 **Universal Rendering**과 **Hybrid Rendering**은 매우 강력하�
 
 하지만 이러한 렌더링 방식을 사용할 때는 몇 가지 주의할 점이 있습니다.
 
-## 1. Lifecycle Hooks
+## Lifecycle Hooks
 
 Nuxt 3에서는 Vue 3의 다양한 생명주기 훅을 사용할 수 있습니다. 하지만 일반적인 **클라이언트 사이드 렌더링(CSR)** 환경과는 달리, **서버 사이드 렌더링(SSR) 환경**에서는 일부 생명주기 훅을 사용할 수 없다는 점에 유의해야 합니다.
 
 [Nuxt의 공식 문서](https://nuxt.com/docs/api/advanced/hooks?source=post_page-----1c72e06d6932--------------------------------#nuxt-hooks-build-time)에서는 각 렌더링 환경에서 어떤 생명주기 훅을 사용할 수 있는지 자세히 설명하고 있으니, SSR 환경에서의 개발 시 참고하는 것이 중요합니다.
 
-## 2. Browser API 활용의 제한
+## Browser API 활용의 제한
 
 window나 document 같은 **Browser API**는 브라우저에서만 동작하는 기능입니다. 즉, **클라이언트 사이드에서만** 사용할 수 있습니다.
 
@@ -224,7 +224,7 @@ Nuxt.js 공식 문서에서도 Browser API에 의존하는 라이브러리는 �
 
 이 경험을 바탕으로 Nuxt3에서의 렌더링 방식에 대한 개념을 확실하게 공부하게 되는 계기를 가졌습니다.
 
-## 3. HTTP 통신의 중복 호출
+## HTTP 통신의 중복 호출
 
 앞서 언급한 내용들은 Next.js와 Nuxt.js에서 공통적으로 적용될 수 있는 부분입니다. 하지만 이 두 프레임워크는 **Data Fetching**에 있어서는 완전히 다른 방식을 채택하고 있습니다.
 

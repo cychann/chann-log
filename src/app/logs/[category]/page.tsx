@@ -1,4 +1,4 @@
-import LogCategoryContent from "@/components/pages/log/LogCategoryContent";
+import LogContent from "@/components/pages/log/LogContent";
 
 type LogCategoryPageProps = {
   params: Promise<{
@@ -21,6 +21,6 @@ export default async function logCategoryPage({
 
   return (
     /* @ts-expect-error Async Server Component */
-    <LogCategoryContent category={category} />
+    <LogContent category={category} />
   );
 }

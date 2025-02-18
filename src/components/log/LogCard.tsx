@@ -11,17 +11,13 @@ type LogCardProps = {
 export default function LogCard({ post }: LogCardProps) {
   const { title, tags, date, readingMinutes, url } = post;
   return (
-    <Link href={url} className="cursor-pointer">
-      <div
-        className="flex flex-col p-4 h-full rounded-lg border border-border bg-background-secondary 
-          hover:shadow-xl dark:hover:shadow-none dark:hover:border-primary-400 
-          transition-all duration-200"
-      >
-        <div className="flex-1">
-          <h3 className="font-bold text-lg">{title}</h3>
-        </div>
-        <div className="mt-auto pt-4 flex flex-col gap-3">
-          <Tags tags={tags?.split(",") || []} />
+    <Link href={url} className="block py-4 sm:py-6 group">
+      <div className="flex flex-col w-full">
+        <span className="text-[18px] sm:text-[20px] font-bold mb-[6px] overflow-hidden text-ellipsis group-hover:text-primary-600 transition-colors">
+          {title}
+        </span>
+        <div className="mt-3 sm:mt-auto pt-2 sm:pt-4 flex flex-col gap-3 sm:gap-[15px]">
+          <Tags tags={tags?.split(",") || []} limit />
           <PostDateTimeInfo date={date} readingMinutes={readingMinutes} />
         </div>
       </div>
