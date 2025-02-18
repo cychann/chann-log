@@ -61,7 +61,7 @@ export default function Header({ navigationSlot, children }: BaseHeaderProps) {
             <div className="ml-auto">
               <div className="flex items-center gap-2 shrink-0">
                 <KBarButton />
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
                 <GithubLogo />
               </div>
             </div>
