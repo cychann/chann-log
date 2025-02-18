@@ -29,6 +29,7 @@ export default {
           secondary: "var(--text-secondary)",
           tertiary: "var(--text-tertiary)",
           inverse: "var(--text-inverse)",
+          description: "var(--text-description)",
         },
         border: {
           DEFAULT: "var(--border)",
