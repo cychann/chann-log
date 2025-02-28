@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "프론트엔드 개발자 최유찬의 기술 블로그입니다. 개발과 관련한 기술적 인사이트를 공유합니다.",
   verification: {
-    google: "FXnEbaZbIqmuvZ468eT9YwzYx1n_BbWXXNyPftG1mI",
+    google: "OFXnEbaZbIqmuvZ468eT9YwzYx1n_BbWXXNyPftG1mI",
   },
 };
 
