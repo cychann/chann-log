@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import "@/config/global.css";
 
 import KBarContainer from "@/components/KBar/KBarContainer";
@@ -46,6 +48,7 @@ export default async function RootLayout({
           </PostProvider>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-FP2XLW3X0P" />
     </html>
   );
 }
