@@ -48,7 +48,7 @@ export default async function RootLayout({
           </PostProvider>
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-FP2XLW3X0P" />
+      <GoogleAnalytics gaId="G-NK2YY7521T" />
     </html>
   );
 }
