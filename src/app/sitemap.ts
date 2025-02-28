@@ -1,9 +1,10 @@
 import { BASE_URL } from "@/config/const";
 import { getArticleList } from "@/lib/posts/article";
 import { getLogList } from "@/lib/posts/log";
+import { MetadataRoute } from "next";
 
-export default async function sitemap() {
-  const staticPages = [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
       lastModified: new Date(),
@@ -25,7 +26,7 @@ export default async function sitemap() {
   ];
 
   const articles = await getArticleList();
-  const articlePages = articles.map((article) => ({
+  const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
     url: `${BASE_URL}/articles/${article.category}/${article.slug}`,
     lastModified: new Date(article.date),
     changeFrequency: "weekly",
@@ -33,7 +34,7 @@ export default async function sitemap() {
   }));
 
   const logs = await getLogList();
-  const logPages = logs.map((log) => ({
+  const logPages: MetadataRoute.Sitemap = logs.map((log) => ({
     url: `${BASE_URL}/logs/${log.category}/${log.slug}`,
     lastModified: new Date(log.date),
     changeFrequency: "weekly",
