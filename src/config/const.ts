@@ -5,3 +5,5 @@ export const NAV_LIST = [
 ];
 
 export const HEADER_HEIGHT = 73;
+
+export const BASE_URL = "https://www.cychann.dev";
