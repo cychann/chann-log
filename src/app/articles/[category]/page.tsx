@@ -1,11 +1,17 @@
 import React from "react";
 import ArticleContent from "@/components/pages/article/ArticleContent";
+import { getArticleCategoryList } from "@/lib/posts/article";
 
 type ArticleCategoryPageProps = {
   params: Promise<{
     category: string;
   }>;
 };
+
+export async function generateStaticParams() {
+  const categories = await getArticleCategoryList();
+  return [{ category: "All" }, ...categories.map((category) => ({ category }))];
+}
 
 export async function generateMetadata({ params }: ArticleCategoryPageProps) {
   const { category } = await params;

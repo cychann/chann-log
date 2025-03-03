@@ -1,10 +1,16 @@
 import LogContent from "@/components/pages/log/LogContent";
+import { getLogCategoryList } from "@/lib/posts/log";
 
 type LogCategoryPageProps = {
   params: Promise<{
     category: string;
   }>;
 };
+
+export async function generateStaticParams() {
+  const categories = await getLogCategoryList();
+  return [{ category: "All" }, ...categories.map((category) => ({ category }))];
+}
 
 export async function generateMetadata({ params }: LogCategoryPageProps) {
   const { category } = await params;
