@@ -1,0 +1,42 @@
+---
+title: Next.js useSearchParams() Suspense 바운더리 누락 오류
+description: 페이지 라우팅 시 useSearchParams() 훅이 Suspense 바운더리 내에서 사용되지 않아 발생하는 클라이언트 사이드 렌더링 관련 오류
+date: 2025-03-04
+tags: Next.js, useSearchParams, Suspense
+---
+
+```tsx
+// ...
+export default function PaginatedList<T extends { title: string }>({
+  items,
+  itemsPerPage = 5,
+  ItemComponent,
+  className = "w-full",
+  itemsContainerClassName = "flex flex-col",
+}: PaginatedListProps<T>) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  //...
+}
+```
+
+빌드 후 아래와 같은 에러가 발생.
+
+<Image src="/posts/logs/Next/missing-suspense-useSearchParams/1.png" />
+
+이 오류는 Next.js 앱 라우터에서 발생하며, useSearchParams() 훅을 사용할 때 Suspense 바운더리 내에서 호출되지 않아 발생하는 것.
+
+아래와 같이 Suspense 바운더리를 추가하여 해결함.
+
+```tsx
+<Suspense>
+  <PaginatedList<ArticlePreview>
+    items={posts}
+    itemsPerPage={5}
+    ItemComponent={ArticleItem}
+  />
+</Suspense>
+```
+
+> 참조: [Next 공식문서](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout)
