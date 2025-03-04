@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { ArticlePreview } from "@/types/post";
 import ArticleCard from "./ArticleCard";
 import PaginatedList from "@/components/layout/PaginatedList";
@@ -15,10 +15,12 @@ type ArticleListProps = {
 
 export default function ArticleList({ posts }: ArticleListProps) {
   return (
-    <PaginatedList<ArticlePreview>
-      items={posts}
-      itemsPerPage={5}
-      ItemComponent={ArticleItem}
-    />
+    <Suspense>
+      <PaginatedList<ArticlePreview>
+        items={posts}
+        itemsPerPage={5}
+        ItemComponent={ArticleItem}
+      />
+    </Suspense>
   );
 }

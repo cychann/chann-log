@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { LogPreview } from "@/types/post";
 import LogCard from "./LogCard";
 import PaginatedList from "@/components/layout/PaginatedList";
@@ -15,10 +15,12 @@ type LogListProps = {
 
 export default function LogList({ posts }: LogListProps) {
   return (
-    <PaginatedList<LogPreview>
-      items={posts}
-      itemsPerPage={10}
-      ItemComponent={LogItem}
-    />
+    <Suspense>
+      <PaginatedList<LogPreview>
+        items={posts}
+        itemsPerPage={10}
+        ItemComponent={LogItem}
+      />
+    </Suspense>
   );
 }
