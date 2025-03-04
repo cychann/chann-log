@@ -2,6 +2,7 @@
 
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 type HeaderLogoProps = {
@@ -12,9 +13,19 @@ type HeaderLogoProps = {
 export default function HeaderLogo({ onClick, active }: HeaderLogoProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const LogoContent = (
-    <h3 className={cn("text-3xl font-extrabold", active && "text-primary")}>
-      chann-log
-    </h3>
+    <div className="flex items-center gap-2">
+      <Image src="/icon.png" alt="logo" width={32} height={32} />
+      <span
+        className={cn(
+          "text-[14px] leading-none font-bold text-text-secondary",
+          active && "text-primary"
+        )}
+      >
+        CHANN.
+        <br />
+        DEV
+      </span>
+    </div>
   );
 
   if (isDesktop) {

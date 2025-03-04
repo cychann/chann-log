@@ -54,10 +54,8 @@ export default function Header({ navigationSlot, children }: BaseHeaderProps) {
         <nav className="max-w-6xl mx-auto py-4 px-4">
           <div className="flex items-center w-full">
             <HeaderLogo onClick={handleLogoClick} active={isNavOpen} />
-            <div className="hidden md:flex flex-1 mx-8">
+            <div className="ml-auto hidden md:flex items-center gap-8">
               {navigationSlot || defaultNavigation}
-            </div>
-            <div className="ml-auto">
               <div className="flex items-center gap-2 shrink-0">
                 <KBarButton />
                 {/* <ThemeToggle /> */}
