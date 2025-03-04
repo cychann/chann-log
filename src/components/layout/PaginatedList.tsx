@@ -13,19 +13,15 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-type ItemComponentProps<T> = {
-  item: T;
-};
-
-type PaginatedListProps<T> = {
+type PaginatedListProps<T extends { title: string }> = {
   items: T[];
   itemsPerPage?: number;
-  ItemComponent: ComponentType<ItemComponentProps<T>>;
+  ItemComponent: ComponentType<{ item: T }>;
   className?: string;
   itemsContainerClassName?: string;
 };
 
-export default function PaginatedList<T extends Record<string, any>>({
+export default function PaginatedList<T extends { title: string }>({
   items,
   itemsPerPage = 5,
   ItemComponent,
@@ -88,7 +84,7 @@ export default function PaginatedList<T extends Record<string, any>>({
     const pageNumbers = [];
 
     let startPage = Math.max(1, currentPage - Math.floor(itemsPerPage / 2));
-    let endPage = Math.min(totalPages, startPage + itemsPerPage - 1);
+    const endPage = Math.min(totalPages, startPage + itemsPerPage - 1);
 
     if (endPage - startPage + 1 < itemsPerPage) {
       startPage = Math.max(1, endPage - itemsPerPage + 1);

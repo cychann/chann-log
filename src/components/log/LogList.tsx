@@ -15,6 +15,10 @@ type LogListProps = {
 
 export default function LogList({ posts }: LogListProps) {
   return (
-    <PaginatedList items={posts} itemsPerPage={10} ItemComponent={LogItem} />
+    <PaginatedList<LogPreview>
+      items={posts}
+      itemsPerPage={10}
+      ItemComponent={LogItem}
+    />
   );
 }

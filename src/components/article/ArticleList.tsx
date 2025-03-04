@@ -15,6 +15,10 @@ type ArticleListProps = {
 
 export default function ArticleList({ posts }: ArticleListProps) {
   return (
-    <PaginatedList items={posts} itemsPerPage={5} ItemComponent={ArticleItem} />
+    <PaginatedList<ArticlePreview>
+      items={posts}
+      itemsPerPage={5}
+      ItemComponent={ArticleItem}
+    />
   );
 }
