@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import KBarButton from "../KBar/KBarButton";
 import GithubLogo from "../common/ui/GithubLogo";
+import Link from "next/link";
 
 type BaseHeaderProps = {
   navigationSlot?: ReactNode;
@@ -59,7 +60,13 @@ export default function Header({ navigationSlot, children }: BaseHeaderProps) {
               <div className="flex items-center gap-2 shrink-0">
                 <KBarButton />
                 {/* <ThemeToggle /> */}
-                <GithubLogo />
+                <Link
+                  href="https://github.com/cychann"
+                  target="_blank"
+                  className="cursor-pointer"
+                >
+                  <GithubLogo />
+                </Link>
               </div>
             </div>
           </div>
