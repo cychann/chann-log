@@ -1,8 +1,10 @@
 "use client";
 
+import Notification from "@/components/common/ui/Notification";
 import { useHeadingsObserver } from "@/hooks/useHeadingsObserver";
+import { useNotification } from "@/hooks/useNotification";
 import { HeadingItem } from "@/types/TOC";
-import { ArrowUpToLine, MessageSquare, Share2 } from "lucide-react";
+import { ArrowUpToLine, MessageSquare, Copy } from "lucide-react";
 import Link from "next/link";
 
 type TOCSidebarProps = {
@@ -11,6 +13,9 @@ type TOCSidebarProps = {
 
 export default function TOCSidebar({ toc }: TOCSidebarProps) {
   const [activeId] = useHeadingsObserver("h1, h2");
+  const { isVisible, message, showNotification } = useNotification({
+    duration: 3000,
+  });
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23,6 +28,7 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
   const copyCurrentLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
+      showNotification("✅ Successfully Copied!");
     } catch (err) {
       console.error("Failed to copy link:", err);
     }
@@ -93,10 +99,15 @@ export default function TOCSidebar({ toc }: TOCSidebarProps) {
             className="group p-2 text-text-tertiary transition-colors hover:text-primary"
             aria-label="Copy page link"
           >
-            <Share2 className="h-5 w-5" />
+            <Copy className="h-5 w-5" />
           </button>
         </div>
       </div>
+      <Notification
+        message={message}
+        isVisible={isVisible}
+        position="bottom-right"
+      />
     </aside>
   );
 }
