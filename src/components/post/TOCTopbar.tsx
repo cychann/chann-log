@@ -12,7 +12,7 @@ export default function TOCTopbar({ toc }: TOCTopbarProps) {
   if (toc.length === 0) return null;
 
   return (
-    <nav className="xl:hidden">
+    <nav className="xl:hidden mt-4">
       <div className="rounded-lg border bg-background/50 p-4 shadow-sm backdrop-blur-sm">
         <h2 className="mb-3 font-bold text-text-primary border-b py-2">목차</h2>
         <ul className="space-y-1 text-sm mb-4">
