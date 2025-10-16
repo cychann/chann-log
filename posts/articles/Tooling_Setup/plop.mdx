@@ -1,0 +1,471 @@
+---
+title: Plop으로 디자인 시스템 컴포넌트 생성 자동화하기
+description: 반복적인 보일러플레이트 작성을 자동화하여 개발 생산성을 높이는 실전 가이드
+thumbnail: "/posts/articles/Tooling_Setup/plop/thumbnail.jpg"
+date: 2025-10-1
+tags: Plop, 자동화, 디자인시스템, 생산성, 개발도구
+---
+
+디자인 시스템을 구축하다 보면 **동일한 구조의 파일들을 반복적으로 생성**하는 작업이 많아집니다.
+새로운 컴포넌트를 만들 때마다 컴포넌트 파일, 테스트 파일, 스토리북 파일, 타입 정의 파일 등을 일일이 작성하고 import/export 구문을 복사-붙여넣기하는 과정은 비효율적이고 실수하기 쉽죠.
+
+더 큰 문제는 **일관성**입니다. 개발자마다 미묘하게 다른 파일 구조나 네이밍 컨벤션을 사용하면 프로젝트가 커질수록 유지보수가 어려워집니다.
+
+이번 글에서는 `Plop`이라는 라이브러리를 활용해 이런 반복 작업을 자동화하고, 팀 전체가 일관된 구조로 컴포넌트를 생성할 수 있도록 구축한 경험을 공유하겠습니다.
+
+---
+
+# 도입 배경
+
+먼저 저희 프로젝트의 디자인 시스템 구조를 살펴볼까요? 저희는 모노레포 구조로 디자인 시스템을 관리하고 있습니다.
+
+```
+packages/
+├── ui/                  # UI 컴포넌트 라이브러리
+│   └── src/
+│       ├── button/
+│       ├── text-field/
+│       └── card/
+├── tokens/              # 디자인 토큰
+├── themes/              # 테마 설정
+└── sdui-renderer/       # 컴포넌트 렌더러
+```
+
+## 디자인 시스템 컴포넌트 구조
+
+예시로 저희가 `Button` 컴포넌트를 어떻게 구성했는지 살펴보겠습니다:
+
+```
+packages/ui/src/button/
+├── button.tsx           # 메인 컴포넌트
+├── button.test.tsx      # 테스트 파일
+├── button.stories.tsx   # 스토리북 문서
+├── button.variants.ts   # CVA 기반 스타일 변형
+└── index.ts             # export 파일
+```
+
+각 파일은 명확한 역할과 규칙을 가지고 있습니다:
+
+**button.tsx** - 메인 컴포넌트
+
+```typescript
+import { type ComponentProps } from "react";
+import { type VariantProps } from "class-variance-authority";
+import { cn } from "@redotlabs/utils";
+import { buttonVariants } from "./button.variants";
+
+type ButtonVariants = VariantProps<typeof buttonVariants>;
+
+function Button({
+  className,
+  variant,
+  size,
+  ...props
+}: ComponentProps<"button"> & ButtonVariants) {
+  return (
+    <button
+      type="button"
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+
+export { Button, buttonVariants };
+export type { ButtonVariants };
+```
+
+**button.variants.ts** - 스타일 변형 정의
+
+```typescript
+import { cva } from "class-variance-authority";
+
+export const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md font-medium transition-colors",
+  {
+    variants: {
+      variant: {
+        contained: "bg-primary-500 text-white hover:bg-primary-600",
+        outlined: "border-2 border-primary-500 text-primary-500",
+        text: "text-primary-500 hover:bg-primary-50",
+      },
+      size: {
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-4 text-base",
+        lg: "h-12 px-6 text-lg",
+      },
+    },
+    defaultVariants: {
+      variant: "contained",
+      size: "md",
+    },
+  }
+);
+```
+
+**index.ts** - 통합 export
+
+```typescript
+export * from "./button";
+export * from "./button.variants";
+```
+
+이런 구조가 `TextField`, `Card`, `Badge` 등 **모든 컴포넌트에 유시하게 적용**되어야 합니다.
+
+# 문제 상황: 반복되는 보일러플레이트
+
+새로운 컴포넌트를 추가할 때마다 저희는 다음과 같은 과정을 거치고 있었습니다.
+
+1. **폴더 생성**: `packages/ui/src/component-name/`
+2. **5개 파일 생성**: `.tsx`, `.test.tsx`, `.stories.tsx`, `.variants.ts`, `index.ts`
+3. **각 파일에 기본 구조 작성**: import, export, 타입 정의 등 복붙
+4. **네이밍 일치**: kebab-case 폴더명 ↔ PascalCase 컴포넌트명 확인
+5. **경로 확인**: 상대 경로 import가 올바른지 체크
+
+매번 이 과정을 반복하다 보니, 시간도 많이 소요됐고 팀원마다 미묘하게 코드 구조를 다르게 적용하여 일관성이 깨지는 경우가 있었습니다.
+
+<Callout type="question">보일러플레이트 제작을 자동화할 수 없을까?</Callout>
+
+결국 저희가 원하는 건 간단했습니다.
+
+```bash
+pnpm generate:ui
+# Component name? TextField
+# ✨ 5개 파일이 완벽하게 생성됨!
+```
+
+단 한 줄의 명령어로 **완벽하게 일관된 구조**의 컴포넌트를 생성하는 것. 바로 이것이 `Plop`을 도입한 이유입니다.
+
+실제 Plop 공식 사이트에서도 **팀의 시간을 절약하고 일관성 있게 새 파일 생성을 도와주는 작은 툴**로 Plop를 소개하고 있습니다. 저희의 요구사항과 정확히 부합했습니다.
+
+---
+
+# Plop이란?
+
+`Plop`은 **마이크로 제너레이터 프레임워크**로, 프로젝트에서 반복적으로 생성되는 코드를 템플릿화하고 자동으로 생성해주는 도구입니다.
+파일/폴더 생성 작업을 스크립트로 등록해두면, 터미널에서 간단한 입력만으로 원하는 코드 구조를 만들어낼 수 있습니다
+
+## 핵심 개념
+
+- **Generator**: 생성할 파일의 종류와 규칙을 정의 (예: `ui-component`, `hook`, `util` 등의 제너레이터)
+- **Prompts**: 사용자에게 입력받을 정보 (예: 컴포넌트 이름)
+- **Actions**: 실제로 수행할 작업들 (파일 생성, 내용 추가 등)
+- **Templates**: 생성될 파일들의 템플릿 (Handlebars 문법 사용)
+
+각 Generator는 `prompts`와 `actions`를 조합하여 동작합니다. 예를 들어 컴포넌트 Generator라면 "컴포넌트 이름을 묻는 prompt"와 "해당 이름으로 파일들을 생성하는 actions"을 정의하게 됩니다. 그리고 각 파일은 사전에 작성된 Handlebars 템플릿을 기반으로 생성됩니다.
+
+---
+
+# 구현 과정: 단계별 설정
+
+## Plop 설치
+
+```bash
+pnpm add -D plop
+```
+
+그리고 `package.json`에 스크립트를 추가합니다:
+
+```json
+{
+  "scripts": {
+    "generate": "plop",
+    "generate:ui": "plop ui"
+  }
+}
+```
+
+이렇게 해두면 `pnpm generate`로 Plop 대화형 CLI를 실행하고, `pnpm generate:ui`로 바로 UI 컴포넌트 생성 제너레이터를 실행할 수 있습니다.
+
+## plopfile.js 작성
+
+프로젝트 루트에 `plopfile.js` 파일을 생성합니다. 여기에서 Plop Generator를 정의하게 됩니다.
+
+```javascript
+// plopfile.js
+export default function (plop) {
+  plop.setGenerator("ui", {
+    description: "Create a new UI component structure",
+    prompts: [
+      {
+        type: "input",
+        name: "componentName",
+        message: "Component name: (PascalCase or camelCase)",
+        validate: (input) => {
+          if (!input) return "Component name is required";
+          if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(input)) {
+            return "Component name must contain only letters and numbers";
+          }
+          return true;
+        },
+      },
+    ],
+    actions: [
+      {
+        type: "addMany",
+        templateFiles: `plop-templates/ui/**`,
+        destination: `packages/ui/src/{{kebabCase componentName}}`,
+        base: `plop-templates/ui`,
+        abortOnFail: true,
+      },
+    ],
+  });
+}
+```
+
+### 주요 설정 설명
+
+- **prompts 배열**: 사용자의 입력을 받는 질문들을 정의합니다. 여기서는 하나의 input(prompt)을 사용해 `componentName`을 입력받도록 했습니다. `validate` 함수를 통해 입력값이 비어있진 않은지, 알파벳으로 시작하는 유효한 이름인지 검증합니다.
+
+- **actions 배열**: Plop이 실행할 작업들을 나열합니다. `addMany` 액션은 여러 파일을 한 번에 추가할 때 사용하며, `templateFiles` 경로에 있는 모든 템플릿을 `destination` 경로로 생성합니다. 여기서 Handlebars 변수인 `{{kebabCase componentName}}`를 사용하여 폴더 및 파일명을 케밥 케이스로 변환해 사용합니다.
+
+> Handlebars 헬퍼 예시
+>
+> - `{{kebabCase componentName}}`: TextField → text-field
+> - `{{pascalCase componentName}}`: textField → TextField
+> - `{{camelCase componentName}}`: TextField → textField
+
+## 템플릿 파일 작성
+
+이제 실제 생성될 파일들의 템플릿을 만들어야 합니다. `plop-templates/ui/` 디렉토리에 컴포넌트 관련 파일들의 템플릿을 작성했습니다.
+
+### 컴포넌트 템플릿
+
+```typescript
+import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+export const {{camelCase componentName}}Variants = cva(
+  '/* 기본 스타일 */',
+  {
+    variants: {
+      variant: {
+        default: '/* default 스타일 */',
+        outline: '/* outline 스타일 */',
+      },
+      size: {
+        sm: '/* small 크기 */',
+        md: '/* medium 크기 */',
+        lg: '/* large 크기 */',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
+  }
+);
+
+export interface {{pascalCase componentName}}Props
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof {{camelCase componentName}}Variants> {
+  children?: React.ReactNode;
+}
+
+export const {{pascalCase componentName}} = React.forwardRef<
+  HTMLDivElement,
+  {{pascalCase componentName}}Props
+>(({ variant, size, className, children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={{{camelCase componentName}}Variants({ variant, size, className })}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
+
+{{pascalCase componentName}}.displayName = '{{pascalCase componentName}}';
+```
+
+위 템플릿은 기본 컴포넌트 코드 구조와 함께, `class-variance-authority (CVA)`를 활용한 스타일 variant 정의를 포함하고 있습니다. 실제 프로젝트에서 `Button` 컴포넌트를 참고하여 일반화한 코드입니다.
+
+### 스토리북 템플릿
+
+```typescript
+import type { Meta, StoryObj } from '@storybook/react';
+import { {{pascalCase componentName}} } from './{{kebabCase componentName}}';
+
+const meta: Meta<typeof {{pascalCase componentName}}> = {
+  title: 'Components/{{pascalCase componentName}}',
+  component: {{pascalCase componentName}},
+  tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'outline'],
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof {{pascalCase componentName}}>;
+
+export const Default: Story = {
+  args: {
+    children: '{{pascalCase componentName}} Content',
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
+    children: 'Outline Variant',
+  },
+};
+```
+
+스토리북 파일 템플릿은 기본적인 Storybook 메타데이터와 예시 스토리를 포함합니다. 컴포넌트 이름이 동적으로 대입되어 `title` 경로나 `args`에 활용됩니다.
+
+### 테스트 템플릿
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { {{pascalCase componentName}} } from './{{kebabCase componentName}}';
+
+describe('{{pascalCase componentName}}', () => {
+  it('renders children correctly', () => {
+    render(<{{pascalCase componentName}}>Test Content</{{pascalCase componentName}}>);
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
+  });
+
+  it('applies variant classes', () => {
+    const { container } = render(
+      <{{pascalCase componentName}} variant="outline">Content</{{pascalCase componentName}}>
+    );
+    expect(container.firstChild).toHaveClass('/* outline 클래스 체크 */');
+  });
+});
+```
+
+테스트 파일 템플릿은 Jest와 Testing Library를 사용하여 기본 동작을 검증하는 예제를 포함합니다.
+
+### Export 파일
+
+```typescript
+export * from "./{{kebabCase componentName}}";
+export * from "./{{kebabCase componentName}}.variants";
+```
+
+index 파일 템플릿은 해당 폴더의 컴포넌트와 variants를 한꺼번에 export합니다. (만약 variants 내용을 컴포넌트 파일에 모두 포함하는 구조라면, 필요에 따라 이 부분을 조정할 수도 있습니다.)
+
+## Prettier 설정 제외
+
+템플릿 파일들은 Handlebars 문법`({{ }})`을 사용하므로, 이를 그대로 뒀을 때 Prettier 포맷팅에서 에러가 발생할 수 있습니다. 따라서 Prettier의 포맷 대상에서 템플릿 디렉토리를 제외했습니다.
+
+```
+// .prettierignore
+plopfile.js
+plop-templates/
+```
+
+---
+
+# 사용 방법
+
+## 기본 사용
+
+```bash
+# 대화형 메뉴 실행
+pnpm generate
+
+# UI 컴포넌트 직접 생성
+pnpm generate:ui
+```
+
+`pnpm generate`를 실행하면 Plop이 설정된 모든 제너레이터 목록을 보여주고, 어떤 제너레이터를 실행할지 선택할 수 있습니다. `generate:ui` 같이 스크립트를 바로 지정하면 해당 제너레이터를 즉시 실행합니다.
+
+## 실행 예시
+
+Plop 제너레이터를 실행하면 터미널에서 컴포넌트 이름을 입력받은 후, 필요한 파일들이 자동으로 생성되는 모습을 볼 수 있습니다.
+아래 예시에서는 `TextField`라는 컴포넌트 이름을 입력하자, 미리 정의해둔 템플릿대로 `text-field` 폴더가 생성되고 그 안에 5개의 파일이 일괄 추가되었습니다.
+파일이 생성될 때마다 터미널 로그에 체크 표시(✔)와 함께 파일 경로가 출력되어, 모든 파일이 정확히 생성되었음을 확인할 수 있습니다.
+
+```bash
+$ pnpm generate:ui
+
+? Component name: (PascalCase or camelCase) TextField
+
+✔  ++ /packages/ui/src/text-field/text-field.tsx
+✔  ++ /packages/ui/src/text-field/text-field.test.tsx
+✔  ++ /packages/ui/src/text-field/text-field.stories.tsx
+✔  ++ /packages/ui/src/text-field/text-field.variants.ts
+✔  ++ /packages/ui/src/text-field/index.ts
+```
+
+자동으로 입력한 이름(`TextField`)이 kebab-case로 변환된 폴더 및 파일명이 생성되며, 각 파일 내부의 네이밍(컴포넌트 이름, 인터페이스명 등)도 Handlebar 템플릿에 따라 **PascalCase**, **camelCase** 등 알맞게 변환되어 들어갑니다. 덕분에 수동으로 파일을 만들고 수정할 필요 없이 곧바로 컴포넌트 구현을 시작할 수 있죠.
+
+---
+
+# 생성되는 파일 구조
+
+위 설정을 통해 `TextField` 컴포넌트를 생성하면 다음과 같은 파일 구조가 생성됩니다:
+
+```
+packages/ui/src/text-field/
+├── text-field.tsx           # 메인 컴포넌트 (CVA 기반 variants 포함)
+├── text-field.test.tsx      # Jest 테스트 파일
+├── text-field.stories.tsx   # Storybook 문서
+├── text-field.variants.ts   # 스타일 변형 정의 (선택사항)
+└── index.ts                 # 통합 export
+```
+
+이처럼 새로운 컴포넌트를 만들 때도 항상 동일한 폴더 및 파일 구조를 가지게 되어, 프로젝트 전반에 걸쳐 일관성이 유지됩니다.
+
+---
+
+# TIPS
+
+## 기존 컴포넌트를 템플릿 참고로 활용
+
+템플릿을 처음 작성할 때는 프로젝트에서 **가장 잘 작성된 기존 컴포넌트를 참고**하는 것이 좋습니다. 저희는 `Button` 컴포넌트를 기준으로 삼아 템플릿을 만들었는데, 이렇게 하면 실제 사용 중인 우수한 예시를 일반화하는 것이므로 빠뜨리는 부분 없이 템플릿을 구성할 수 있습니다.
+
+## 점진적으로 템플릿 개선
+
+처음부터 완벽한 템플릿을 만들려고 하기보다는, **일단 동작하는 템플릿을 만든 후 팀원들과 사용해보며 개선하는 과정**을 추천합니다. 실제 몇 번 사용해보면 예상치 못한 케이스들이 나오기 마련이므로, 그때그때 템플릿을 수정하여 발전시키면 됩니다. (예: 추가로 필요한 prop이나 스타일 추가, 파일 생성 여부 조건 등)
+
+## 여러 타입의 Generator 구성
+
+Plop은 UI 컴포넌트 외에도 다양하게 활용 가능합니다. 프로젝트 요구에 맞게 여러 종류의 제너레이터를 만들 수 있어요.
+
+```javascript
+// plopfile.js에 추가
+plop.setGenerator("hook", {
+  description: "Create a custom React hook",
+  // ...
+});
+
+plop.setGenerator("util", {
+  description: "Create a utility function",
+  // ...
+});
+```
+
+이렇게 설정해두면:
+
+```bash
+pnpm generate:hook      # 커스텀 훅 생성
+pnpm generate:util      # 유틸리티 함수 생성
+```
+
+등의 방식으로 필요한 코드를 쉽게 스캐폴딩할 수 있습니다. 반복 작업이 존재하는 모든 곳에 Plop를 응용해볼 수 있습니다.
+
+## 과도한 추상화 경계
+
+Plop를 도입하면 ‘모든 걸 자동화하고 싶다’는 욕심이 생기기 쉽습니다.
+하지만 모든 케이스를 100% 커버하는 템플릿을 만들려 하면 오히려 복잡도가 올라가고, 유지보수가 어려워질 수 있습니다.
+
+가장 일반적인 경우만 자동화하고, 특수한 케이스는 수동으로 처리하는 유연함을 갖는 게 현실적입니다.
+
+저 역시 현재 개발 중인 디자인 시스템에서도 컴포넌트별 요구사항이 제각각이기 때문에, 정말 기본적인 로직만 Plop으로 자동화하고, 나머지 부분은 직접 구현하며 개발하고 있습니다.
+
+## 추가 참고 자료
+
+- [Plop 공식 문서](https://plopjs.com/) - Generator 설정 상세 가이드
